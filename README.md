@@ -20,7 +20,8 @@ IT IS I, BLAITE. WHO BRINGS UPON THEE:
 
 # BUT JOHN, WHAT IS THE GAME ABOUT?
 
-#survival #nature #alone #rpg #textgame
+#survival #nature #alone #rpg #text-game
+#strategic #turn-based #generetive-world
 THE GAME WILL REVOLVE ABOUT YOU, HUMAN.
  YOU'LL SEEK SHELTER AND MATERIALS TO
 SURVIVE IN HARSH ENVIRONMENT OF NATURE.
