@@ -86,7 +86,7 @@ Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk){
 
 void moveTheHuman(bool moveThemLeft, Human* moveThem=player){
 	if(moveThemLeft){
-		if(gameViewMode){
+		if(gameViewMode==1){
 			moveThem->move(m_left);
 			if(isPlayerInNewChunk)
 				current_chunk = loadChunk();
@@ -97,7 +97,7 @@ void moveTheHuman(bool moveThemLeft, Human* moveThem=player){
 			else moveThem->selected_item--;
 		}
 	} else {
-		if(gameViewMode){
+		if(gameViewMode==1){
 			if(player->stage_pos>3) 
 				current_chunk = loadChunk();
 			moveThem->move(m_right);
@@ -179,7 +179,8 @@ void getInput(Human* moveThem){
 			interact(moveThem);
 			break;
         case 'E':
-            gameViewMode = !gameViewMode;
+            if(gameViewMode==0) gameViewMode=1;
+            else gameViewMode = 0;
             break;
         default:
             povYouDidNothing();
@@ -221,7 +222,7 @@ int main(){
     current_chunk = loadChunk();
     while(youWannaKeepGaming){
         if(!areYouDebugging) system("cls");
-        if(gameViewMode)
+        if(gameViewMode==1)
             cout << renderChunk(current_chunk->stage, humans);
         else
             renderBackpack(player);

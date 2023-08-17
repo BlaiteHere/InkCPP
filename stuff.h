@@ -6,7 +6,7 @@ using namespace std;
 bool youWannaKeepGaming=true;
 bool areYouDebugging=true;
 bool isPlayerInNewChunk=false;
-bool gameViewMode=true;
+int gameViewMode = 1;
 hash<string> seed;
 enum moving_direction{
     m_left=true,
