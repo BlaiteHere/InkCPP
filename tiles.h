@@ -1,5 +1,4 @@
-#include <iostream> 
-#include "items.h"
+#include "crafting.h"
 using namespace std;
 
 string nothing="   ";

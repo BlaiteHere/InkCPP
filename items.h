@@ -16,7 +16,7 @@ class Item{
     public:
     string name, description;
     char icon;
-    Item(){}
+    Item();
     Item(string item_name, char item_icon, string desc=""){
         name = item_name;
         icon = item_icon;
@@ -61,6 +61,7 @@ class Edible: public Item{
 };
 
 class InventoryItem{
+    public:
     Item* item;
     int amount;
     InventoryItem(Item* inv_item, int inv_amount){
@@ -72,6 +73,7 @@ class InventoryItem{
 Item* item_templates[]={
     new Item("None", '-'),                        // empty
     new Item("Stick", '/', "My favourite weapon"),
+    new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
 	new Edible("Yumberry", '8', "Juicy"),
     new Tool("Axe", 'P', "AAAA", breakTree)

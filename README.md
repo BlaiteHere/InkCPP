@@ -1,4 +1,5 @@
-# InkCPP
+# InkCPP          (this .md was made)
+#               (for RAW format only)
 
 HELLO EVERY !
 IT IS I, BLAITE. WHO BRINGS UPON THEE:
