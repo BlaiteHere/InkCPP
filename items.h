@@ -16,7 +16,7 @@ class Item{
     public:
     string name, description;
     char icon;
-    Item();
+    Item(){}
     Item(string item_name, char item_icon, string desc=""){
         name = item_name;
         icon = item_icon;
