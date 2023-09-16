@@ -1,6 +1,19 @@
 #include "stuff.h"
 using namespace std;
 
+char input;
+int amount_of_actions = 3;
+int selected_inventory_space = 0;
+
+
+enum gameViewModes {
+    inventory_tui,
+    actual_game,
+    interaction_tui,
+    crafting_tui
+};
+
+
 void debug(string message, bool putTheDebugThingies=true){ //DEBUG
     if(areYouDebugging){
         if(putTheDebugThingies) message = ">>> " + message;
@@ -11,22 +24,29 @@ void debug(string message, bool putTheDebugThingies=true){ //DEBUG
 
 
 void renderBackpack(Human* &this_human){
-    Item* this_item;
+    Item* this_item = this_human->backpack[selected_inventory_space];
 
     cout << this_human->nickname << "'s Backpack:\n";
-    for(int i=0; i<4; i+=2){
-    
-        for(int j=0; j<2; j++){
-            this_item = this_human->backpack[i+j];
 
-            if(this_item==NULL)
-                cout << i+j << " - None: ...\t\t";
-            
+    for(int i=0; i<8; i+=2){
+        for(int j=0; j<2; j++)
+        {
+            int current_index = i+j;
+            this_item = this_human->backpack[current_index];
+
+            if(i+j == selected_inventory_space)
+                cout << '$';
             else
-                cout << i+j << ' ' << this_item->icon << ' ' <<
+                cout << current_index;
+
+            if(this_item == NULL)
+                cout << " - None: ...\t\t";
+            else
+                cout << ' ' << this_item->icon << ' ' <<
                 this_item->name << ": " << 
                 this_item->description << "\t\t";
         }
+
         cout << '\n';
     }
     return;
@@ -36,7 +56,9 @@ void renderBackpack(Human* &this_human){
 void doTheActions(); //does actions like growing trees, moving enemies, etc.
 
 
-void startCrafting(){}
+void startCrafting(){
+    return;
+}
 
 
 void introduction(){
@@ -100,47 +122,50 @@ Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk){
 }
 
 void moveTheHuman(bool moveThemLeft, Human* moveThem=player){
-	if(moveThemLeft){
-		if(gameViewMode==1){
-			moveThem->move(m_left);
-    
-			if(isPlayerInNewChunk)
-				current_chunk = loadChunk();
+	if(moveThemLeft && gameViewMode == actual_game){
+        moveThem->move(m_left);
 
-			isPlayerInNewChunk=false;
+        if(isPlayerInNewChunk)
+            current_chunk = loadChunk();
 
-		} else {
-			if(moveThem->selected_item==0) 
-				moveThem->selected_item=7;
-
-			else moveThem->selected_item--;
-		}
+        isPlayerInNewChunk=false;
 
 	} else {
-		if(gameViewMode==1){
+        if(player->stage_pos > 3) 
+            current_chunk = loadChunk();
 
-			if(player->stage_pos>3) 
-				current_chunk = loadChunk();
+        moveThem->move(m_right);
 
-			moveThem->move(m_right);
+        if(isPlayerInNewChunk)
+            current_chunk = loadChunk();
 
-			if(isPlayerInNewChunk)
-				current_chunk = loadChunk();
-
-			isPlayerInNewChunk=false;
-		} else {
-
-			if(moveThem->selected_item==7) 
-				moveThem->selected_item=0;
-
-			else moveThem->selected_item++;
-		}
+        isPlayerInNewChunk = false;
 	}
 	return;
 }
 
 
-void quitTheGame(){
+void change_inventory_selected_space(bool change_space_left = true)
+{
+    if(change_space_left)
+    {
+        if(selected_inventory_space == 0) 
+            selected_inventory_space = 7;
+
+        else selected_inventory_space--;
+
+    } else {
+        if(selected_inventory_space == 7) 
+            selected_inventory_space = 0;
+
+        else selected_inventory_space++;
+    }
+    return;
+}
+
+
+void quitTheGame()
+{
 	char answer;
 	cout << "Are you sure you want to leave the game? (y/n)\n>>>";
 	cin >> answer;
@@ -157,33 +182,8 @@ void quitTheGame(){
 }
 
 
-void interact(Human* this_human){
-    Tile* this_tile=current_chunk->stage[this_human->stage_pos];
-	int amount_of_actions = this_tile->interact();
-	int action_number;
-
-	while(true){
-		cin >> action_number;
-
-		if(action_number >= amount_of_actions){
-			cout << '\n'; 
-			return;
-
-		} else 
-            if(action_number < amount_of_actions) 
-                break;  
-            // only 3 actions in tile possible
-	}
-
-	player->pickup_item(this_tile->get_loot(action_number));
-    if(this_tile->change_to == 127) return;
-
-	this_tile = tile_templates[this_tile->change_to]->duplicate();
-	return;
-}
-
-
-void povYouDidNothing(){
+void povYouDidNothing()
+{
 	string youDidNuthin[]={
 		"Uh oh! You did nothing...\t:/",
 		"Woopsie daisy! Nothing happened.",
@@ -202,17 +202,8 @@ void povYouDidNothing(){
 }
 
 
-void switchGameViewModes(){
-    if(gameViewMode==0)
-        gameViewMode = 1;
-    else 
-        gameViewMode = 0;
-
-    return;
-}
-
-
-string renderChunk(Tile* this_chunk[5], Human* players[]){
+string renderChunk(Tile* this_chunk[5], Human* players[])
+{
     //Render Tiles to this_canvas array
     string this_canvas[3][5];
 

@@ -3,10 +3,15 @@ using namespace std;
 
 string nothing="   ";
 
+enum tile_change_to{
+    dont_change = 127
+};
+
 int loot_tables[][3]={
     {},
     {1, 2, 3}
 };
+
 
 /*class Action{
     public:
@@ -14,6 +19,7 @@ int loot_tables[][3]={
     int loot_table[3];
     Action(){}
 };*/
+
 
 class Tile{
     public:
@@ -23,9 +29,8 @@ class Tile{
     Item* requires;
     Tile(){}
     Tile(string layerone, string layertwo, string layerthree,
-    int tile_change=127, Item* tile_req=NULL,
-    string actionone=nothing, string actiontwo=nothing,
-    string actionthree=nothing){
+    int tile_change = dont_change, Item* tile_req = NULL, string actionone = nothing, 
+    string actiontwo = nothing, string actionthree = nothing){
         layers[0] = layerone;
         layers[1] = layertwo;
         layers[2] = layerthree;
@@ -50,12 +55,13 @@ class Tile{
     }
 };
 
+
 class Pickup_Tile: public Tile{
     public:
     int loot_table[4];
     Pickup_Tile(string layerone, string layertwo, string layerthree,
-    int loot_table_id, int tile_change=127, string actionone=nothing, string actiontwo=nothing,
-    string actionthree=nothing){
+    int loot_table_id, int tile_change = dont_change, string actionone = nothing,
+    string actiontwo = nothing, string actionthree = nothing){
         layers[0] = layerone;
         layers[1] = layertwo;
         layers[2] = layerthree;
@@ -86,11 +92,13 @@ class Pickup_Tile: public Tile{
         cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
+
     Pickup_Tile* duplicate(){
         return new Pickup_Tile(layers[0], layers[1], layers[2],
         0, change_to, actions[0], actions[1], actions[2]);
     }
 };
+
 
 Tile* tile_templates[]={
     new Tile(nothing, nothing, "___"), // i personally ated. sorry

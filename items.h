@@ -45,9 +45,25 @@ class Tool: public Item{
 };
 
 class Edible: public Item{
-    int usage, durability;
     public:
+    int usage, durability;
     Edible(string item_name, char item_icon,
+    string desc,int item_usage=none){
+        name = item_name;
+        icon = item_icon;
+        usage = item_usage;
+        description = desc;
+    }
+    void writeDesc(){
+        cout << name << ": [" << usage << "]\n" << description;
+        return;
+    }
+};
+
+class ItemTile: public Item{
+    public:
+    int usage, durability;
+    ItemTile(string item_name, char item_icon,
     string desc,int item_usage=none){
         name = item_name;
         icon = item_icon;
@@ -76,5 +92,6 @@ Item* item_templates[]={
     new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
 	new Edible("Yumberry", '8', "Juicy"),
+	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
     new Tool("Axe", 'P', "AAAA", breakTree)
 };
