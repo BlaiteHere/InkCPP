@@ -75,6 +75,7 @@ void introduction(){
         player->nickname = nameYourInk;
 
     cout << "Welcome to the world of " << player->nickname << '!' << endl;
+    cin >> nameYourInk;
     return;
 }
 

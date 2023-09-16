@@ -162,6 +162,8 @@ void gameHandler()
 
 int main()
 {
+    areYouDebugging = true;
+
     introduction();
     current_chunk = loadChunk();
 
@@ -170,7 +172,7 @@ int main()
         if(!areYouDebugging) system("cls"); //WINDOWS ONLY! cleans cmdl
 
         gameHandler();
-        //cout << endl << gameViewMode << endl;
+        //cout << endl << gameViewMode << endl;     DEBUG!
         inGameShowControls();
         getInput(player);
     }

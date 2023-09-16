@@ -56,10 +56,10 @@ class Tile{
 };
 
 
-class Pickup_Tile: public Tile{
+class Action_Tile: public Tile{
     public:
     int loot_table[4];
-    Pickup_Tile(string layerone, string layertwo, string layerthree,
+    Action_Tile(string layerone, string layertwo, string layerthree,
     int loot_table_id, int tile_change = dont_change, string actionone = nothing,
     string actiontwo = nothing, string actionthree = nothing){
         layers[0] = layerone;
@@ -85,16 +85,16 @@ class Pickup_Tile: public Tile{
             cout << layers[i] << '\n';
         }
 
-        cout << "Which action would you like to perform with it?\n";
+        cout << "\nWhich action would you like to perform with it?\n";
         for(int i=0; i<amount_of_actions; i++)
-            cout << nothing << i << ". " << actions[i] << '\n';
+            cout << "\tPress " << i << " for [" << actions[i] << "]\n";
 
-        cout << "\nWrite 3 to exit.\n";
+        //cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
 
-    Pickup_Tile* duplicate(){
-        return new Pickup_Tile(layers[0], layers[1], layers[2],
+    Action_Tile* duplicate(){
+        return new Action_Tile(layers[0], layers[1], layers[2],
         0, change_to, actions[0], actions[1], actions[2]);
     }
 };
@@ -103,7 +103,13 @@ class Pickup_Tile: public Tile{
 Tile* tile_templates[]={
     new Tile(nothing, nothing, "___"), // i personally ated. sorry
     new Tile(nothing, nothing, "_v_"), // grass
-    new Pickup_Tile(nothing, nothing, "_*_", 1, 0, "Pick up an item", "Don't pick up an item", "Idk what else to add in here."), // item
+    new Action_Tile(
+        nothing, nothing, "_*_", 
+        1, 0, 
+        "Pick up an item", 
+        "Don't pick up an item", 
+        "3rd option."
+    ), // item
     new Tile(nothing, " /\\", "//]"),  // rock
-    new Pickup_Tile(" ^ ", "/^\\", "^i^", 2, 0, "Chop the tree", "Get leaves")     // tree
+    new Action_Tile(" ^ ", "/^\\", "^i^", 2, 0, "Chop the tree", "Get leaves")     // tree
 };
