@@ -20,7 +20,7 @@ class Recipe {
         elements[2] = elementthree;
     }
 
-    virtual void render();
+    void render();
 };
 
 
