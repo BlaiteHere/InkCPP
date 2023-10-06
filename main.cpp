@@ -123,17 +123,17 @@ void inGameShowControls()
     {
         case inventory_tui:
             cout << 
-            "A-D to move\tE to close inventory\tI to use\tC to craft\n";
+            "A-D to move    E to close inventory    I to use    C to craft\n";
             return;
 
         case actual_game:
             cout << 
-            "A-D to navigate\tE to open inventory\tI to interact\tC to craft\n";
+            "A-D to navigate    E to open inventory    I to interact    C to craft\n";
             return;
 
         case interaction_tui:
             cout << 
-            "0-1-2 select action\tAnything else to close\n";
+            "0-1-2 select action    Anything else to close\n";
             return;
     }
     return;

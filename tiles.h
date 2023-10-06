@@ -1,9 +1,9 @@
 #include "crafting.h"
 using namespace std;
 
-string nothing="   ";
+string nothing = "   ";
 
-enum tile_change_to{
+enum tile_change_to: char {
     dont_change = 127
 };
 
@@ -27,7 +27,11 @@ class Tile{
     string layers[3]={nothing, "ERR", "OR!"};
     string actions[3];
     Item* requires;
+
+
     Tile(){}
+
+
     Tile(string layerone, string layertwo, string layerthree,
     int tile_change = dont_change, Item* tile_req = NULL, string actionone = nothing, 
     string actiontwo = nothing, string actionthree = nothing){
@@ -40,6 +44,8 @@ class Tile{
         actions[1]=actiontwo;
         actions[2]=actionthree;
     }
+
+
     virtual int interact(){
         cout << "Interacted with object:\n";
         for(int i=0; i<3; i++)
@@ -47,9 +53,13 @@ class Tile{
         cout << "No actions to perform.\nWrite 3 to exit.\n";
         return 0;
     }
+
+
     virtual Tile* duplicate(){
         return new Tile(layers[0], layers[1], layers[2]);
     }
+
+
     virtual Item* get_loot(int action){
         return item_templates[loot_tables[action][rand() % 3]];
     }
@@ -59,6 +69,8 @@ class Tile{
 class Action_Tile: public Tile{
     public:
     int loot_table[4];
+
+
     Action_Tile(string layerone, string layertwo, string layerthree,
     int loot_table_id, int tile_change = dont_change, string actionone = nothing,
     string actiontwo = nothing, string actionthree = nothing){
@@ -73,6 +85,8 @@ class Action_Tile: public Tile{
         for(int i=1; i<4; i++)
             loot_table[i] = loot_tables[loot_table_id][i]; // the loot table
     }
+
+
     int interact(){
         int amount_of_actions=0;
         for(int i=0; i<3; i++){
@@ -92,6 +106,7 @@ class Action_Tile: public Tile{
         //cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
+    
 
     Action_Tile* duplicate(){
         return new Action_Tile(layers[0], layers[1], layers[2],

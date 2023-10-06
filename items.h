@@ -6,31 +6,44 @@ int randomNumberGenerator(int stop, int start=0){
     return start + (rand() % (stop - start));
 }
 
-enum item_usage_list{
+enum item_usage_list: char{
     none=0,
     breakTree,
     breakStone
 };
 
-class Item{
+class Item: public Printer{
     public:
     string name, description;
     char icon;
+
+
     Item(){}
+
+
     Item(string item_name, char item_icon, string desc=""){
         name = item_name;
         icon = item_icon;
         description=desc;
     }
+
+
     virtual void writeDesc(){
         cout << name << ":\n" << description;
         return;
+    }
+
+
+    string print() {
+        return name;
     }
 };
 
 class Tool: public Item{
     int usage, durability;
     public:
+
+
     Tool(string item_name, char item_icon,
     string desc,int item_usage=none){
         name = item_name;
@@ -38,6 +51,8 @@ class Tool: public Item{
         usage = item_usage;
         description = desc;
     }
+
+
     void writeDesc(){
         cout << name << ": [" << usage << "]\n" << description;
         return;
@@ -47,6 +62,8 @@ class Tool: public Item{
 class Edible: public Item{
     public:
     int usage, durability;
+
+
     Edible(string item_name, char item_icon,
     string desc,int item_usage=none){
         name = item_name;
@@ -54,6 +71,8 @@ class Edible: public Item{
         usage = item_usage;
         description = desc;
     }
+
+
     void writeDesc(){
         cout << name << ": [" << usage << "]\n" << description;
         return;
@@ -63,6 +82,8 @@ class Edible: public Item{
 class ItemTile: public Item{
     public:
     int usage, durability;
+
+
     ItemTile(string item_name, char item_icon,
     string desc,int item_usage=none){
         name = item_name;
@@ -70,6 +91,8 @@ class ItemTile: public Item{
         usage = item_usage;
         description = desc;
     }
+
+
     void writeDesc(){
         cout << name << ": [" << usage << "]\n" << description;
         return;
@@ -80,6 +103,8 @@ class InventoryItem{
     public:
     Item* item;
     int amount;
+
+    
     InventoryItem(Item* inv_item, int inv_amount){
         item=inv_item;
         amount=inv_amount;

@@ -6,7 +6,7 @@ int amount_of_actions = 3;
 int selected_inventory_space = 0;
 
 
-enum gameViewModes {
+enum gameViewModes: char {
     inventory_tui,
     actual_game,
     interaction_tui,
@@ -26,7 +26,7 @@ void debug(string message, bool putTheDebugThingies=true){ //DEBUG
 void renderBackpack(Human* &this_human){
     Item* this_item = this_human->backpack[selected_inventory_space];
 
-    cout << this_human->nickname << "'s Backpack:\n";
+    cout << this_human->name << "'s Backpack:\n";
 
     for(int i=0; i<8; i+=2){
         for(int j=0; j<2; j++)
@@ -64,7 +64,7 @@ void startCrafting(){
 void introduction(){
     string nameYourInk; //DEBUG
     if(areYouDebugging){
-        player->nickname = "Blaite";
+        player->name = "Blaite";
         return;
     }
 
@@ -72,9 +72,9 @@ void introduction(){
     cin >> nameYourInk;
 
     if(nameYourInk!="no")
-        player->nickname = nameYourInk;
+        player->name = nameYourInk;
 
-    cout << "Welcome to the world of " << player->nickname << '!' << endl;
+    cout << "Welcome to the world of " << player->name << '!' << endl;
     cin >> nameYourInk;
     return;
 }
@@ -173,7 +173,7 @@ void quitTheGame()
 
 	if(answer=='y' or answer=='Y') {
 		youWannaKeepGaming = false;
-		cout << "See you soon " << player->nickname << "... ";
+		cout << "See you soon " << player->name << "... ";
 		cin >> answer;
 
 	} else 

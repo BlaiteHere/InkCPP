@@ -7,6 +7,8 @@ class Recipe {
     string name;
     InventoryItem* elements[3];
     InventoryItem* outcome;
+
+    
     Recipe(
         string recipename,
         InventoryItem* recipe_outcome,

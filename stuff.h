@@ -1,4 +1,5 @@
 #include <vector>
+#include "pure.h"
 #include "tiles.h"
 using namespace std;
 
@@ -9,15 +10,17 @@ int gameViewMode = 1;
 unsigned int current_selected_item;
 
 hash<string> seed;
-enum moving_direction{
+enum moving_direction: bool{
     m_left=true,
     m_right=false
 };
 
-class Chunk{
+class Chunk
+{
     public:
         unsigned int id;
         Tile* stage[5];
+
 
         Chunk(unsigned int chunk_id){
             id=chunk_id;
@@ -26,9 +29,10 @@ class Chunk{
         }
 };
 
-class Human{
+class Human: public Printer
+{
     public:
-        string nickname;
+        string name;
         int stage_pos=2, selected_item=0;
         unsigned int chunk_pos=0;
         Item* backpack[8];
@@ -38,7 +42,7 @@ class Human{
             layers[1] = ".o.";
             layers[2] = "_x_";
             //human_selected=selected_item;
-            nickname = human_nick;
+            name = human_nick;
             for(int i=0; i<8; i++){
                 if(human_inv == nullptr)
                     backpack[i] = NULL;
@@ -47,11 +51,8 @@ class Human{
             }
             return;
         }
-        //void select_item(){
-        //    if(selected_item == 8) layers[1][2] = '.';
-        //    else layers[1][2] = backpack[selected_item]->icon;
-        //    return;
-        //}
+
+
         void move(bool moveTo){
             if(moveTo){
                 if(stage_pos == 0){
@@ -69,8 +70,15 @@ class Human{
             }
             return;
         }
+
+
         void pickup_item(Item* item){
             backpack[0]=item;
+        }
+
+
+        string print() {
+            return name;
         }
 };
 
@@ -84,4 +92,4 @@ Human* player = new Human();//, free_cool_inventory);
 Human* humans[]={player};
 vector<Chunk> chunks;
 Chunk* current_chunk = new Chunk(0);
-int player_seed = seed(player->nickname);
+int player_seed = seed(player->name);
