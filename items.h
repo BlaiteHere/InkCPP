@@ -1,22 +1,32 @@
 #include <iostream>
+#include "pure.h"
 using namespace std;
 
-int randomNumberGenerator(int stop, int start=0){
-    //Use the name as a seed for the random generation
-    return start + (rand() % (stop - start));
-}
 
-enum item_usage_list: char{
-    none=0,
+
+
+
+
+
+enum item_usage_list: char {
+    none = 0,
     breakTree,
     breakStone
 };
 
-class Item: public Printer{
+
+
+class BasicItem {
+    virtual void use() = 0;
+    virtual void writeDesc() = 0;
+};
+
+
+
+class Item: public NamePrinter, public BasicItem{
     public:
     string name, description;
     char icon;
-
 
     Item(){}
 
@@ -24,20 +34,20 @@ class Item: public Printer{
     Item(string item_name, char item_icon, string desc=""){
         name = item_name;
         icon = item_icon;
-        description=desc;
+        description = desc;
     }
 
 
-    virtual void writeDesc(){
+    void writeDesc(){
         cout << name << ":\n" << description;
         return;
     }
 
 
-    string print() {
-        return name;
-    }
+    void use() { return; }
 };
+
+
 
 class Tool: public Item{
     int usage, durability;
@@ -45,7 +55,7 @@ class Tool: public Item{
 
 
     Tool(string item_name, char item_icon,
-    string desc,int item_usage=none){
+    string desc, int item_usage = none){
         name = item_name;
         icon = item_icon;
         usage = item_usage;
@@ -59,13 +69,15 @@ class Tool: public Item{
     }
 };
 
-class Edible: public Item{
+
+
+class Edible: public Item {
     public:
     int usage, durability;
 
 
     Edible(string item_name, char item_icon,
-    string desc,int item_usage=none){
+    string desc, int item_usage=none){
         name = item_name;
         icon = item_icon;
         usage = item_usage;
@@ -78,6 +90,8 @@ class Edible: public Item{
         return;
     }
 };
+
+
 
 class ItemTile: public Item{
     public:
@@ -85,7 +99,7 @@ class ItemTile: public Item{
 
 
     ItemTile(string item_name, char item_icon,
-    string desc,int item_usage=none){
+    string desc, int item_usage=none){
         name = item_name;
         icon = item_icon;
         usage = item_usage;
@@ -98,6 +112,8 @@ class ItemTile: public Item{
         return;
     }
 };
+
+
 
 class InventoryItem{
     public:
@@ -110,6 +126,8 @@ class InventoryItem{
         amount=inv_amount;
     }
 };
+
+
 
 Item* item_templates[]={
     new Item("None", '-'),                        // empty

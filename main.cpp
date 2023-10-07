@@ -1,7 +1,9 @@
 #include "functions.h"
 using namespace std;
 
-void getInput(Human* moveThem){
+
+void getInput(Human* moveThem)
+{
     cout << "Action: ";
     cin >> input;
 
@@ -24,7 +26,7 @@ void getInput(Human* moveThem){
                     quitTheGame();
                     return;
                 case 'I':
-                    //Use selected Item
+                    useSelectedItem(player);
                     break;
                 case 'E':
                     gameViewMode = actual_game;

@@ -1,5 +1,4 @@
 #include <vector>
-#include "pure.h"
 #include "tiles.h"
 using namespace std;
 
@@ -29,7 +28,7 @@ class Chunk
         }
 };
 
-class Human: public Printer
+class Human: public NamePrinter
 {
     public:
         string name;
@@ -76,10 +75,6 @@ class Human: public Printer
             backpack[0]=item;
         }
 
-
-        string print() {
-            return name;
-        }
 };
 
 

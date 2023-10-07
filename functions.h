@@ -2,8 +2,8 @@
 using namespace std;
 
 char input;
-int amount_of_actions = 3;
-int selected_inventory_space = 0;
+char amount_of_actions = 3;
+char selected_inventory_space = 0;
 
 
 enum gameViewModes: char {
@@ -14,7 +14,13 @@ enum gameViewModes: char {
 };
 
 
-void debug(string message, bool putTheDebugThingies=true){ //DEBUG
+int randomNumberGenerator(int stop, int start=0){
+    //Use the name as a seed for the random generation
+    return start + (rand() % (stop - start));
+}
+
+
+void debug(string message, bool putTheDebugThingies = true){ //DEBUG
     if(areYouDebugging){
         if(putTheDebugThingies) message = ">>> " + message;
         cout << message;
@@ -51,6 +57,14 @@ void renderBackpack(Human* &this_human){
     }
     return;
 }
+
+
+void useSelectedItem(Human* human_with_inventory) 
+{
+    human_with_inventory->backpack[selected_inventory_space]->use();
+
+    return;
+};
 
 
 void doTheActions(); //does actions like growing trees, moving enemies, etc.

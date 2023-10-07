@@ -2,7 +2,7 @@
 using namespace std;
 
 
-class Recipe {
+class Recipe: public Printer {
     public:
     string name;
     InventoryItem* elements[3];
@@ -23,6 +23,10 @@ class Recipe {
     }
 
     void render();
+
+    string print() {
+        return name;
+    }
 };
 
 
