@@ -10,17 +10,31 @@ IT IS I, BLAITE. WHO BRINGS UPON THEE:
 
 
 
-# I'LL BE MAKING IT WITH
+# I'LL BE MAKING IT WITH THESE
  > stuff I use
 
-> 😝 C++/G++
-> 😎 GIT
-> 💻 GITHUB
-> 🤓 VISUAL STUDIO CODE
-> 🙂 WINDOWS
-> 👾 DISCORD
-> 📝 PHYSICAL NOTEPAD
-> 🧠 my THOUGHTS && IDEAS
++ 😝 C++ (compiler: G++)
++ 💻 GIT (GitHub)
++ 🤓 VISUAL STUDIO CODE
++ 🙂 WINDOWS (duh)
++ 👾 DISCORD
++ 📝 PHYSICAL NOTEPAD
++ 🧠 THOUGHTS && IDEAS of mine
+
+~ 😎 FRIENDS
+
+
+
+# OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
+
+Just compile `main.cpp`, that should work.
+
+There's also a RELEASE with a compiled `.exe` 
+  File, which seems to work only on my PC.
+    Compiling should work in that case.
+
+The compiling tutorial will be at the end of
+               this document.
 
 
 
@@ -39,7 +53,7 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
 
 
 # WHAT I'LL BE DOING ASAP
- > aka goals
+ > aka current goals
 
 - make Interaction with Tiles work
  - class type Action with `name` (to display), what the Tile should change to (if it even should), what Item the player has to have equipped to do the action successfully && what `loot_table` to give to the player when the Interaction is successful
@@ -60,23 +74,26 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
 # FUTURE IMPROVEMENTS PLANNED
  > more abstract goals
 
+### If something works, I'll mark it with a
+###     (+) instead of a default (-).
+
 - working Inventory & Hand system;
- - working Items
- - working Inventory UI
+ + working Items
+ + working Inventory UI
  - working Item Holding and Usage
 
 - working Crafting system;
  - working Inventory/Crafting UI
 
 - save game to files;
- - saving chunks function
+ - saving chunks with a function
  - saving game essentials to a file
 
-- more GameViewMode support;
- - making all GameViewMode dependant functions execute in one function, so you don't need to go to `getInput()` and `main()` separately when changing one thing
++ more GameViewMode support;
+ + making all GameViewMode dependant functions execute in one function, so you don't need to go to `getInput()` and `main()` separately when changing one thing
 
 - more Structures: spawned & built;
- - world generation enable spawning structures and looting them (like Statue, Lake)
+ - world generation with enabled spawning structures and being able to loot them (like Statue, Lake)
  - Crafting system giving structures to Inventory and ability to place them (like House, Camp & Farm)
 - Enemies & battle system;
  - ability to defeat Enemies in a battle
@@ -85,3 +102,34 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
 
  #survival #nature #alone #rpg #text-game
  #strategic #turn-based #generetive-world
+
+
+
+# HowToCompile: Part II
+
+GUIDE:
+
+### Download && Install a MinGW C++ Compiler
+ > default https://www.mingw-w64.org
+ > or my fav: https://sourceforge.net/projects/mingw
+
+### Check if G++ works as intended
+```
+g++ --version
+```
+If you got an error, there's something wrong with your installation.
+You might also need to go to Windows Settings && 
+
+### Compiling && Linking `main.cpp` file (example for `g++` on Windows)
+ > Open CMDL (Command Line)
+ > Type the following to (except the "bash", that is just made for formatting):
+ > go to the file directory, compile && link the file to `a.exe` then execute it in the terminal.
+```bash
+cd [file path of the InkCPP folder]
+g++ main.cpp
+a.exe
+```
+
+### Have fun
+ > This is just a demo of the project.
+ > It's not much, but think of the bright side:
