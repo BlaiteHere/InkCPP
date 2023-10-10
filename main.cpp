@@ -3,6 +3,7 @@ using namespace std;
 
 
 void getInput(Human* moveThem)
+    //GETS INPUT
 {
     cout << "Action: ";
     cin >> input;
@@ -118,6 +119,7 @@ void getInput(Human* moveThem)
 
 
 void inGameShowControls()
+    //OUTPUTS GAME CONTROLS FOR SPECIFIC GAMEVIEWMODES
 {
     cout << '\n';
 
@@ -143,6 +145,7 @@ void inGameShowControls()
 
 
 void gameHandler()
+    //OUTPUTS TO THE CONSOLE
 {
     switch(gameViewMode)
     {
@@ -162,6 +165,19 @@ void gameHandler()
 }
 
 
+void memory_deletus()
+    //DELETES HEAP MEMORY
+{
+    for(int i=0; i<1; i++)
+        delete humans[i];
+    vector<Chunk>().swap(chunks);
+    for(int i=0; i<5; i++)
+        delete tile_templates[i];
+    for(int i=0; i<7; i++)
+        delete item_templates[i];
+}
+
+
 int main()
 {
     areYouDebugging = true;
@@ -178,5 +194,7 @@ int main()
         inGameShowControls();
         getInput(player);
     }
+
+    memory_deletus();
     return 0;
 }

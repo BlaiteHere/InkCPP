@@ -1,4 +1,6 @@
+#include "debug.h"
 using namespace std;
+
 
 
 class Printer
@@ -8,9 +10,18 @@ class Printer
 };
 
 
+
 class NamePrinter: public Printer
 {
-    string name;
     public:
+    string name;
     string print() { return name; };
+};
+
+
+
+class BasicItem {
+    //FUNCTIONS FOR ITEM(s)
+    virtual void use() = 0;
+    virtual void writeDesc() = 0;
 };

@@ -14,7 +14,9 @@ class Recipe: public Printer {
         InventoryItem* recipe_outcome,
         InventoryItem* elementone,
         InventoryItem* elementtwo = NULL,
-        InventoryItem* elementthree = NULL){
+        InventoryItem* elementthree = NULL
+        )
+    {
 
         name = recipename;
         elements[0] = elementone;
@@ -22,11 +24,16 @@ class Recipe: public Printer {
         elements[2] = elementthree;
     }
 
+
     void render();
+
 
     string print() {
         return name;
     }
+
+
+    ~Recipe(){ debug(((string)"Recipe " + print() + (string)" has been deleted.\n")); }
 };
 
 

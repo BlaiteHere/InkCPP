@@ -2,19 +2,15 @@
 #include "tiles.h"
 using namespace std;
 
-bool youWannaKeepGaming=true;
-bool areYouDebugging=false;
-bool isPlayerInNewChunk=false;
-int gameViewMode = 1;
-unsigned int current_selected_item;
+bool youWannaKeepGaming = 1,
+     isPlayerInNewChunk = 0;
+char gameViewMode = 1;
+unsigned char current_selected_item;
 
 hash<string> seed;
-enum moving_direction: bool{
-    m_left=true,
-    m_right=false
-};
 
 class Chunk
+    //5 TILES + UNIQUE ID
 {
     public:
         unsigned int id;
@@ -26,10 +22,18 @@ class Chunk
             for(int i=0; i<5; i++)
                 stage[i] = NULL;
         }
+    
+
+    ~Chunk(){ debug(((string)"Chunk " + to_string(id) + (string)" has been deleted.\n")); }
 };
 
 class Human: public NamePrinter
+    //CHARACTER YOU MOVE AS IN GAME
 {
+    enum moving_direction: bool{
+        m_left=true,
+        m_right=false
+    };
     public:
         string name;
         int stage_pos=2, selected_item=0;
@@ -75,15 +79,13 @@ class Human: public NamePrinter
             backpack[0]=item;
         }
 
+
+        ~Human(){ debug(((string)"Human named \"" + name + (string)"\" has been deleted.\n")); }
 };
 
 
-Item* free_cool_inventory[]={
-    new Tool("Pickaxe", 'T', "Say Gex", breakStone),
-    new Item("Gummy bear", 'x', "Yum yummies in our tummies.")
-};
 
-Human* player = new Human();//, free_cool_inventory);
+Human* player = new Human();
 Human* humans[]={player};
 vector<Chunk> chunks;
 Chunk* current_chunk = new Chunk(0);

@@ -1,14 +1,11 @@
-#include <iostream>
 #include "pure.h"
 using namespace std;
 
 
 
-
-
-
-
-enum item_usage_list: char {
+enum item_usage_list: char 
+    //ITEM FUNCTIONALITY
+{
     none = 0,
     breakTree,
     breakStone
@@ -16,16 +13,11 @@ enum item_usage_list: char {
 
 
 
-class BasicItem {
-    virtual void use() = 0;
-    virtual void writeDesc() = 0;
-};
-
-
-
-class Item: public NamePrinter, public BasicItem{
+class Item: public NamePrinter, public BasicItem 
+    //IT DOES STUFF
+{
     public:
-    string name, description;
+    string description;
     char icon;
 
     Item(){}
@@ -45,13 +37,16 @@ class Item: public NamePrinter, public BasicItem{
 
 
     void use() { return; }
+
+    ~Item(){ debug(((string)"Item " + print() + (string)" has been deleted.\n")); }
 };
 
 
 
-class Tool: public Item{
-    int usage, durability;
+class Tool: public Item {
+    //IT DESTROY STUFF
     public:
+    int usage, durability;
 
 
     Tool(string item_name, char item_icon,
@@ -67,16 +62,21 @@ class Tool: public Item{
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
+
+
+    ~Tool(){ debug(((string)"Tool " + print() + (string)" has been deleted.\n")); }
 };
 
 
 
-class Edible: public Item {
+class Consumable: public Item 
+    //YUM
+{
     public:
     int usage, durability;
 
 
-    Edible(string item_name, char item_icon,
+    Consumable(string item_name, char item_icon,
     string desc, int item_usage=none){
         name = item_name;
         icon = item_icon;
@@ -89,11 +89,16 @@ class Edible: public Item {
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
+
+
+    ~Consumable(){ debug(((string)"Consumable " + print() + (string)" has been deleted.\n")); }
 };
 
 
 
-class ItemTile: public Item{
+class ItemTile: public Item
+    //NO CLUE WHAT IS THIS FOR. I WILL DELETE THIS IN THE NEXT COMMIT PROBABLY
+{
     public:
     int usage, durability;
 
@@ -111,11 +116,16 @@ class ItemTile: public Item{
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
+
+
+    ~ItemTile(){ debug(((string)"ItemTile " + print() + (string)" has been deleted.\n")); }
 };
 
 
 
-class InventoryItem{
+class InventoryItem
+    //ITEM FOUND IN THE INVENTORY (WITH AMOUNT OF ITSELF)
+{
     public:
     Item* item;
     int amount;
@@ -125,16 +135,20 @@ class InventoryItem{
         item=inv_item;
         amount=inv_amount;
     }
+
+    ~InventoryItem(){ debug(((string)"InventoryItem " + item->print() + (string)" has been deleted.\n")); }
 };
 
 
 
-Item* item_templates[]={
+Item* item_templates[] =
+{
+    //ALL ITEMS IN THE GAME ARE STORED HERE
     new Item("None", '-'),                        // empty
     new Item("Stick", '/', "My favourite weapon"),
     new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
-	new Edible("Yumberry", '8', "Juicy"),
+	new Consumable("Yumberry", '8', "Juicy"),
 	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
     new Tool("Axe", 'P', "AAAA", breakTree)
 };

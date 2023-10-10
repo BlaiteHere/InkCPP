@@ -6,7 +6,9 @@ char amount_of_actions = 3;
 char selected_inventory_space = 0;
 
 
-enum gameViewModes: char {
+enum gameViewModes: char 
+    //ALL RENDER/OUTPUT MODES
+{
     inventory_tui,
     actual_game,
     interaction_tui,
@@ -14,22 +16,17 @@ enum gameViewModes: char {
 };
 
 
-int randomNumberGenerator(int stop, int start=0){
+int randomNumberGenerator(int stop, int start=0)
+    //RNG
+{
     //Use the name as a seed for the random generation
     return start + (rand() % (stop - start));
 }
 
 
-void debug(string message, bool putTheDebugThingies = true){ //DEBUG
-    if(areYouDebugging){
-        if(putTheDebugThingies) message = ">>> " + message;
-        cout << message;
-    }
-    return;
-}
-
-
-void renderBackpack(Human* &this_human){
+void renderBackpack(Human* &this_human)
+    //RENDERS HUMAN INVENTORY
+{
     Item* this_item = this_human->backpack[selected_inventory_space];
 
     cout << this_human->name << "'s Backpack:\n";
@@ -60,22 +57,29 @@ void renderBackpack(Human* &this_human){
 
 
 void useSelectedItem(Human* human_with_inventory) 
+    //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
+
     human_with_inventory->backpack[selected_inventory_space]->use();
 
     return;
 };
 
 
-void doTheActions(); //does actions like growing trees, moving enemies, etc.
+void doTheActions(); // growing trees, moves enemies, etc.
 
 
-void startCrafting(){
+void startCrafting()
+    //RENDERS CRAFTING TUI
+{
+
     return;
 }
 
 
-void introduction(){
+void introduction()
+    //ASKS FOR THE INK HUMAN NAME, IT IS LATER USED AS THE WORLD SEED
+{
     string nameYourInk; //DEBUG
     if(areYouDebugging){
         player->name = "Blaite";
@@ -94,7 +98,9 @@ void introduction(){
 }
 
 
-Chunk* composeChunk(unsigned int this_id, Chunk* &this_chunk){
+Chunk* composeChunk(unsigned int this_id, Chunk* &this_chunk)
+    //CONSTRUCTS A CHUNK AND RETURNS IT
+{
     srand(player_seed + player->chunk_pos);
     int this_random_number;
     string debug_msg;   //DEBUG
@@ -114,10 +120,12 @@ Chunk* composeChunk(unsigned int this_id, Chunk* &this_chunk){
 }
 
 
-Chunk* saveChunk();
+//Chunk* saveChunk();
 
 
-Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk){
+Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk)
+    //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
+{
     //Search if chunk exists
     for(int i=0; i<chunks.size(); i++){
     
@@ -136,7 +144,14 @@ Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk){
     return this_chunk;
 }
 
-void moveTheHuman(bool moveThemLeft, Human* moveThem=player){
+void moveTheHuman(const bool moveThemLeft, Human* moveThem=player)
+    //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
+{
+    enum moving_direction: bool{
+        m_left=true,
+        m_right=false
+    };
+
 	if(moveThemLeft && gameViewMode == actual_game){
         moveThem->move(m_left);
 
@@ -160,7 +175,8 @@ void moveTheHuman(bool moveThemLeft, Human* moveThem=player){
 }
 
 
-void change_inventory_selected_space(bool change_space_left = true)
+void change_inventory_selected_space(const bool change_space_left = true)
+    //CHANGES INVENTORY SELECTED CURSOR SPACE
 {
     if(change_space_left)
     {
@@ -180,6 +196,7 @@ void change_inventory_selected_space(bool change_space_left = true)
 
 
 void quitTheGame()
+    //ASKS YOU IF YOU'RE SURE TO EXIT 2
 {
 	char answer;
 	cout << "Are you sure you want to leave the game? (y/n)\n>>>";
@@ -198,9 +215,10 @@ void quitTheGame()
 
 
 void povYouDidNothing()
+    //POV: NO INPUT
 {
-	string youDidNuthin[]={
-		"Uh oh! You did nothing...\t:/",
+	const char* youDidNuthin[10][127]={
+		"Uh oh! You did nothing...   :/",
 		"Woopsie daisy! Nothing happened.",
 		"Nothing was changed! :/",
 		"Bruhh, did you do nothing on purpose just to see this msg??",
@@ -208,16 +226,17 @@ void povYouDidNothing()
 		"But nothing came.",
 		">>> [Turn skipped!] >>>",
 		"Nothing wasn't done, yesn't?",
-		"Heavens! You happened to forget to write down the message!\nKinda cringe, innit bruv?",
-		"UwU, U-um, *sweats confused* I t-think you might f-f-fowwgot to u-use your keyboawd >///<\n(pls, kill me)"
+		"Heavens! You happened to forget to write down the message!\n> Kinda cringe, innit bruv?",
+		"UwU, U-um, *sweats confused* I t-think you might f-f-fowwgot to u-use your keyboawd >///<\n> (pls, kill me)"
 	};
 
-	cout << youDidNuthin[rand() % 10] << endl;
+	cout << "> " << youDidNuthin[rand() % 10] << endl;
 	return;
 }
 
 
 string renderChunk(Tile* this_chunk[5], Human* players[])
+    //RETURNS STRING WITH THE VIEW OF THE GAME SCENE
 {
     //Render Tiles to this_canvas array
     string this_canvas[3][5];

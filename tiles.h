@@ -13,12 +13,31 @@ int loot_tables[][3]={
 };
 
 
-/*class Action{
+class Action: public NamePrinter
+{
     public:
-    string name="Default action";
-    int loot_table[3];
+    string name = "Default action";
+    int afterUseChangeTileToThisIndex = dont_change;
+    Item* getItemFromThis,
+        * requiredItemForThis;
+
+
     Action(){}
-};*/
+
+
+    Action(
+        string a_name, 
+        int a_change_to,
+        Item* a_getItem,
+        Item* a_reqItem
+    )
+    {
+        name = a_name;
+        afterUseChangeTileToThisIndex = a_change_to;
+        getItemFromThis = a_getItem;
+        requiredItemForThis = a_reqItem;
+    }
+};
 
 
 class Tile{
