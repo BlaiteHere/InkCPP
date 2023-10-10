@@ -1,14 +1,17 @@
-# InkCPP          (this .md was made)
-#               (for RAW format only)
+# InkCPP           (this .md was made)
+#                (for RAW format only)
 
 HELLO EVERY !
 IT IS I, BLAITE. WHO BRINGS UPON THEE:
 #            I N K C P P 
+           (official name in progress)
 ### MY FIRST CPP ACTUAL GAME / PROJECT
+ > introduction to the project && me
 
 
 
 # I'LL BE MAKING IT WITH
+ > stuff I use
 
 > 😝 C++/G++
 > 😎 GIT
@@ -16,10 +19,13 @@ IT IS I, BLAITE. WHO BRINGS UPON THEE:
 > 🤓 VISUAL STUDIO CODE
 > 🙂 WINDOWS
 > 👾 DISCORD
+> 📝 PHYSICAL NOTEPAD
+> 🧠 my THOUGHTS && IDEAS
 
 
 
 # BUT JOHN, WHAT IS THE GAME ABOUT?
+ > about
 
 THE GAME WILL REVOLVE ABOUT YOU, HUMAN.
  YOU'LL SEEK SHELTER AND MATERIALS TO
@@ -30,7 +36,29 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
   BUILD STRUCTURES, GATHER RESOURCES
 # IN THIS POCKET-SIZED 1D ADVENTURE.
 
+
+
+# WHAT I'LL BE DOING ASAP
+ > aka goals
+
+- make Interaction with Tiles work
+ - class type Action with `name` (to display), what the Tile should change to (if it even should), what Item the player has to have equipped to do the action successfully && what `loot_table` to give to the player when the Interaction is successful
+
+- make Inventory and Items work
+ - make Items removed from inventory and use them
+ - make Tools have `Durability` that will replace `Amount`
+ - make Tools have `max_durability` or `max_amount`
+ - improve Inventory TUI design
+
+- make Crafting system (recipes, Crafting, Workbench)
+ - make Workbench give you access to better recipes
+
+- improve visible chunk/scene design
+
+
+
 # FUTURE IMPROVEMENTS PLANNED
+ > more abstract goals
 
 - working Inventory & Hand system;
  - working Items
