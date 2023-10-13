@@ -1,4 +1,3 @@
-#include <vector>
 #include "tiles.h"
 using namespace std;
 
@@ -20,7 +19,7 @@ class Chunk
         Chunk(unsigned int chunk_id){
             id=chunk_id;
             for(int i=0; i<5; i++)
-                stage[i] = NULL;
+                stage[i] = nullptr;
         }
     
 
@@ -40,7 +39,7 @@ class Human: public NamePrinter
         unsigned int chunk_pos=0;
         InventoryItem* backpack[8];
         string layers[3];
-        Human(string human_nick="Ann", InventoryItem* human_inv[]=NULL){
+        Human(string human_nick="Ann", InventoryItem* human_inv[]=nullptr){
             layers[0] = nothing;
             layers[1] = ".o.";
             layers[2] = "_x_";
@@ -48,7 +47,7 @@ class Human: public NamePrinter
             name = human_nick;
             for(int i=0; i<8; i++){
                 if(human_inv == nullptr)
-                    backpack[i] = NULL;
+                    backpack[i] = nullptr;
                 else 
                     backpack[i] = human_inv[i];
             }
@@ -87,7 +86,7 @@ class Human: public NamePrinter
 
 
 
-Human* player = new Human();
+Human* const player = new Human();
 Human* humans[]={player};
 vector<Chunk> chunks;
 Chunk* current_chunk = new Chunk(0);

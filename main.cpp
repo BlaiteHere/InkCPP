@@ -67,6 +67,7 @@ void getInput(Human* moveThem)
 
         case interaction_tui: 
         {
+            /*
             Tile* this_tile = current_chunk->stage[player->stage_pos];
             int input_to_int = input - 48;
 
@@ -77,12 +78,15 @@ void getInput(Human* moveThem)
             }
 
             player->pickup_item((Item*)(this_tile->get_loot(input_to_int)));
+            // D: I probably shouldn't const stuff and then unconst stuff
+            // D:   But IDC it caused me already enough of a headache.
 
-            if(this_tile->change_to == dont_change) 
+            if(this_tile->get_loot() == 0) 
                 return;
 
             this_tile = tile_templates[this_tile->change_to]->duplicate();
             gameViewMode = actual_game;
+            */
 
             break;
         }

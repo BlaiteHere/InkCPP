@@ -1,4 +1,4 @@
-#include "crafting.h"
+#include "action.h"
 using namespace std;
 
 string nothing = "   ";
@@ -7,65 +7,31 @@ enum tile_change_to: char {
     dont_change = 127
 };
 
-int loot_tables[][3]={
-    {},
-    {1, 2, 3}
-};
-
-
-class Action: public NamePrinter
-{
-    public:
-    string name = "Default action";
-    int afterUseChangeTileToThisIndex = dont_change;
-    Item* getItemFromThis,
-        * requiredItemForThis;
-
-
-    Action(){}
-
-
-    Action(
-        string a_name, 
-        int a_change_to,
-        Item* a_getItem,
-        Item* a_reqItem
-    )
-    {
-        name = a_name;
-        afterUseChangeTileToThisIndex = a_change_to;
-        getItemFromThis = a_getItem;
-        requiredItemForThis = a_reqItem;
-    }
-};
-
 
 class Tile{
     public:
-    int change_to;
-    string layers[3]={nothing, "ERR", "OR!"};
-    string actions[3];
-    Item* requires;
+    string layers[3] = //Basically what is displayed when the
+    {                  //          tile is rendered.
+        nothing, 
+        "ERR", 
+        "OR!"
+    };
 
 
     Tile(){}
 
 
-    Tile(string layerone, string layertwo, string layerthree,
-    int tile_change = dont_change, Item* tile_req = NULL, string actionone = nothing, 
-    string actiontwo = nothing, string actionthree = nothing){
+    Tile(string layerone, string layertwo, string layerthree)
+
+    {
         layers[0] = layerone;
         layers[1] = layertwo;
         layers[2] = layerthree;
-        change_to = tile_change;
-        requires = tile_req;
-        actions[0]=actionone;
-        actions[1]=actiontwo;
-        actions[2]=actionthree;
     }
 
 
-    virtual int interact(){
+    virtual int interact()
+    {
         cout << "Interacted with object:\n";
         for(int i=0; i<3; i++)
             cout << layers[i] << '\n';
@@ -75,49 +41,49 @@ class Tile{
 
 
     virtual Tile* duplicate(){
-        return new Tile(layers[0], layers[1], layers[2]);
+        return this;
     }
 
 
-    virtual const Item* get_loot(int action) const
+    virtual const Item* get_loot(int action=0) const
     {
-        return (const Item*)(item_templates[loot_tables[action][rand() % 3]]);
+        return (const Item*)(item_templates[action]);
     }
 };
 
 
 class Action_Tile: public Tile{
     public:
-    int loot_table[4];
+    Action* actions[3];
 
 
-    Action_Tile(string layerone, string layertwo, string layerthree,
-    int loot_table_id, int tile_change = dont_change, string actionone = nothing,
-    string actiontwo = nothing, string actionthree = nothing){
+    Action_Tile(
+        string layerone, string layertwo, string layerthree, 
+        Action* actionone, Action* actiontwo=nullptr, Action* actionthree=nullptr
+    )
+    {
         layers[0] = layerone;
         layers[1] = layertwo;
         layers[2] = layerthree;
-        change_to = tile_change;
-        loot_table[0] = loot_table_id; // the id of the loot_table
-        actions[0]=actionone;
-        actions[1]=actiontwo;
-        actions[2]=actionthree;
-        for(int i=1; i<4; i++)
-            loot_table[i] = loot_tables[loot_table_id][i]; // the loot table
+        actions[0] = actionone;
+        actions[1] = actiontwo;
+        actions[2] = actionthree;
     }
 
 
-    int interact(){
-        int amount_of_actions=0;
+    int interact()
+    {
+        //Count the amount of actions
+        int amount_of_actions = 0;
         for(int i=0; i<3; i++){
-            if(actions[i]==nothing) break;
+            if(actions[i] == nullptr) break;
             amount_of_actions++;
         }
 
+        //Print the interacted Tile
         cout << "Interacted with pickup-tile:\n";
-        for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++)
             cout << layers[i] << '\n';
-        }
 
         cout << "\nWhich action would you like to perform with it?\n";
         for(int i=0; i<amount_of_actions; i++)
@@ -129,8 +95,7 @@ class Action_Tile: public Tile{
     
 
     Action_Tile* duplicate(){
-        return new Action_Tile(layers[0], layers[1], layers[2],
-        0, change_to, actions[0], actions[1], actions[2]);
+        return this;
     }
 };
 
@@ -138,13 +103,16 @@ class Action_Tile: public Tile{
 Tile* tile_templates[]={
     new Tile(nothing, nothing, "___"), // i personally ated. sorry
     new Tile(nothing, nothing, "_v_"), // grass
-    new Action_Tile(
+    new Action_Tile
+    (
         nothing, nothing, "_*_", 
-        1, 0, 
-        "Pick up an item", 
-        "Don't pick up an item", 
-        "3rd option."
+        &action_templates[1]
     ), // item
     new Tile(nothing, " /\\", "//]"),  // rock
-    new Action_Tile(" ^ ", "/^\\", "^i^", 2, 0, "Chop the tree", "Get leaves")     // tree
+    new Action_Tile
+    (
+        " ^ ", "/^\\", "^i^",
+        &action_templates[2],
+        &action_templates[3]
+    )     // tree
 };

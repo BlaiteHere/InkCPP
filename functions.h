@@ -24,43 +24,39 @@ int randomNumberGenerator(int stop, int start=0)
 }
 
 
-void renderBackpack(Human* &this_human)
+void renderBackpack(Human* this_human)
     //RENDERS HUMAN INVENTORY
 {
     InventoryItem* this_item = this_human->backpack[selected_inventory_space];
 
     cout << this_human->name << "'s Backpack:\n";
 
-    for(int i=0; i<8; i+=2){
-        for(int j=0; j<2; j++)
-        {
-            int current_index = i+j;
-            this_item = this_human->backpack[current_index];
+    for(int i=0; i<8; i++)
+    {
+        this_item = this_human->backpack[i];
 
-            if(i+j == selected_inventory_space)
-                cout << '$';
-            else
-                cout << current_index;
+        if(i == selected_inventory_space)
+            cout << " >";
+        else
+            cout << i+1;
 
-            if(this_item == NULL)
-                cout << " - None: ...\t\t";
-            else
-                cout << ' ' << this_item->item->icon << ' ' <<
-                this_item->item->name << ": " << 
-                this_item->item->description << "\t\t";
-        }
-
-        cout << '\n';
+        if(this_item == nullptr)
+            cout << " ' ' | None: ...\n";
+        else
+            cout << " '" << this_item->item->icon << "' | " <<
+            this_item->item->name << ": " << 
+            this_item->item->description << "\n";
     }
     return;
 }
 
 
-void useSelectedItem(Human* human_with_inventory) 
+void useSelectedItem(Human* human_with_inventory)
     //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
 
-    human_with_inventory->backpack[selected_inventory_space]->item->use();
+    //human_with_inventory->backpack[selected_inventory_space]->item->use(); 
+    //  segmentation fault
 
     return;
 };

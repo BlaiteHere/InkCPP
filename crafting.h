@@ -13,8 +13,8 @@ class Recipe: public Printer {
         const string recipename,
         const InventoryItem* recipe_outcome,
         const InventoryItem* elementone,
-        const InventoryItem* elementtwo = NULL,
-        const InventoryItem* elementthree = NULL
+        const InventoryItem* elementtwo = nullptr,
+        const InventoryItem* elementthree = nullptr
         )
     {
 
@@ -42,7 +42,7 @@ void Recipe::render(){
 
     //Count the amount of elements in the recipe
     for(int i=0; i<3; i++)
-        if(elements[i] == NULL) break;
+        if(elements[i] == nullptr) break;
         else amount_of_elements++;
 
     //Render recipe

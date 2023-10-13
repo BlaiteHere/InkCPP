@@ -3,13 +3,14 @@ using namespace std;
 
 
 
-enum item_usage_list: char 
+/*enum item_usage_list: char 
     //ITEM FUNCTIONALITY
 {
     none = 0,
     breakTree,
     breakStone
 };
+*/
 
 
 
@@ -54,11 +55,10 @@ class Tool: public Item {
 
 
     Tool(string item_name, char item_icon,
-    string desc, int item_usage = none)
+    string desc)
     {
         name = item_name;
         icon = item_icon;
-        usage = item_usage;
         description = desc;
     }
 
@@ -83,11 +83,10 @@ class Consumable: public Item
 
 
     Consumable(string item_name, char item_icon,
-    string desc, int item_usage=none)
+    string desc)
     {
         name = item_name;
         icon = item_icon;
-        usage = item_usage;
         description = desc;
     }
 
@@ -112,10 +111,9 @@ class ItemTile: public Item
 
 
     ItemTile(string item_name, char item_icon,
-    string desc, int item_usage=none){
+    string desc){
         name = item_name;
         icon = item_icon;
-        usage = item_usage;
         description = desc;
     }
 
@@ -168,5 +166,5 @@ const Item* item_templates[] =
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
 	new Consumable("Yumberry", '8', "Juicy"),
 	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
-    new Tool("Axe", 'P', "AAAA", breakTree)
+    new Tool("Axe", 'P', "Breaks trees")
 };
