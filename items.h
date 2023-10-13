@@ -20,23 +20,27 @@ class Item: public NamePrinter, public BasicItem
     string description;
     char icon;
 
+
     Item(){}
 
 
-    Item(string item_name, char item_icon, string desc=""){
+    Item(string item_name, char item_icon, string desc="")
+    {
         name = item_name;
         icon = item_icon;
         description = desc;
     }
 
 
-    void writeDesc(){
+    void writeDesc() const
+    {
         cout << name << ":\n" << description;
         return;
     }
 
 
-    void use() { return; }
+    void use() { return; } //wip
+
 
     ~Item(){ debug(((string)"Item " + print() + (string)" has been deleted.\n")); }
 };
@@ -50,7 +54,8 @@ class Tool: public Item {
 
 
     Tool(string item_name, char item_icon,
-    string desc, int item_usage = none){
+    string desc, int item_usage = none)
+    {
         name = item_name;
         icon = item_icon;
         usage = item_usage;
@@ -58,7 +63,8 @@ class Tool: public Item {
     }
 
 
-    void writeDesc(){
+    void writeDesc() const
+    {
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
@@ -70,14 +76,15 @@ class Tool: public Item {
 
 
 class Consumable: public Item 
-    //YUM
+    //YUM, will be probably replaced by Tool since it is the same
 {
     public:
     int usage, durability;
 
 
     Consumable(string item_name, char item_icon,
-    string desc, int item_usage=none){
+    string desc, int item_usage=none)
+    {
         name = item_name;
         icon = item_icon;
         usage = item_usage;
@@ -85,7 +92,8 @@ class Consumable: public Item
     }
 
 
-    void writeDesc(){
+    void writeDesc() const
+    {
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
@@ -112,7 +120,8 @@ class ItemTile: public Item
     }
 
 
-    void writeDesc(){
+    void writeDesc() const
+    {
         cout << name << ": [" << usage << "]\n" << description;
         return;
     }
@@ -131,7 +140,8 @@ class InventoryItem
     int amount;
 
     
-    InventoryItem(Item* inv_item, int inv_amount){
+    InventoryItem(Item* inv_item, int inv_amount)
+    {
         item=inv_item;
         amount=inv_amount;
     }
@@ -141,7 +151,7 @@ class InventoryItem
 
 
 
-Item* item_templates[] =
+const Item* item_templates[] =
 {
     //ALL ITEMS IN THE GAME ARE STORED HERE
     new Item("None", '-'),                        // empty
