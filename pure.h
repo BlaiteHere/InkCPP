@@ -22,6 +22,6 @@ class NamePrinter: public Printer
 
 class BasicItem {
     //FUNCTIONS FOR ITEM(s)
-    virtual void use() = 0;
-    virtual void writeDesc() = 0;
+    virtual void use() const = 0;
+    virtual void writeDesc() const = 0;
 };

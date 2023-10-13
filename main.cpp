@@ -76,7 +76,7 @@ void getInput(Human* moveThem)
                 return;
             }
 
-            player->pickup_item(this_tile->get_loot(input_to_int));
+            player->pickup_item((Item*)(this_tile->get_loot(input_to_int)));
 
             if(this_tile->change_to == dont_change) 
                 return;

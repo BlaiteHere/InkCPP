@@ -79,8 +79,9 @@ class Tile{
     }
 
 
-    virtual Item* get_loot(int action){
-        return item_templates[loot_tables[action][rand() % 3]];
+    virtual const Item* get_loot(int action) const
+    {
+        return (const Item*)(item_templates[loot_tables[action][rand() % 3]]);
     }
 };
 

@@ -39,7 +39,7 @@ class Item: public NamePrinter, public BasicItem
     }
 
 
-    void use() { return; } //wip
+    void use() const { return; } //wip
 
 
     ~Item(){ debug(((string)"Item " + print() + (string)" has been deleted.\n")); }
@@ -145,6 +145,14 @@ class InventoryItem
         item=inv_item;
         amount=inv_amount;
     }
+
+
+    InventoryItem(const Item* inv_item, int inv_amount)
+    {
+        item = (Item*)inv_item;
+        amount = inv_amount;
+    }
+
 
     ~InventoryItem(){ debug(((string)"InventoryItem " + item->print() + (string)" has been deleted.\n")); }
 };

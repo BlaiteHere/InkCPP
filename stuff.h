@@ -38,9 +38,9 @@ class Human: public NamePrinter
         string name;
         int stage_pos=2, selected_item=0;
         unsigned int chunk_pos=0;
-        Item* backpack[8];
+        InventoryItem* backpack[8];
         string layers[3];
-        Human(string human_nick="Ann", Item* human_inv[]=NULL){
+        Human(string human_nick="Ann", InventoryItem* human_inv[]=NULL){
             layers[0] = nothing;
             layers[1] = ".o.";
             layers[2] = "_x_";
@@ -75,8 +75,10 @@ class Human: public NamePrinter
         }
 
 
-        void pickup_item(Item* item){
-            backpack[0]=item;
+        const bool pickup_item(const Item* item)
+        {
+            backpack[1] = new InventoryItem(item, 1);
+            return true;
         }
 
 

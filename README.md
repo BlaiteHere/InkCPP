@@ -29,12 +29,12 @@ IT IS I, BLAITE. WHO BRINGS UPON THEE:
 
 Just compile `main.cpp`, that should work.
 
-There's also a RELEASE with a compiled `.exe` 
+There's also a RELEASE with a compiled `.exe`
   File, which seems to work only on my PC.
     Compiling should work in that case.
 
 The compiling tutorial will be at the end of
-               this document.
+              this document.
 
 
 

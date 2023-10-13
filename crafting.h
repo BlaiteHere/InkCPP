@@ -1,20 +1,20 @@
 #include "items.h"
 using namespace std;
 
-
+/*
 class Recipe: public Printer {
     public:
     string name;
-    InventoryItem* elements[3];
-    InventoryItem* outcome;
+    const InventoryItem* elements[3];
+    const InventoryItem* outcome;
 
     
     Recipe(
-        string recipename,
-        InventoryItem* recipe_outcome,
-        InventoryItem* elementone,
-        InventoryItem* elementtwo = NULL,
-        InventoryItem* elementthree = NULL
+        const string recipename,
+        const InventoryItem* recipe_outcome,
+        const InventoryItem* elementone,
+        const InventoryItem* elementtwo = NULL,
+        const InventoryItem* elementthree = NULL
         )
     {
 
@@ -68,3 +68,4 @@ Recipe recipes[] {
         new InventoryItem(item_templates[2], 16)
     )
 };
+*/

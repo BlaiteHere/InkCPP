@@ -27,7 +27,7 @@ int randomNumberGenerator(int stop, int start=0)
 void renderBackpack(Human* &this_human)
     //RENDERS HUMAN INVENTORY
 {
-    Item* this_item = this_human->backpack[selected_inventory_space];
+    InventoryItem* this_item = this_human->backpack[selected_inventory_space];
 
     cout << this_human->name << "'s Backpack:\n";
 
@@ -45,9 +45,9 @@ void renderBackpack(Human* &this_human)
             if(this_item == NULL)
                 cout << " - None: ...\t\t";
             else
-                cout << ' ' << this_item->icon << ' ' <<
-                this_item->name << ": " << 
-                this_item->description << "\t\t";
+                cout << ' ' << this_item->item->icon << ' ' <<
+                this_item->item->name << ": " << 
+                this_item->item->description << "\t\t";
         }
 
         cout << '\n';
@@ -60,7 +60,7 @@ void useSelectedItem(Human* human_with_inventory)
     //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
 
-    human_with_inventory->backpack[selected_inventory_space]->use();
+    human_with_inventory->backpack[selected_inventory_space]->item->use();
 
     return;
 };
