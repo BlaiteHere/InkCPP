@@ -79,21 +79,22 @@ class Consumable: public Item
     //YUM, will be probably replaced by Tool since it is the same
 {
     public:
-    int usage, durability;
+    int durability;
 
 
     Consumable(string item_name, char item_icon,
-    string desc)
+    string desc, const int max_durability)
     {
         name = item_name;
         icon = item_icon;
         description = desc;
+        durability = max_durability;
     }
 
 
     void writeDesc() const
     {
-        cout << name << ": [" << usage << "]\n" << description;
+        cout << name << ": [" << durability << "]\n" << description;
         return;
     }
 
@@ -107,11 +108,12 @@ class ItemTile: public Item
     //NO CLUE WHAT IS THIS FOR. I WILL DELETE THIS IN THE NEXT COMMIT PROBABLY
 {
     public:
-    int usage, durability;
+    int durability;
 
 
     ItemTile(string item_name, char item_icon,
-    string desc){
+    string desc)
+    {
         name = item_name;
         icon = item_icon;
         description = desc;
@@ -120,7 +122,7 @@ class ItemTile: public Item
 
     void writeDesc() const
     {
-        cout << name << ": [" << usage << "]\n" << description;
+        cout << name << ": [" << durability << "]\n" << description;
         return;
     }
 
@@ -164,7 +166,7 @@ const Item* item_templates[] =
     new Item("Stick", '/', "My favourite weapon"),
     new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
-	new Consumable("Yumberry", '8', "Juicy"),
+	new Consumable("Yumberry", '8', "Juicy", 16),
 	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
     new Tool("Axe", 'P', "Breaks trees")
 };

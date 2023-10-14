@@ -36,7 +36,7 @@ void renderBackpack(Human* this_human)
         this_item = this_human->backpack[i];
 
         if(i == selected_inventory_space)
-            cout << " >";
+            cout << " >>>";
         else
             cout << i+1;
 

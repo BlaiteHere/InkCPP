@@ -67,26 +67,26 @@ void getInput(Human* moveThem)
 
         case interaction_tui: 
         {
-            /*
+            // current inspected tile
             Tile* this_tile = current_chunk->stage[player->stage_pos];
+             // turning char "1" to int 1
             int input_to_int = input - 48;
 
-            //check if the int can be an input
+            // check if the input is a legal option of the interaction TUI
             if(input_to_int >= amount_of_actions || input_to_int < 0){
                 gameViewMode = actual_game;
                 return;
             }
 
-            player->pickup_item((Item*)(this_tile->get_loot(input_to_int)));
-            // D: I probably shouldn't const stuff and then unconst stuff
-            // D:   But IDC it caused me already enough of a headache.
+            //Call player's pickup_item() that will put the item in the inventory
+            Item* my_loot = (Item*)(this_tile->get_loot(input_to_int));
+            moveThem->pickup_item(my_loot);
 
             if(this_tile->get_loot() == 0) 
                 return;
 
-            this_tile = tile_templates[this_tile->change_to]->duplicate();
+            this_tile = tile_templates[this_tile->change_tile_to(input_to_int)]->duplicate();
             gameViewMode = actual_game;
-            */
 
             break;
         }

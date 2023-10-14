@@ -22,7 +22,6 @@ class Tile{
 
 
     Tile(string layerone, string layertwo, string layerthree)
-
     {
         layers[0] = layerone;
         layers[1] = layertwo;
@@ -30,7 +29,8 @@ class Tile{
     }
 
 
-    virtual int interact()
+    virtual int interact() const
+    // Interaction screen render
     {
         cout << "Interacted with object:\n";
         for(int i=0; i<3; i++)
@@ -40,14 +40,26 @@ class Tile{
     }
 
 
-    virtual Tile* duplicate(){
+    virtual Tile* duplicate()
+    // Returns a heap ptr to a new tile of the same arguments
+    {
         return this;
     }
 
 
-    virtual const Item* get_loot(int action=0) const
+    virtual const int change_tile_to(const int input=127) const
+    // Returns what the tile should change to 
+    // (index in item_teplates[])
+    // 127 = don't change
+    { 
+        return input;
+    }
+
+
+    virtual const Item* get_loot(const int input=0) const
+    // Returns loot from the action
     {
-        return (const Item*)(item_templates[action]);
+        return (const Item*)(item_templates[0]);
     }
 };
 
@@ -71,7 +83,7 @@ class Action_Tile: public Tile{
     }
 
 
-    int interact()
+    int interact() const
     {
         //Count the amount of actions
         int amount_of_actions = 0;
@@ -87,15 +99,32 @@ class Action_Tile: public Tile{
 
         cout << "\nWhich action would you like to perform with it?\n";
         for(int i=0; i<amount_of_actions; i++)
-            cout << "\tPress " << i << " for [" << actions[i] << "]\n";
+            cout << "\tWrite " << i << " for [" << actions[i]->name << "]\n";
 
         //cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
     
 
-    Action_Tile* duplicate(){
+    Action_Tile* duplicate()
+    {
         return this;
+    }
+
+    const int change_tile_to(const int input=127) const
+    // Returns what the tile should change to 
+    // (index in item_teplates[])
+    {
+        if(input==127) return 127;
+
+        return actions[input]->afterUseChangeTileToThisIndex;
+    }
+
+
+    const Item* get_loot(const int input=0) const
+    // Returns loot from the action
+    {
+        return (const Item*)(actions[input]->getItemFromThis);
     }
 };
 
@@ -111,7 +140,7 @@ Tile* tile_templates[]={
     new Tile(nothing, " /\\", "//]"),  // rock
     new Action_Tile
     (
-        " ^ ", "/^\\", "^i^",
+        " ^ ", "{^}", "^i^",
         &action_templates[2],
         &action_templates[3]
     )     // tree
