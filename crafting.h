@@ -1,8 +1,8 @@
 #include "items.h"
 using namespace std;
 
-/*
-class Recipe: public Printer {
+
+class Recipe: public NamePrinter {
     public:
     string name;
     const InventoryItem* elements[3];
@@ -26,11 +26,6 @@ class Recipe: public Printer {
 
 
     void render();
-
-
-    string print() {
-        return name;
-    }
 
 
     ~Recipe(){ debug(((string)"Recipe " + print() + (string)" has been deleted.\n")); }
@@ -68,4 +63,3 @@ Recipe recipes[] {
         new InventoryItem(item_templates[2], 16)
     )
 };
-*/

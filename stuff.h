@@ -5,15 +5,16 @@ bool youWannaKeepGaming = 1,
      isPlayerInNewChunk = 0;
 char gameViewMode = 1;
 unsigned char current_selected_item;
+const int oneChunkSize=5;
 
 hash<string> seed;
 
 class Chunk
-    //5 TILES + UNIQUE ID
+    //[oneChunkSize] TILES + UNIQUE ID
 {
     public:
         unsigned int id;
-        Tile* stage[5];
+        Tile* stage[oneChunkSize];
 
 
         Chunk(unsigned int chunk_id){
@@ -35,28 +36,35 @@ class Human: public NamePrinter
     };
     public:
         string name;
-        int stage_pos=2, selected_item=0;
+        int stage_pos=2, 
+            selected_item=0;
         unsigned int chunk_pos=0;
         InventoryItem* backpack[8];
         string layers[3];
-        Human(string human_nick="Ann", InventoryItem* human_inv[]=nullptr){
+        Human(string human_nick="Ann")//, InventoryItem* human_inv[] = nullptr)
+        {
             layers[0] = nothing;
             layers[1] = ".o.";
             layers[2] = "_x_";
-            //human_selected=selected_item;
             name = human_nick;
-            for(int i=0; i<8; i++){
-                if(human_inv == nullptr)
-                    backpack[i] = nullptr;
-                else 
-                    backpack[i] = human_inv[i];
+
+            
+            for(int i=0; i<8; i++)
+            {
+                //if(human_inv == nullptr)
+                    backpack[i] = new InventoryItem;
+                //else 
+                //    backpack[i] = human_inv[i];
             }
+            
             return;
         }
 
 
-        void move(bool moveTo){
-            if(moveTo){
+        void move(bool moveTo)
+        {
+            if(moveTo)
+            {
                 if(stage_pos == 0){
                     stage_pos=4;
                     chunk_pos--;
@@ -64,7 +72,7 @@ class Human: public NamePrinter
                 } else stage_pos--;
             
             } else {
-                if(stage_pos == 4){
+                if(stage_pos == oneChunkSize-1){
                     stage_pos=0;
                     chunk_pos++;
                     isPlayerInNewChunk=true;

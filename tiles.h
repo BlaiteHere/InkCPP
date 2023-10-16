@@ -29,6 +29,13 @@ class Tile{
     }
 
 
+    virtual const Item* getActionReq(int action_index) const
+    // Returns action's requirement item index (item_templates[])
+    {
+        return nullptr;
+    }
+
+
     virtual int interact() const
     // Interaction screen render
     {
@@ -43,8 +50,8 @@ class Tile{
     virtual Tile* duplicate()
     // Returns a heap ptr to a new tile of the same arguments
     {
-        return this;
-    }
+        return nullptr;
+    }   // idk how to program this without ids
 
 
     virtual const int change_tile_to(const int input=127) const
@@ -108,7 +115,7 @@ class Action_Tile: public Tile{
 
     Action_Tile* duplicate()
     {
-        return this;
+        return &(*this);
     }
 
     const int change_tile_to(const int input=127) const
@@ -125,6 +132,12 @@ class Action_Tile: public Tile{
     // Returns loot from the action
     {
         return (const Item*)(actions[input]->getItemFromThis);
+    }
+
+    const Item* getActionReq(int action_index) const
+    // Returns action's requirement item index (item_templates[])
+    {
+        return actions[action_index]->requiredItemForThis;
     }
 };
 

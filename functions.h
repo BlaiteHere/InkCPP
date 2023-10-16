@@ -27,7 +27,7 @@ int randomNumberGenerator(int stop, int start=0)
 void renderBackpack(Human* this_human)
     //RENDERS HUMAN INVENTORY
 {
-    InventoryItem* this_item = this_human->backpack[selected_inventory_space];
+    InventoryItem* this_item;
 
     cout << this_human->name << "'s Backpack:\n";
 
@@ -40,7 +40,7 @@ void renderBackpack(Human* this_human)
         else
             cout << i+1;
 
-        if(this_item == nullptr)
+        if(this_item->item == nullptr)
             cout << " ' ' | None: ...\n";
         else
             cout << " '" << this_item->item->icon << "' | " <<
@@ -103,7 +103,7 @@ Chunk* composeChunk(unsigned int this_id, Chunk* &this_chunk)
 
     debug("Generating new chunk with random numbers: ");
 
-    for(int i=0; i<5; i++){
+    for(int i=0; i<oneChunkSize; i++){
         this_random_number = randomNumberGenerator(5);
         debug_msg = to_string(this_random_number) + ", ";   //DEBUG
         debug(debug_msg, false);    //DEBUG
@@ -127,7 +127,7 @@ Chunk* loadChunk(Human* this_human=player, Chunk* &this_chunk = current_chunk)
     
         if(chunks[i].id == this_human->chunk_pos){
 
-            for(int a=0; a<5; a++) this_chunk->stage[a] = chunks[i].stage[a];
+            for(int a=0; a<oneChunkSize; a++) this_chunk->stage[a] = chunks[i].stage[a];
 
             debug("Chunk data found. Loading chunk...\n");  //DEBUG
             return this_chunk;
@@ -231,14 +231,14 @@ void povYouDidNothing()
 }
 
 
-string renderChunk(Tile* this_chunk[5], Human* players[])
+string renderChunk(Tile* this_chunk[oneChunkSize], Human* players[])
     //RETURNS STRING WITH THE VIEW OF THE GAME SCENE
 {
     //Render Tiles to this_canvas array
-    string this_canvas[3][5];
+    string this_canvas[3][oneChunkSize];
 
     for(int y=0; y<3; y++)
-        for(int x=0; x<5; x++)
+        for(int x=0; x<oneChunkSize; x++)
             this_canvas[y][x] = this_chunk[x]->layers[y];
 
     //Render Humans to this_canvas array
@@ -252,7 +252,7 @@ string renderChunk(Tile* this_chunk[5], Human* players[])
     debug("Player chunk pos: " + to_string(player->chunk_pos) + '\n'); //DEBUG
 
     for(int y=0; y<3; y++){
-        for(int x=0; x<5; x++){
+        for(int x=0; x<oneChunkSize; x++){
 
             if(x==0) {
                 if(y==2)

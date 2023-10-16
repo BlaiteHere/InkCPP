@@ -6,7 +6,7 @@ using namespace std;
 class Printer
 {
     public:
-    virtual string print() = 0;
+    virtual string print() const = 0;
 };
 
 
@@ -15,7 +15,7 @@ class NamePrinter: public Printer
 {
     public:
     string name;
-    string print() { return name; };
+    string print() const { return name; };
 };
 
 

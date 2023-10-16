@@ -140,14 +140,14 @@ class InventoryItem
     int amount;
 
     
-    InventoryItem(Item* inv_item, int inv_amount)
+    InventoryItem(Item* inv_item=nullptr, int inv_amount=0)
     {
         item=inv_item;
         amount=inv_amount;
     }
 
 
-    InventoryItem(const Item* inv_item, int inv_amount)
+    InventoryItem(const Item* inv_item, const int inv_amount)
     {
         item = (Item*)inv_item;
         amount = inv_amount;

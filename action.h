@@ -51,7 +51,6 @@ Action action_templates[] =
     Action
     (
         "Get leaves",
-        item_templates[2],
-        0
+        item_templates[2]
     )
 };

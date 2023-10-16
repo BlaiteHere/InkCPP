@@ -27,7 +27,7 @@ void getInput(Human* moveThem)
                     quitTheGame();
                     return;
                 case 'I':
-                    useSelectedItem(player);
+                    useSelectedItem(moveThem);
                     break;
                 case 'E':
                     gameViewMode = actual_game;
@@ -69,7 +69,7 @@ void getInput(Human* moveThem)
         {
             // current inspected tile
             Tile* this_tile = current_chunk->stage[player->stage_pos];
-             // turning char "1" to int 1
+             // turning char {"1"} to int {1}
             int input_to_int = input - 48;
 
             // check if the input is a legal option of the interaction TUI
@@ -78,6 +78,19 @@ void getInput(Human* moveThem)
                 return;
             }
 
+            //Check if human's hand has the item to do the action
+            Item* human_hand = moveThem->backpack[moveThem->selected_item]->item;
+
+            if (this_tile->getActionReq(input_to_int) != (const Item*)nullptr &&
+            human_hand != this_tile->getActionReq(input_to_int))
+            {
+                cout << "Requirements don't match.\n";
+                gameViewMode = actual_game;
+                return;
+            }
+
+            cout << "Successfully commited tax fraud.\n";// << '\n';
+
             //Call player's pickup_item() that will put the item in the inventory
             Item* my_loot = (Item*)(this_tile->get_loot(input_to_int));
             moveThem->pickup_item(my_loot);
@@ -85,7 +98,8 @@ void getInput(Human* moveThem)
             if(this_tile->get_loot() == 0) 
                 return;
 
-            this_tile = tile_templates[this_tile->change_tile_to(input_to_int)]->duplicate();
+            current_chunk->stage[player->stage_pos] = 
+            tile_templates[this_tile->change_tile_to(input_to_int)]->duplicate();
             gameViewMode = actual_game;
 
             break;
