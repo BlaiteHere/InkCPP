@@ -13,15 +13,16 @@ class Chunk
     //[oneChunkSize] TILES + UNIQUE ID
 {
     public:
-        unsigned int id;
-        Tile* stage[oneChunkSize];
+    unsigned int id;
+    Tile* stage[oneChunkSize];
 
 
-        Chunk(unsigned int chunk_id){
-            id=chunk_id;
-            for(int i=0; i<5; i++)
-                stage[i] = nullptr;
-        }
+    Chunk(const unsigned int chunk_id=0)
+    {
+        id=chunk_id;
+        for(int i=0; i<5; i++)
+            stage[i] = nullptr;
+    }
     
 
     ~Chunk(){ debug(((string)"Chunk " + to_string(id) + (string)" has been deleted.\n")); }
@@ -30,38 +31,34 @@ class Chunk
 class Human: public NamePrinter
     //CHARACTER YOU MOVE AS IN GAME
 {
+    private:
     enum moving_direction: bool{
         m_left=true,
         m_right=false
     };
+
     public:
         string name;
-        int stage_pos=2, 
-            selected_item=0;
+        char stage_pos=2, 
+             selected_item=0;
         unsigned int chunk_pos=0;
         InventoryItem* backpack[8];
         string layers[3];
         Human(string human_nick="Ann")//, InventoryItem* human_inv[] = nullptr)
+        : name(human_nick)
         {
             layers[0] = nothing;
             layers[1] = ".o.";
             layers[2] = "_x_";
-            name = human_nick;
 
-            
             for(int i=0; i<8; i++)
-            {
-                //if(human_inv == nullptr)
-                    backpack[i] = new InventoryItem;
-                //else 
-                //    backpack[i] = human_inv[i];
-            }
+                backpack[i] = new InventoryItem;
             
             return;
         }
 
 
-        void move(bool moveTo)
+        void move(const bool& moveTo)
         {
             if(moveTo)
             {
@@ -95,7 +92,7 @@ class Human: public NamePrinter
 
 
 Human* const player = new Human();
-Human* humans[]={player};
+Human* const humans[]={player};
 vector<Chunk> chunks;
-Chunk* current_chunk = new Chunk(0);
+Chunk* current_chunk = new Chunk();
 int player_seed = seed(player->name);

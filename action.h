@@ -46,7 +46,7 @@ Action action_templates[] =
         "Chop the tree",
         item_templates[2],
         0,
-        item_templates[7]
+        item_templates[6]
     ),
     Action
     (

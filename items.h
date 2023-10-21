@@ -159,10 +159,10 @@ class InventoryItem
 
 
 
-const Item* item_templates[] =
+const Item* const item_templates[] =
 {
     //ALL ITEMS IN THE GAME ARE STORED HERE
-    new Item("None", '-'),                        // empty
+    new Item("None", '-'),                         // empty
     new Item("Stick", '/', "My favourite weapon"),
     new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),

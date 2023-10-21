@@ -8,7 +8,8 @@ enum tile_change_to: char {
 };
 
 
-class Tile{
+class Tile
+{
     public:
     string layers[3] = //Basically what is displayed when the
     {                  //          tile is rendered.
@@ -47,14 +48,14 @@ class Tile{
     }
 
 
-    virtual Tile* duplicate()
+    virtual Tile* duplicate() const
     // Returns a heap ptr to a new tile of the same arguments
     {
-        return nullptr;
+        return new Tile(layers[0], layers[1], layers[2]);
     }   // idk how to program this without ids
 
 
-    virtual const int change_tile_to(const int input=127) const
+    virtual const int change_tile_to(const int input=dont_change) const
     // Returns what the tile should change to 
     // (index in item_teplates[])
     // 127 = don't change
@@ -84,6 +85,7 @@ class Action_Tile: public Tile{
         layers[0] = layerone;
         layers[1] = layertwo;
         layers[2] = layerthree;
+
         actions[0] = actionone;
         actions[1] = actiontwo;
         actions[2] = actionthree;
@@ -111,12 +113,16 @@ class Action_Tile: public Tile{
         //cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
-    
 
-    Action_Tile* duplicate()
+
+    Action_Tile* duplicate() const
     {
-        return &(*this);
+        return new Action_Tile(
+            layers[0], layers[1], layers[2],
+            actions[0], actions[1], actions[2]
+        );
     }
+
 
     const int change_tile_to(const int input=127) const
     // Returns what the tile should change to 
@@ -134,6 +140,7 @@ class Action_Tile: public Tile{
         return (const Item*)(actions[input]->getItemFromThis);
     }
 
+
     const Item* getActionReq(int action_index) const
     // Returns action's requirement item index (item_templates[])
     {
@@ -142,7 +149,7 @@ class Action_Tile: public Tile{
 };
 
 
-Tile* tile_templates[]={
+const Tile* tile_templates[] = {
     new Tile(nothing, nothing, "___"), // i personally ated. sorry
     new Tile(nothing, nothing, "_v_"), // grass
     new Action_Tile
