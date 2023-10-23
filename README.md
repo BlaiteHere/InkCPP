@@ -55,8 +55,8 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
 # WHAT I'LL BE DOING ASAP
  > aka current goals
 
-- make Interaction with Tiles work
- - class type Action with `name` (to display), what the Tile should change to (if it even should), what Item the player has to have equipped to do the action successfully && what `loot_table` to give to the player when the Interaction is successful
++ make Interaction with Tiles work
+ + class type Action with `name` (to display), what the Tile should change to (if it even should), what Item the player has to have equipped to do the action successfully && what `loot_table` to give to the player when the Interaction is successful
 
 - make Inventory and Items work
  - make Items removed from inventory and use them
