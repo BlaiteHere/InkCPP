@@ -176,7 +176,7 @@ void moveTheHuman(const bool& moveThemLeft, Human* const moveThem=player)
 }
 
 
-void change_inventory_selected_space(const bool& change_space_left = true)
+void change_inventory_selected_space(const bool change_space_left = true)
     //CHANGES INVENTORY SELECTED CURSOR SPACE
 {
     if(change_space_left)
