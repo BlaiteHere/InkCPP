@@ -160,7 +160,7 @@ const Tile* tile_templates[] = {
     new Tile(nothing, " /\\", "//]"),  // rock
     new Action_Tile
     (
-        " ^ ", "{^}", "^i^",
+        " ^ ", "/^\\", "^i^",
         &action_templates[2],
         &action_templates[3]
     )     // tree

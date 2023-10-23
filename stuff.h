@@ -6,6 +6,7 @@ bool youWannaKeepGaming = 1,
 char gameViewMode = 1;
 unsigned char current_selected_item;
 const int oneChunkSize=5;
+string recent_action = nothing;
 
 hash<string> seed;
 
@@ -47,14 +48,12 @@ class Human: public NamePrinter
         Human(string human_nick="Ann")//, InventoryItem* human_inv[] = nullptr)
         : name(human_nick)
         {
-            layers[0] = nothing;
-            layers[1] = ".o.";
-            layers[2] = "_x_";
+            layers[0] = " o ",
+            layers[1] = "/V\\",
+            layers[2] = "_A_";
 
             for(int i=0; i<8; i++)
                 backpack[i] = new InventoryItem;
-            
-            return;
         }
 
 

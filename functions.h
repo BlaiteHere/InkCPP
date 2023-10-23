@@ -54,6 +54,8 @@ void renderBackpack(const Human* const& this_human)
 void useSelectedItem(Human* const &this_human)
     //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
+    recent_action = "Item used.";
+
     if(this_human->backpack[selected_inventory_space]->item == nullptr)
         return;
     this_human->layers[1][2] = this_human->backpack[selected_inventory_space]->item->icon;
@@ -70,6 +72,7 @@ void useSelectedItem(Human* const &this_human)
 void startCrafting()
     //RENDERS CRAFTING TUI
 {
+    recent_action = "Crafting...";
 
     return;
 }
@@ -79,7 +82,9 @@ void introduction()
     //ASKS FOR THE INK HUMAN NAME, IT IS LATER USED AS THE WORLD SEED
 {
     string nameYourInk;
-    if(areYouDebugging){
+
+    if(areYouDebugging)
+    {
         player->name = "Blaite";
         return;
     }
@@ -90,7 +95,8 @@ void introduction()
     if(nameYourInk!="no")
         player->name = nameYourInk;
 
-    cout << "Welcome to the world of " << player->name << '!' << endl;
+    cout << "Welcome to " << player->name << "'s world!" << endl
+    << "Write any key to continue...\n";
     cin >> nameYourInk;
     return;
 }
@@ -122,7 +128,7 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
 //Chunk* saveChunk();
 
 
-void loadChunk(Human* const& this_human=player, Chunk* &this_chunk = current_chunk)
+void loadChunk(Human* const& this_human = player, Chunk* &this_chunk = current_chunk)
     //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
 {
     //Search if chunk exists
@@ -144,7 +150,7 @@ void loadChunk(Human* const& this_human=player, Chunk* &this_chunk = current_chu
     return;
 }
 
-void moveTheHuman(const bool& moveThemLeft, Human* const moveThem=player)
+void moveTheHuman(const bool moveThemLeft, Human* const moveThem=player)
     //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
     enum moving_direction: bool{
@@ -218,7 +224,8 @@ void quitTheGame()
 void povYouDidNothing()
     //POV: NO INPUT
 {
-	const char* youDidNuthin[10][127]={
+	const string youDidNuthin[10] = 
+    {
 		"Uh oh! You did nothing...   :/",
 		"Woopsie daisy! Nothing happened.",
 		"Nothing was changed! :/",
@@ -231,7 +238,7 @@ void povYouDidNothing()
 		"UwU, U-um, *sweats confused* I t-think you might f-f-fowwgot to u-use your keyboawd >///<\n> (pls, kill me)"
 	};
 
-	cout << "> " << youDidNuthin[rand() % 10] << endl;
+	recent_action = (string)youDidNuthin[rand() % 10];
 	return;
 }
 

@@ -68,7 +68,6 @@ void getInput(Human* moveThem)
         case interaction_tui: 
         {
             interacting_with_tile(moveThem);
-
             break;
         }
 
@@ -150,7 +149,7 @@ void gameHandler()
 }
 
 
-void memory_deletus()
+/*void memory_deletus()
     //DELETES HEAP MEMORY
 {
     for(int i=0; i<1; i++)
@@ -160,26 +159,35 @@ void memory_deletus()
         delete tile_templates[i];
     for(int i=0; i<7; i++)
         delete item_templates[i];
-}
+}*/
 
 
 int main()
 {
-    areYouDebugging = 1;
+    areYouDebugging = false;
 
     introduction();
     loadChunk();
 
-    while(youWannaKeepGaming)
-    {
-        if(!areYouDebugging) system("cls"); //WINDOWS ONLY! cleans cmdl
+    if(areYouDebugging)
+        while(youWannaKeepGaming)
+        {
+            debug("NEWLINE\n");
+            cout << recent_action << endl;
 
-        gameHandler();
-        //cout << endl << gameViewMode << endl;     DEBUG!
-        inGameShowControls();
-        getInput(player);
-    }
+            gameHandler();
+            inGameShowControls();
+            getInput(player);
+        }
+    else
+        while(youWannaKeepGaming)
+        {
+            system("cls");  //WINDOWS ONLY! cleans cmdl
 
-    memory_deletus();
+            cout << recent_action << endl;
+            gameHandler();
+            inGameShowControls();
+            getInput(player);
+        }
     return 0;
 }
