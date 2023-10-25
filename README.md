@@ -1,18 +1,17 @@
-# InkCPP           (this .md was made)
-#                (for RAW format only)
-
-HELLO EVERY !
-IT IS I, BLAITE. WHO BRINGS UPON THEE:
-#            I N K C P P 
-           (official name in progress)
-### MY FIRST CPP ACTUAL GAME / PROJECT
- > introduction to the project && me
+# InkCPP
 
 
+
+### HELLO EVERYONE!
+Welcome to README.md of my project:
+> `my game - inkcpp` (official name in progress)
+
+### Which is actually my first CPP [ACTUAL GAME / PROJECT]
 
 # I'LL BE MAKING IT WITH THESE
  > stuff I use
 
+```
 + 😝 C++ (compiler: G++)
 + 💻 GIT (GitHub)
 + 🤓 VISUAL STUDIO CODE
@@ -22,41 +21,45 @@ IT IS I, BLAITE. WHO BRINGS UPON THEE:
 + 🧠 THOUGHTS && IDEAS of mine
 
 ~ 😎 FRIENDS
+```
 
 
 
-# OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
+# FAQ:
+
+### OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
 
 Just compile `main.cpp`, that should work.
 
-There's also a RELEASE with a compiled `.exe`
-  File, which seems to work only on my PC.
-    Compiling should work in that case.
+There's also a RELEASE with a compiled `.exe`. File, which seems to work only on my PC. Compiling should work in that case.
 
-The compiling tutorial will be at the end of
-              this document.
+The compiling tutorial will be at the end of this document.
 
 
 
-# BUT JOHN, WHAT IS THE GAME ABOUT?
+### BUT JOHN, WHAT IS THE GAME ABOUT?
  > about
 
 THE GAME WILL REVOLVE ABOUT YOU, HUMAN.
- YOU'LL SEEK SHELTER AND MATERIALS TO
+YOU'LL SEEK SHELTER AND MATERIALS TO
 SURVIVE IN HARSH ENVIRONMENT OF NATURE.
- YOU'LL MAKE TOOLS AND FIGHT MONSTERS.
+YOU'LL MAKE TOOLS AND FIGHT MONSTERS.
 OR YOU WILL BEFRIEND THEM! YOUR CHOICE.
 THERE'S NO GOALS. YOU DO WHAT YOU WANT.
-  BUILD STRUCTURES, GATHER RESOURCES
-# IN THIS POCKET-SIZED 1D ADVENTURE.
+BUILD STRUCTURES, GATHER RESOURCES
+**IN THIS POCKET-SIZED 1D ADVENTURE.**
 
+# Goals:
 
-
-# WHAT I'LL BE DOING ASAP
+### WHAT I'LL BE DOING ASAP!
  > aka current goals
 
+```
 + make Interaction with Tiles work
- + class type Action with `name` (to display), what the Tile should change to (if it even should), what Item the player has to have equipped to do the action successfully && what `loot_table` to give to the player when the Interaction is successful
+ + class type Action with `name` (to display), what the Tile should change to
+(if it even should), what Item the player has to have equipped to do the action
+successfully && what `loot_table` to give to the player when
+the Interaction is successful
 
 - make Inventory and Items work
  - make Items removed from inventory and use them
@@ -68,15 +71,16 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
  - make Workbench give you access to better recipes
 
 - improve visible chunk/scene design
+```
 
 
 
 # FUTURE IMPROVEMENTS PLANNED
  > more abstract goals
 
-### If something works, I'll mark it with a
-###     (+) instead of a default (-).
+If something works, I'll mark it with a plus (+) instead of a default minus (-).
 
+```
 - working Inventory & Hand system;
  + working Items
  + working Inventory UI
@@ -90,15 +94,20 @@ THERE'S NO GOALS. YOU DO WHAT YOU WANT.
  - saving game essentials to a file
 
 + more GameViewMode support;
- + making all GameViewMode dependant functions execute in one function, so you don't need to go to `getInput()` and `main()` separately when changing one thing
+ + making all GameViewMode dependant functions execute in one function,
+so you don't need to go to `getInput()` and `main()` separately when
+changing one thing
 
 - more Structures: spawned & built;
- - world generation with enabled spawning structures and being able to loot them (like Statue, Lake)
- - Crafting system giving structures to Inventory and ability to place them (like House, Camp & Farm)
+ - world generation with enabled spawning structures and
+being able to loot them (like Statue, Lake)
+ - Crafting system giving structures to Inventory and ability to place them
+(like House, Camp & Farm)
 - Enemies & battle system;
  - ability to defeat Enemies in a battle
  - ability to calm Enemies & exit battling
  - making Enemies give you resources if befriended or defeated
+```
 
  #survival #nature #alone #rpg #text-game
  #strategic #turn-based #generetive-world
@@ -123,13 +132,15 @@ You might also need to go to Windows Settings &&
 ### Compiling && Linking `main.cpp` file (example for `g++` on Windows)
  > Open CMDL (Command Line)
  > Type the following to (except the "bash", that is just made for formatting):
- > go to the file directory, compile && link the file to `a.exe` then execute it in the terminal.
+ > go to the file directory, compile && link the file to `a.exe`
+ then execute it in the terminal.
 ```bash
 cd [file path of the InkCPP folder]
 g++ main.cpp
 a.exe
 ```
+### There are also releases, that should from release v0.1.3 work.
 
-### Have fun
+# Have fun
  > This is just a demo of the project.
  > It's not much, but think of the bright side:
