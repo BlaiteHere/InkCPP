@@ -6,9 +6,9 @@ class Action: public NamePrinter
 {
     public:
     string name = "Default action";
-    int afterUseChangeTileToThisIndex = dont_change;
+    int tileToChange = dont_change;
     Item* getItemFromThis,
-        * requiredItemForThis;
+        * requiredItem;
 
 
     enum tile_change_to: char 
@@ -25,9 +25,9 @@ class Action: public NamePrinter
     )
     {
         name = a_name;
-        afterUseChangeTileToThisIndex = a_change_to;
+        tileToChange = a_change_to;
         getItemFromThis = (Item*)a_getItem;
-        requiredItemForThis = (Item*)a_reqItem;
+        requiredItem = (Item*)a_reqItem;
     }
 };
 

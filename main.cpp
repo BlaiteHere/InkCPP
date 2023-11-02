@@ -90,7 +90,7 @@ void getInput(Human* moveThem)
                     gameViewMode = inventory_tui;
                     break;
                 case 'C':
-                    //startCrafting();
+                    startCrafting();
                     break;
                 default:
                     povYouDidNothing();
@@ -164,7 +164,7 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = false;
+    areYouDebugging = true;
 
     introduction();
     loadChunk();

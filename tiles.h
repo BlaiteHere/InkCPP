@@ -1,33 +1,50 @@
 #include "action.h"
+
+#define tile_template_array_size int
 using namespace std;
 
-string nothing = "   ";
+const char nothing[] = "   ";
 
 enum tile_change_to: char {
     dont_change = 127
 };
 
 
-class Tile
+class Tile: public NamePrinter
 {
     public:
-    string layers[3] = //Basically what is displayed when the
+    char layers[3][4] = //Basically what is displayed when the
     {                  //          tile is rendered.
-        nothing, 
-        "ERR", 
-        "OR!"
+        *nothing, 
+        *"ERR", 
+        *"OR!"
     };
+    string name;
 
 
-    Tile(){}
+    Tile() : name("Error") {}
 
 
-    Tile(string layerone, string layertwo, string layerthree)
+    Tile(string layerone, string layertwo, string layerthree, string tilename)
+        : name(tilename)
     {
-        layers[0] = layerone;
-        layers[1] = layertwo;
-        layers[2] = layerthree;
+        for(int i=0; i<3; i++)
+            layers[0][i] = layerone[i];
+        
+        for(int i=0; i<3; i++)
+            layers[1][i] = layertwo[i];
+
+        for(int i=0; i<3; i++)
+            layers[2][i] = layerthree[i];
     }
+
+    
+    /*
+    Tile(Tile& other)
+    {
+        other.name = name;
+    }
+    */
 
 
     virtual const Item* getActionReq(int action_index) const
@@ -40,7 +57,7 @@ class Tile
     virtual int interact() const
     // Interaction screen render
     {
-        cout << "Interacted with object:\n";
+        cout << "Interacted with " << name << ":\n";
         for(int i=0; i<3; i++)
             cout << layers[i] << '\n';
         cout << "No actions to perform.\nWrite 3 to exit.\n";
@@ -48,14 +65,14 @@ class Tile
     }
 
 
-    virtual Tile* duplicate() const
+    virtual Tile* clone() const
     // Returns a heap ptr to a new tile of the same arguments
     {
-        return new Tile(layers[0], layers[1], layers[2]);
+        return new Tile(layers[0], layers[1], layers[2], name);
     }   // idk how to program this without ids
 
 
-    virtual const int change_tile_to(const int input=dont_change) const
+    virtual const char getTileToChange(const int input=dont_change) const
     // Returns what the tile should change to 
     // (index in item_teplates[])
     // 127 = don't change
@@ -64,7 +81,7 @@ class Tile
     }
 
 
-    virtual const Item* get_loot(const int input=0) const
+    virtual const Item* getLoot(const int input=0) const
     // Returns loot from the action
     {
         return (const Item*)(item_templates[0]);
@@ -75,16 +92,22 @@ class Tile
 class Action_Tile: public Tile{
     public:
     Action* actions[3];
+    string name;
 
 
     Action_Tile(
-        string layerone, string layertwo, string layerthree, 
+        string layerone, string layertwo, string layerthree, string tilename,
         Action* actionone, Action* actiontwo=nullptr, Action* actionthree=nullptr
-    )
+    ) : name(tilename)
     {
-        layers[0] = layerone;
-        layers[1] = layertwo;
-        layers[2] = layerthree;
+        for(int i=0; i<3; i++)
+            layers[0][i] = layerone[i];
+        
+        for(int i=0; i<3; i++)
+            layers[1][i] = layertwo[i];
+
+        for(int i=0; i<3; i++)
+            layers[2][i] = layerthree[i];
 
         actions[0] = actionone;
         actions[1] = actiontwo;
@@ -102,7 +125,7 @@ class Action_Tile: public Tile{
         }
 
         //Print the interacted Tile
-        cout << "Interacted with pickup-tile:\n";
+        cout << "Interacted with " << name << ":\n";
         for(int i=0; i<3; i++)
             cout << layers[i] << '\n';
 
@@ -110,31 +133,30 @@ class Action_Tile: public Tile{
         for(int i=0; i<amount_of_actions; i++)
             cout << "\tWrite " << i << " for [" << actions[i]->name << "]\n";
 
-        //cout << "\nWrite 3 to exit.\n";
         return amount_of_actions;
     }
 
 
-    Action_Tile* duplicate() const
+    Action_Tile* clone() const
     {
         return new Action_Tile(
-            layers[0], layers[1], layers[2],
+            layers[0], layers[1], layers[2], name,
             actions[0], actions[1], actions[2]
         );
     }
 
 
-    const int change_tile_to(const int input=127) const
-    // Returns what the tile should change to 
+    const char getTileToChange(const char input=127) const
+    // Returns what the tile should change to
     // (index in item_teplates[])
     {
         if(input==127) return 127;
 
-        return actions[input]->afterUseChangeTileToThisIndex;
+        return actions[input]->tileToChange;
     }
 
 
-    const Item* get_loot(const int input=0) const
+    const Item* getLoot(const int input=0) const
     // Returns loot from the action
     {
         return (const Item*)(actions[input]->getItemFromThis);
@@ -144,23 +166,25 @@ class Action_Tile: public Tile{
     const Item* getActionReq(int action_index) const
     // Returns action's requirement item index (item_templates[])
     {
-        return actions[action_index]->requiredItemForThis;
+        return actions[action_index]->requiredItem;
     }
 };
 
 
 const Tile* tile_templates[] = {
-    new Tile(nothing, nothing, "___"), // i personally ated. sorry
-    new Tile(nothing, nothing, "_v_"), // grass
+    new Tile(nothing, nothing, "___", "an empty tile"), // i personally ated. sorry
+    new Tile(nothing, nothing, "_v_", "a grass"), // grass
     new Action_Tile
     (
         nothing, nothing, "_*_", 
+        "an item on the ground",
         &action_templates[1]
     ), // item
-    new Tile(nothing, " /\\", "//]"),  // rock
+    new Tile(nothing, " /\\", "//]", "a rock"),  // rock
     new Action_Tile
     (
         " ^ ", "/^\\", "^i^",
+        "a tree",
         &action_templates[2],
         &action_templates[3]
     )     // tree

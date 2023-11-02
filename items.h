@@ -1,35 +1,53 @@
+/*
+    Legend:
+    Item:
+        - can't be used
+        - material
+    Tool
+        - can be used
+        - used only `max_amount` times
+    Consumable:
+        - can be used
+        - used only `max_amount` times
+        - use grants stats
+    ItemTile:
+        - can be used
+        - use builds the structure in the tile
+*/
+
 #include "pure.h"
 using namespace std;
 
 
 
-/*enum item_usage_list: char 
-    //ITEM FUNCTIONALITY
+class BasicItem 
 {
-    none = 0,
-    breakTree,
-    breakStone
+    //FUNCTIONS FOR ITEM(s)
+    //virtual void use() const = 0;
+    virtual void writeDesc() const = 0;
 };
-*/
 
 
 
 class Item: public NamePrinter, public BasicItem 
-    //IT DOES STUFF
+    //IT DOES STUFF, usually material
 {
     public:
     string description;
     char icon;
+    const char type = 'i';
+    int max_amount;
 
 
     Item(){}
 
 
-    Item(string item_name, char item_icon, string desc="")
+    Item(string item_name, const char item_icon,
+    string desc="", const int maximum_item_amount=16)
+        :   description(desc), icon(item_icon), 
+            max_amount(maximum_item_amount)
     {
         name = item_name;
-        icon = item_icon;
-        description = desc;
     }
 
 
@@ -40,35 +58,28 @@ class Item: public NamePrinter, public BasicItem
     }
 
 
-    void use() const { return; } //wip
-
-
     ~Item(){ debug(((string)"Item " + print() + (string)" has been deleted.\n")); }
 };
 
 
 
-class Tool: public Item {
+class Tool: public Item 
+{
     //IT DESTROY STUFF
     public:
-    int usage, durability;
+    const char type = 't';
 
 
-    Tool(string item_name, char item_icon,
-    string desc)
+    Tool(
+        string item_name, const char item_icon,
+        string desc="", const int maximum_item_amount=16
+    )
     {
-        name = item_name;
-        icon = item_icon;
         description = desc;
+        icon = item_icon;
+        max_amount = maximum_item_amount;
+        name = item_name;
     }
-
-
-    void writeDesc() const
-    {
-        cout << name << ": [" << usage << "]\n" << description;
-        return;
-    }
-
 
     ~Tool(){ debug(((string)"Tool " + print() + (string)" has been deleted.\n")); }
 };
@@ -79,25 +90,18 @@ class Consumable: public Item
     //YUM, will be probably replaced by Tool since it is the same
 {
     public:
-    int durability;
+    const char type = 'c';
 
-
-    Consumable(string item_name, char item_icon,
-    string desc, const int max_durability)
+    Consumable(
+        string item_name, const char item_icon,
+        string desc="", const int maximum_item_amount=16
+    )
     {
-        name = item_name;
-        icon = item_icon;
         description = desc;
-        durability = max_durability;
+        icon = item_icon;
+        max_amount = maximum_item_amount;
+        name = item_name;
     }
-
-
-    void writeDesc() const
-    {
-        cout << name << ": [" << durability << "]\n" << description;
-        return;
-    }
-
 
     ~Consumable(){ debug(((string)"Consumable " + print() + (string)" has been deleted.\n")); }
 };
@@ -108,24 +112,18 @@ class ItemTile: public Item
     //NO CLUE WHAT IS THIS FOR. I WILL DELETE THIS IN THE NEXT COMMIT PROBABLY
 {
     public:
-    int durability;
+    const char type = 'c';
 
-
-    ItemTile(string item_name, char item_icon,
-    string desc)
+    ItemTile(
+        string item_name, const char item_icon,
+        string desc="", const int maximum_item_amount=16
+    )
     {
-        name = item_name;
-        icon = item_icon;
         description = desc;
+        icon = item_icon;
+        max_amount = maximum_item_amount;
+        name = item_name;
     }
-
-
-    void writeDesc() const
-    {
-        cout << name << ": [" << durability << "]\n" << description;
-        return;
-    }
-
 
     ~ItemTile(){ debug(((string)"ItemTile " + print() + (string)" has been deleted.\n")); }
 };
@@ -166,7 +164,8 @@ const Item* const item_templates[] =
     new Item("Stick", '/', "My favourite weapon"),
     new Item("Wood", 'U', "Basic building material"),
     new Item("Flint", 'd', "Looks sharp enough to make some tools"),
-	new Consumable("Yumberry", '8', "Juicy", 16),
+	new Consumable("Yumberry", '8', "Juicy sweetness in your jaw"),
 	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
-    new Tool("Axe", 'P', "Breaks trees")
+    new Tool("Axe", 'P', "Breaks trees"),
+    new Item("Leaf", 'U', "Flat pieces of plant from the tree")
 };

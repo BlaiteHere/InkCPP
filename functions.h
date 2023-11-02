@@ -1,4 +1,4 @@
-#include "stuff.h"
+#include "entity.h"
 using namespace std;
 
 char input;
@@ -33,7 +33,7 @@ void renderBackpack(const Human* const& this_human)
 
     for(int i=0; i<8; i++)
     {
-        this_item = this_human->backpack[i];
+        this_item = this_human->backpack.m_inventory[i];
 
         if(i == selected_inventory_space)
             cout << " >>>";
@@ -41,7 +41,7 @@ void renderBackpack(const Human* const& this_human)
             cout << i+1;
 
         if(this_item->item == nullptr)
-            cout << " [ ] ] | None: ...\n";
+            cout << " [ ] | None: ...\n";
         else
             cout << " [" << this_item->item->icon << "] | " <<
             this_item->item->name << ": " << 
@@ -54,11 +54,15 @@ void renderBackpack(const Human* const& this_human)
 void useSelectedItem(Human* const &this_human)
     //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
-    recent_action = "Item used.";
+    Item* item = this_human->backpack.m_inventory[selected_inventory_space]->item;
 
-    if(this_human->backpack[selected_inventory_space]->item == nullptr)
+    if(item == nullptr)
         return;
-    this_human->layers[1][2] = this_human->backpack[selected_inventory_space]->item->icon;
+
+    //Check Item type
+    recent_action = item->name + " used.";
+
+    this_human->render.layers[1][2] = item->icon;
     //this_human->backpack[selected_inventory_space]->item->use(); 
     //  segmentation fault
 
@@ -116,7 +120,7 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
         this_random_number = randomNumberGenerator(5);
         debug_msg = to_string(this_random_number) + ", ";//DEBUG
         debug(debug_msg, false);                         //DEBUG
-        this_chunk->stage[i] = tile_templates[this_random_number]->duplicate();
+        this_chunk->stage[i] = tile_templates[this_random_number]->clone();
     }
 
     debug("\n", false); //DEBUG
@@ -128,7 +132,7 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
 //Chunk* saveChunk();
 
 
-void loadChunk(Human* const& this_human = player, Chunk* &this_chunk = current_chunk)
+void loadChunk(Human* const& this_human = player, Chunk* this_chunk = current_chunk)
     //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
 {
     //Search if chunk exists
@@ -150,7 +154,7 @@ void loadChunk(Human* const& this_human = player, Chunk* &this_chunk = current_c
     return;
 }
 
-void moveTheHuman(const bool moveThemLeft, Human* const moveThem=player)
+void moveTheHuman(const bool moveThemLeft, Human* const moveThem = player)
     //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
     enum moving_direction: bool{
@@ -183,7 +187,8 @@ void moveTheHuman(const bool moveThemLeft, Human* const moveThem=player)
 
 
 void change_inventory_selected_space(const bool change_space_left = true)
-    //CHANGES INVENTORY SELECTED CURSOR SPACE
+    //CHANGES INVENTORY SELECTED CURSOR SPACE 
+    //and checks if it's not out of bounds of the array
 {
     if(change_space_left)
     {
@@ -203,7 +208,7 @@ void change_inventory_selected_space(const bool change_space_left = true)
 
 
 void quitTheGame()
-    //ASKS YOU IF YOU'RE SURE TO EXIT 2
+    //ASKS YOU IF YOU'RE SURE TO EXIT 2HE GAME
 {
 	char answer;
 	cout << "Are you sure you want to leave the game? (y/n)\n>>>";
@@ -238,12 +243,12 @@ void povYouDidNothing()
 		"UwU, U-um, *sweats confused* I t-think you might f-f-fowwgot to u-use your keyboawd >///<\n> (pls, kill me)"
 	};
 
-	recent_action = (string)youDidNuthin[rand() % 10];
+	recent_action = youDidNuthin[rand() % 10];
 	return;
 }
 
 
-string renderChunk(const Chunk* const this_chunk, Human* const players[])
+string renderChunk(const Chunk* const& this_chunk, Human* const players[])
     //RETURNS STRING WITH THE VIEW OF THE GAME SCENE
 {
     //Render Tiles to this_canvas array
@@ -251,20 +256,23 @@ string renderChunk(const Chunk* const this_chunk, Human* const players[])
 
     for(int y=0; y<3; y++)
         for(int x=0; x<oneChunkSize; x++)
-            this_canvas[y][x] = this_chunk->stage[x]->layers[y];
+            for(int i=0; i<3; i++)
+                this_canvas[y][x] = this_chunk->stage[x]->layers[y];
 
     //Render Humans to this_canvas array
     for(int i=0; i<1; i++)
         for(int y=0; y<3; y++)
-            this_canvas[y][humans[i]->stage_pos] = humans[i]->layers[y];
+            this_canvas[y][humans[i]->stage_pos] = humans[i]->render.layers[y];
 
     //Render whole to this_render string
     string this_render = "";
 
     debug("Player chunk pos: " + to_string(player->chunk_pos) + '\n'); //DEBUG
 
-    for(int y=0; y<3; y++){
-        for(int x=0; x<oneChunkSize; x++){
+    for(int y=0; y<3; y++)
+    {
+        for(int x=0; x<oneChunkSize; x++)
+        {
 
             if(x==0) {
                 if(y==2)
@@ -289,7 +297,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     //Checks stuff necessary for interacting
 {
     //Current inspected tile
-    Tile* this_tile = current_chunk->stage[player->stage_pos];
+    Tile* this_tile = current_chunk->stage[moveMe->stage_pos];
         // turning char {"1"} to int {1}
     int input_to_int = this_input - 48;
 
@@ -301,7 +309,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     }
 
     //Check if human's hand has the item to do the action
-    Item* human_hand = moveMe->backpack[moveMe->selected_item]->item;
+    Item* human_hand = moveMe->backpack.m_inventory[moveMe->selected_item]->item;
     const Item* item_req = this_tile->getActionReq(input_to_int);
 
     if (item_req != nullptr && human_hand != item_req)
@@ -311,17 +319,22 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
         return;
     }
 
+    recent_action = "Successfully interacted with " + this_tile->print() + '!';
     debug("Successfully commited tax fraud.\n");
 
     //Call Player(moveMe)'s pickup_item() that will put the item in the inventory
-    Item* my_loot = (Item*)(this_tile->get_loot(input_to_int));
-    moveMe->pickup_item(my_loot);
+    Item* my_loot = (Item*)(this_tile->getLoot(input_to_int));
+    if (moveMe->pickup_item(my_loot)) recent_action = "Full inventory!";
 
-    if (this_tile->get_loot() == 0) 
+    if (this_tile->getLoot() == 0) 
         return;
 
-    current_chunk->stage[moveMe->stage_pos] = 
-    tile_templates[this_tile->change_tile_to(input_to_int)]->duplicate();
+    const char index = this_tile->getTileToChange(input_to_int);
+
+    if(index!=127) 
+        current_chunk->stage[moveMe->stage_pos] = 
+        tile_templates[index]->clone();
+
     gameViewMode = actual_game;
     return;
 }
