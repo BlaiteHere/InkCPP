@@ -3,15 +3,7 @@ using namespace std;
 
 
 
-class Printer
-{
-    public:
-    virtual string print() const = 0;
-};
-
-
-
-class NamePrinter: public Printer
+class NamePrinter
 {
     public:
     string name;
@@ -19,7 +11,7 @@ class NamePrinter: public Printer
 };
 
 
-class ThreeLayerDrawable: public Printer
+class ThreeLayerDrawable
 {
     public:
     char layers[3][4];

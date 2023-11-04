@@ -35,22 +35,28 @@ class Action: public NamePrinter
 Action action_templates[] =
 {
     Action(),
-    Action
-    (
+    Action(
         "Pick up an item",
         item_templates[1],
         0
     ),
-    Action
-    (
+    Action(
         "Chop the tree",
         item_templates[2],
         0,
         item_templates[6]
     ),
-    Action
-    (
+    Action(
         "Get leaves",
         item_templates[2]
+    ),
+    Action(
+        "Get leaves but funnier",
+        item_templates[8]
+    ),
+    Action(
+        "Shove the contraption into your inventory",
+        item_templates[9],
+        0
     )
 };

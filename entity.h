@@ -22,7 +22,7 @@ class Entity: public NamePrinter
     public:
     const char entity_type='e';
     ThreeLayerDrawable render;
-    bool direction;
+    mutable bool direction;
     string name;
 
 
@@ -49,10 +49,10 @@ class Human: public Entity
 {
     public:
     const char entity_type='h';
-    char stage_pos=2,
-            selected_item=0;
-    unsigned int chunk_pos=0;
-    Inventory backpack;
+    mutable char stage_pos=2,
+                 selected_item=0;
+    mutable unsigned int chunk_pos=0;
+    mutable Inventory backpack;
     string name;
 
 
@@ -63,7 +63,7 @@ class Human: public Entity
         direction = false;
     }
 
-    void move(const bool moveTo)
+    const void move(const bool moveTo) const
     {
         if(moveTo)
         {
@@ -88,7 +88,7 @@ class Human: public Entity
     }
 
 
-    const bool pickup_item(const Item* item)
+    const bool itemSorter (const Item* item) const
     {
         for(int i=0; i<8; i++)
             if (backpack.m_inventory[i]->item == nullptr)
@@ -99,7 +99,24 @@ class Human: public Entity
                 backpack.m_inventory[i]->amount++;
                 return 0;
             }
-        return 1;   // inventory full
+        return 1;
+    }
+
+
+    const bool pickup_item(const Item* item) const
+    {
+        return itemSorter(item);
+    }
+
+
+    const void useItem(const int selected_inv_space) const
+    {
+        backpack.m_inventory[selected_inv_space]->amount--;
+
+        if (backpack.m_inventory[selected_inv_space]->amount == 0)
+            backpack.m_inventory[selected_inv_space]->item = nullptr;
+
+        return;
     }
 
 

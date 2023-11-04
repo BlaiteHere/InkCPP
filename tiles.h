@@ -1,6 +1,5 @@
 #include "action.h"
 
-#define tile_template_array_size int
 using namespace std;
 
 const char nothing[] = "   ";
@@ -19,14 +18,12 @@ class Tile: public NamePrinter
         *"ERR", 
         *"OR!"
     };
-    string name;
 
 
-    Tile() : name("Error") {}
+    Tile() { name = "Error"; }
 
 
     Tile(string layerone, string layertwo, string layerthree, string tilename)
-        : name(tilename)
     {
         for(int i=0; i<3; i++)
             layers[0][i] = layerone[i];
@@ -36,6 +33,8 @@ class Tile: public NamePrinter
 
         for(int i=0; i<3; i++)
             layers[2][i] = layerthree[i];
+
+        name = tilename;
     }
 
     
@@ -92,13 +91,12 @@ class Tile: public NamePrinter
 class Action_Tile: public Tile{
     public:
     Action* actions[3];
-    string name;
 
 
     Action_Tile(
         string layerone, string layertwo, string layerthree, string tilename,
         Action* actionone, Action* actiontwo=nullptr, Action* actionthree=nullptr
-    ) : name(tilename)
+    )
     {
         for(int i=0; i<3; i++)
             layers[0][i] = layerone[i];
@@ -112,6 +110,7 @@ class Action_Tile: public Tile{
         actions[0] = actionone;
         actions[1] = actiontwo;
         actions[2] = actionthree;
+        name = tilename;
     }
 
 
@@ -172,20 +171,28 @@ class Action_Tile: public Tile{
 
 
 const Tile* tile_templates[] = {
-    new Tile(nothing, nothing, "___", "an empty tile"), // i personally ated. sorry
-    new Tile(nothing, nothing, "_v_", "a grass"), // grass
-    new Action_Tile
-    (
+    new Tile(nothing, nothing, "___", "an empty tile"),
+    new Tile(nothing, nothing, "_v_", "a grass patch"),
+    new Action_Tile(
         nothing, nothing, "_*_", 
         "an item on the ground",
         &action_templates[1]
-    ), // item
-    new Tile(nothing, " /\\", "//]", "a rock"),  // rock
+    ),
+    new Tile(
+        nothing, " /\\", "//]", 
+        "a rock"
+    ),
     new Action_Tile
     (
         " ^ ", "/^\\", "^i^",
         "a tree",
         &action_templates[2],
-        &action_templates[3]
-    )     // tree
+        &action_templates[3],
+        &action_templates[4]
+    ),
+    new Action_Tile(
+        "/^\\", "[o]", "o-o", 
+        "Portable building",
+        &action_templates[5]
+    )
 };

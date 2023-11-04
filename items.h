@@ -20,32 +20,34 @@ using namespace std;
 
 
 
-class BasicItem 
+class BasicItem: public NamePrinter
 {
     //FUNCTIONS FOR ITEM(s)
-    //virtual void use() const = 0;
     virtual void writeDesc() const = 0;
 };
 
 
 
-class Item: public NamePrinter, public BasicItem 
+class Item: public BasicItem 
     //IT DOES STUFF, usually material
 {
-    public:
+public:
     string description;
     char icon;
-    const char type = 'i';
+    char type;
     int max_amount;
 
 
-    Item(){}
+    Item() = default;
 
 
-    Item(string item_name, const char item_icon,
-    string desc="", const int maximum_item_amount=16)
-        :   description(desc), icon(item_icon), 
-            max_amount(maximum_item_amount)
+    Item(
+        string item_name, const char item_icon,
+        string desc="", const int maximum_item_amount=16
+    )
+    :   description(desc), icon(item_icon), 
+        max_amount(maximum_item_amount),
+        type('i')
     {
         name = item_name;
     }
@@ -58,7 +60,7 @@ class Item: public NamePrinter, public BasicItem
     }
 
 
-    ~Item(){ debug(((string)"Item " + print() + (string)" has been deleted.\n")); }
+    ~Item(){ debug(((string)"Item " + name + (string)" has been deleted.\n")); }
 };
 
 
@@ -66,19 +68,16 @@ class Item: public NamePrinter, public BasicItem
 class Tool: public Item 
 {
     //IT DESTROY STUFF
-    public:
-    const char type = 't';
-
-
+public:
     Tool(
         string item_name, const char item_icon,
         string desc="", const int maximum_item_amount=16
-    )
-    {
+    ){
         description = desc;
         icon = item_icon;
         max_amount = maximum_item_amount;
         name = item_name;
+        type = 't';
     }
 
     ~Tool(){ debug(((string)"Tool " + print() + (string)" has been deleted.\n")); }
@@ -89,9 +88,7 @@ class Tool: public Item
 class Consumable: public Item 
     //YUM, will be probably replaced by Tool since it is the same
 {
-    public:
-    const char type = 'c';
-
+public:
     Consumable(
         string item_name, const char item_icon,
         string desc="", const int maximum_item_amount=16
@@ -101,6 +98,7 @@ class Consumable: public Item
         icon = item_icon;
         max_amount = maximum_item_amount;
         name = item_name;
+        type = 'c';
     }
 
     ~Consumable(){ debug(((string)"Consumable " + print() + (string)" has been deleted.\n")); }
@@ -111,18 +109,20 @@ class Consumable: public Item
 class ItemTile: public Item
     //NO CLUE WHAT IS THIS FOR. I WILL DELETE THIS IN THE NEXT COMMIT PROBABLY
 {
-    public:
-    const char type = 'c';
+public:
+    char tileToChange;
+
 
     ItemTile(
-        string item_name, const char item_icon,
+        string item_name, const char item_icon, char item_tileToChange,
         string desc="", const int maximum_item_amount=16
-    )
+    ): tileToChange(item_tileToChange)
     {
         description = desc;
         icon = item_icon;
         max_amount = maximum_item_amount;
         name = item_name;
+        type = 'T';
     }
 
     ~ItemTile(){ debug(((string)"ItemTile " + print() + (string)" has been deleted.\n")); }
@@ -160,12 +160,34 @@ class InventoryItem
 const Item* const item_templates[] =
 {
     //ALL ITEMS IN THE GAME ARE STORED HERE
-    new Item("None", '-'),                         // empty
-    new Item("Stick", '/', "My favourite weapon"),
-    new Item("Wood", 'U', "Basic building material"),
-    new Item("Flint", 'd', "Looks sharp enough to make some tools"),
-	new Consumable("Yumberry", '8', "Juicy sweetness in your jaw"),
-	new ItemTile("Basic Workstation", '^', "You can craft more advanced items with it"),
-    new Tool("Axe", 'P', "Breaks trees"),
-    new Item("Leaf", 'U', "Flat pieces of plant from the tree")
+    new Item(
+        "None", '-'
+    ),
+    new Item(
+        "Stick", '/', "My favourite weapon"
+    ),
+    new Item(
+        "Wood", 'U', "Basic building material"
+    ),
+    new Item(
+        "Flint", 'd', "Looks sharp enough to make some tools"
+    ),
+	new Consumable(
+        "Yumberry", '8', "Juicy sweetness in your jaw"
+    ),
+	new ItemTile(
+        "Basic Workbench", '^', 0, "You can craft more advanced items with it"
+    ),
+    new Tool(
+        "Axe", 'P', "Breaks trees"
+    ),
+    new Item(
+        "Leaf", 'U', "Flat pieces of plant from the tree"
+    ),
+    new Consumable(
+        "Airnut", 'o', "Hard on the outside, sweet on the inside"
+    ),
+    new ItemTile(
+        "Portable building", 'A', 5, "A portable machinery"
+    )
 };

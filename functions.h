@@ -45,13 +45,13 @@ void renderBackpack(const Human* const& this_human)
         else
             cout << " [" << this_item->item->icon << "] | " <<
             this_item->item->name << ": " << 
-            this_item->item->description << "\n";
+            this_item->item->description << " x " << this_item->amount << "\n";
     }
     return;
 }
 
 
-void useSelectedItem(Human* const &this_human)
+void useSelectedItem(Human* const &this_human, Chunk* this_chunk = current_chunk)
     //DOES use() ON ITEM THAT IS SELECTED WHEN INVENTORY'ING
 {
     Item* item = this_human->backpack.m_inventory[selected_inventory_space]->item;
@@ -59,12 +59,27 @@ void useSelectedItem(Human* const &this_human)
     if(item == nullptr)
         return;
 
-    //Check Item type
-    recent_action = item->name + " used.";
+    //Assign a name to the type
+    string item_type;
+    if (item->type == 'i') item_type = "Materials can't be";
+    else if (item->type == 't') item_type = "Tool";
+    else if (item->type == 'c') item_type = "Consumable";
+    else if (item->type == 'T') item_type = "ItemTile";
+    else item_type = "Error";
 
-    this_human->render.layers[1][2] = item->icon;
-    //this_human->backpack[selected_inventory_space]->item->use(); 
-    //  segmentation fault
+    //Change recent_action dialogue
+    recent_action = item_type + " used.";
+
+    //Check Item type
+    if (item->type == 't' || item->icon == 'w')
+        this_human->render.layers[1][2] = item->icon;
+    else if (item->type == 'c') 
+        this_human->useItem(selected_inventory_space);
+    else if (item->type == 'T') {
+        ItemTile* item_tile = static_cast<ItemTile*>(item);
+        this_chunk->stage[this_human->stage_pos] = (Tile*)tile_templates[item_tile->tileToChange];
+        this_human->useItem(selected_inventory_space);
+    }
 
     return;
 };
@@ -117,7 +132,7 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
 
     for(int i=0; i<oneChunkSize; i++)
     {
-        this_random_number = randomNumberGenerator(5);
+        this_random_number = randomNumberGenerator(6);
         debug_msg = to_string(this_random_number) + ", ";//DEBUG
         debug(debug_msg, false);                         //DEBUG
         this_chunk->stage[i] = tile_templates[this_random_number]->clone();
@@ -319,7 +334,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
         return;
     }
 
-    recent_action = "Successfully interacted with " + this_tile->print() + '!';
+    recent_action = "Successfully interacted with " + static_cast<Tile*>(this_tile)->name + '!';
     debug("Successfully commited tax fraud.\n");
 
     //Call Player(moveMe)'s pickup_item() that will put the item in the inventory
@@ -332,8 +347,8 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     const char index = this_tile->getTileToChange(input_to_int);
 
     if(index!=127) 
-        current_chunk->stage[moveMe->stage_pos] = 
-        tile_templates[index]->clone();
+        current_chunk->stage[moveMe->stage_pos]
+         = tile_templates[index]->clone();
 
     gameViewMode = actual_game;
     return;

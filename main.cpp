@@ -164,7 +164,7 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = true;
+    areYouDebugging = false;
 
     introduction();
     loadChunk();
