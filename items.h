@@ -23,7 +23,7 @@ using namespace std;
 class BasicItem: public NamePrinter
 {
     //FUNCTIONS FOR ITEM(s)
-    virtual void writeDesc() const = 0;
+    virtual const void writeDesc() const = 0;
 };
 
 
@@ -43,9 +43,10 @@ public:
 
     Item(
         string item_name, const char item_icon,
-        string desc="", const int maximum_item_amount=16
-    )
-    :   description(desc), icon(item_icon), 
+        string desc = "No description",
+        const int maximum_item_amount = 16
+    ):
+        description(desc), icon(item_icon), 
         max_amount(maximum_item_amount),
         type('i')
     {
@@ -53,9 +54,9 @@ public:
     }
 
 
-    void writeDesc() const
+    const void writeDesc() const
     {
-        cout << name << ":\n" << description;
+        cout << '[' << icon << "] | " << name << ": " << description;
         return;
     }
 
@@ -71,11 +72,11 @@ class Tool: public Item
 public:
     Tool(
         string item_name, const char item_icon,
-        string desc="", const int maximum_item_amount=16
+        string desc="", const int maximum_item_durability=16
     ){
         description = desc;
         icon = item_icon;
-        max_amount = maximum_item_amount;
+        max_amount = maximum_item_durability;
         name = item_name;
         type = 't';
     }

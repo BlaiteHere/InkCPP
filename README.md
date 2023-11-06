@@ -1,12 +1,8 @@
 # InkCPP
 
-// BLAITE, RENDERING GONE WRONG AGAIN
-// AFTER ADDING THREELAYER CLASS INSTEAD OF THE CHAR ARRAYS
-// FIX IT! IT SEEMS NOT TO FILL AT ALL THE CANVAS ARRAY. I THINK.
-
 ### HELLO EVERYONE!
 Welcome to README.md of my project:
-> `my game - inkcpp` (official name in progress)
+> `my game - Rupestri`
 
 ### Which is actually my first CPP [ACTUAL GAME / PROJECT]
 
@@ -86,7 +82,7 @@ If something works, I'll mark it with a plus (+) instead of a default minus (-).
 - working Inventory & Hand system;
  + working Items
  + working Inventory UI
- - working Item Holding and Usage
+ + working Item Holding and Usage
 
 - working Crafting system;
  - working Inventory/Crafting UI
@@ -94,6 +90,7 @@ If something works, I'll mark it with a plus (+) instead of a default minus (-).
 - save game to files;
  - saving chunks with a function
  - saving game essentials to a file
+ - optimising tiles into dynamic (eg. chest, house) && static (eg. tree, rock)
 
 + more GameViewMode support;
  + making all GameViewMode dependant functions execute in one function,

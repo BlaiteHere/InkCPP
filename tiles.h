@@ -112,8 +112,18 @@ class Action_Tile: public Tile{
 
         cout << "\nWhich action would you like to perform with it?\n";
         for(int i=0; i<amount_of_actions; i++)
-            cout << "\tWrite " << i+1 << " for [" << actions[i]->name << "]\n";
+        {
+            cout << "\tWrite " << i+1 << " for [" << actions[i]->name << "]";
+    
+            if (actions[i]->requiredItem != nullptr)
+            {
+                cout << " (requires: ";
+                actions[i]->requiredItem->writeDesc();
+                cout << ')';
+            }
 
+            cout << '\n';
+        }
         return amount_of_actions;
     }
 

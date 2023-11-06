@@ -77,16 +77,18 @@ void renderBackpack(const Human* const& this_human)
         this_item = this_human->backpack.m_inventory[i];
 
         if(i == selected_inventory_space)
-            cout << " >>>";
+            cout << " >>> ";
         else
-            cout << i+1;
+            cout << i+1 << ' ';
+
 
         if(this_item->item == nullptr)
-            cout << " [ ] | None: ...\n";
+            cout << "[ ] | None: ...\n";
         else
-            cout << " [" << this_item->item->icon << "] | " <<
-            this_item->item->name << ": " << 
-            this_item->item->description << " x " << this_item->amount << "\n";
+        {
+            this_item->item->writeDesc();
+            cout << " x " << this_item->amount << '\n';
+        }
     }
     return;
 }
@@ -100,16 +102,16 @@ void useSelectedItem(Human* const &this_human, Chunk* this_chunk = current_chunk
     if(item == nullptr)
         return;
 
-    //Assign a name to the type
-    string item_type;
-    if (item->type == 'i') item_type = "Materials can't be";
-    else if (item->type == 't') item_type = "Tool";
-    else if (item->type == 'c') item_type = "Consumable";
-    else if (item->type == 'T') item_type = "ItemTile";
-    else item_type = "Error";
-
     //Change recent_action dialogue
-    recent_action = item_type + " used.";
+    if (item->type == 'i')
+        recent_action = "Materials can't be used or equiped.";
+    else if (item->type == 't')
+        recent_action = item->name + " has been equiped.";
+    else if (item->type == 'c') 
+        recent_action = item->name + " consumed.";
+    else if (item->type == 'T') 
+        recent_action = item->name + " placed down.";
+    else recent_action = "Error! How did we get here?";
 
     //Check Item type
     if (item->type == 't' || item->icon == 'w')
@@ -373,4 +375,11 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
 
     gameViewMode = actual_game;
     return;
+}
+
+
+
+void credits()
+{
+    
 }

@@ -26,10 +26,11 @@ void getInput(Human* moveThem)
                 case 'Q':
                     quitTheGame();
                     return;
-                case 'I':
+                case 'R':
                     useSelectedItem(moveThem);
                     break;
                 case 'E':
+                    recent_action = " ";
                     gameViewMode = actual_game;
                     break;
                 default:
