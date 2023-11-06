@@ -25,17 +25,16 @@ Welcome to README.md of my project:
 
 # FAQ:
 
-### OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
+## OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
 
-Just compile `main.cpp`, that should work.
+### There's also a RELEASE with a compiled `.exe` file & Dynamic libs that should work on any Windows & maybe Linux OS!
+Otherwise, you can try compiling the files *yourself*.
 
-There's also a RELEASE with a compiled `.exe`. File, which seems to work only on my PC. Compiling should work in that case.
-
-The compiling tutorial will be at the end of this document.
-
+### The compiling tutorial will be at the end of this document.
 
 
-### BUT JOHN, WHAT IS THE GAME ABOUT?
+
+## BUT JOHN, WHAT IS THE GAME ABOUT?
  > about
 
 THE GAME WILL REVOLVE ABOUT YOU, HUMAN.
