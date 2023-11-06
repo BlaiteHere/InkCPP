@@ -2,19 +2,19 @@
 using namespace std;
 
 
-class Recipe: public Printer {
+class Recipe: public NamePrinter {
     public:
     string name;
-    InventoryItem* elements[3];
-    InventoryItem* outcome;
+    const InventoryItem* elements[3];
+    const InventoryItem* outcome;
 
     
     Recipe(
-        string recipename,
-        InventoryItem* recipe_outcome,
-        InventoryItem* elementone,
-        InventoryItem* elementtwo = NULL,
-        InventoryItem* elementthree = NULL
+        const string recipename,
+        const InventoryItem* recipe_outcome,
+        const InventoryItem* elementone,
+        const InventoryItem* elementtwo = nullptr,
+        const InventoryItem* elementthree = nullptr
         )
     {
 
@@ -28,11 +28,6 @@ class Recipe: public Printer {
     void render();
 
 
-    string print() {
-        return name;
-    }
-
-
     ~Recipe(){ debug(((string)"Recipe " + print() + (string)" has been deleted.\n")); }
 };
 
@@ -42,7 +37,7 @@ void Recipe::render(){
 
     //Count the amount of elements in the recipe
     for(int i=0; i<3; i++)
-        if(elements[i] == NULL) break;
+        if(elements[i] == nullptr) break;
         else amount_of_elements++;
 
     //Render recipe

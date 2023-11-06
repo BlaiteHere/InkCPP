@@ -3,25 +3,71 @@ using namespace std;
 
 
 
-class Printer
-{
-    public:
-    virtual string print() = 0;
-};
-
-
-
-class NamePrinter: public Printer
+class NamePrinter
 {
     public:
     string name;
-    string print() { return name; };
+    string print() const { return name; };
 };
 
 
+class ThreeLayerDrawable
+{
+    public:
+    char layers[3][4];
 
-class BasicItem {
-    //FUNCTIONS FOR ITEM(s)
-    virtual void use() = 0;
-    virtual void writeDesc() = 0;
+
+    ThreeLayerDrawable () {}
+
+
+    ThreeLayerDrawable (
+        const char layerone[4], 
+        const char layertwo[4], 
+        const char layerthree[4]
+    )
+    {
+        for(int i=0; i<3; i++)
+            layers[0][i] = layerone[i];
+        layers[0][3] = 0;
+        
+        for(int i=0; i<3; i++)
+            layers[1][i] = layertwo[i];
+        layers[1][3] = 0;
+
+        for(int i=0; i<3; i++)
+            layers[2][i] = layerthree[i];
+        layers[2][3] = 0;
+    }
+
+
+    ThreeLayerDrawable (
+        string layerone, 
+        string layertwo, 
+        string layerthree
+    )
+    {
+        for(int i=0; i<3; i++)
+            layers[0][i] = layerone[i];
+        layers[0][3] = 0;
+        
+        for(int i=0; i<3; i++)
+            layers[1][i] = layertwo[i];
+        layers[1][3] = 0;
+
+        for(int i=0; i<3; i++)
+            layers[2][i] = layerthree[i];
+        layers[2][3] = 0;
+    }
+
+
+    string print() const 
+    {
+        string myPrint = "";
+        for(int i=0; i<3; i++)
+        {
+            myPrint += layers[i] + '\n';
+        }
+
+        return myPrint;
+    }
 };

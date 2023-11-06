@@ -1,4 +1,3 @@
-#include <vector>
 #include "tiles.h"
 using namespace std;
 
@@ -6,87 +5,47 @@ bool youWannaKeepGaming = 1,
      isPlayerInNewChunk = 0;
 char gameViewMode = 1;
 unsigned char current_selected_item;
+const int oneChunkSize=5;
+const char defaultInventorySize=8;
+string recent_action = nothing;
 
 hash<string> seed;
 
+
+class StaticChunkTile
+{
+    //Index of the tile that is in tile_templates[]
+    char tile_index;
+
+    StaticChunkTile(const char c_tileindex)
+    {
+        tile_index = c_tileindex;
+    }
+};
+
+
 class Chunk
-    //5 TILES + UNIQUE ID
+    //[oneChunkSize] TILES + UNIQUE ID
 {
     public:
-        unsigned int id;
-        Tile* stage[5];
+    unsigned int id;
+    Tile* stage[oneChunkSize];
 
 
-        Chunk(unsigned int chunk_id){
-            id=chunk_id;
-            for(int i=0; i<5; i++)
-                stage[i] = NULL;
-        }
+    Chunk(const unsigned int chunk_id=0)
+    {
+        id=chunk_id;
+        for(int i=0; i<5; i++)
+            stage[i] = nullptr;
+    }
     
 
     ~Chunk(){ debug(((string)"Chunk " + to_string(id) + (string)" has been deleted.\n")); }
 };
 
-class Human: public NamePrinter
-    //CHARACTER YOU MOVE AS IN GAME
-{
-    enum moving_direction: bool{
-        m_left=true,
-        m_right=false
-    };
-    public:
-        string name;
-        int stage_pos=2, selected_item=0;
-        unsigned int chunk_pos=0;
-        Item* backpack[8];
-        string layers[3];
-        Human(string human_nick="Ann", Item* human_inv[]=NULL){
-            layers[0] = nothing;
-            layers[1] = ".o.";
-            layers[2] = "_x_";
-            //human_selected=selected_item;
-            name = human_nick;
-            for(int i=0; i<8; i++){
-                if(human_inv == nullptr)
-                    backpack[i] = NULL;
-                else 
-                    backpack[i] = human_inv[i];
-            }
-            return;
-        }
-
-
-        void move(bool moveTo){
-            if(moveTo){
-                if(stage_pos == 0){
-                    stage_pos=4;
-                    chunk_pos--;
-                    isPlayerInNewChunk=true;
-                } else stage_pos--;
-            
-            } else {
-                if(stage_pos == 4){
-                    stage_pos=0;
-                    chunk_pos++;
-                    isPlayerInNewChunk=true;
-                } else stage_pos++;
-            }
-            return;
-        }
-
-
-        void pickup_item(Item* item){
-            backpack[0]=item;
-        }
-
-
-        ~Human(){ debug(((string)"Human named \"" + name + (string)"\" has been deleted.\n")); }
-};
 
 
 
-Human* player = new Human();
-Human* humans[]={player};
+
 vector<Chunk> chunks;
-Chunk* current_chunk = new Chunk(0);
-int player_seed = seed(player->name);
+Chunk* current_chunk = new Chunk();
