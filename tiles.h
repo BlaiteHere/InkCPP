@@ -12,12 +12,7 @@ enum tile_change_to: char {
 class Tile: public NamePrinter
 {
     public:
-    char layers[3][4] = //Basically what is displayed when the
-    {                  //          tile is rendered.
-        *nothing, 
-        *"ERR", 
-        *"OR!"
-    };
+    ThreeLayerDrawable render;
 
 
     Tile() { name = "Error"; }
@@ -25,14 +20,7 @@ class Tile: public NamePrinter
 
     Tile(string layerone, string layertwo, string layerthree, string tilename)
     {
-        for(int i=0; i<3; i++)
-            layers[0][i] = layerone[i];
-        
-        for(int i=0; i<3; i++)
-            layers[1][i] = layertwo[i];
-
-        for(int i=0; i<3; i++)
-            layers[2][i] = layerthree[i];
+        render = ThreeLayerDrawable(layerone, layertwo, layerthree);
 
         name = tilename;
     }
@@ -58,7 +46,7 @@ class Tile: public NamePrinter
     {
         cout << "Interacted with " << name << ":\n";
         for(int i=0; i<3; i++)
-            cout << layers[i] << '\n';
+            cout << render.layers[i] << '\n';
         cout << "No actions to perform.\nWrite 3 to exit.\n";
         return 0;
     }
@@ -67,7 +55,7 @@ class Tile: public NamePrinter
     virtual Tile* clone() const
     // Returns a heap ptr to a new tile of the same arguments
     {
-        return new Tile(layers[0], layers[1], layers[2], name);
+        return new Tile(render.layers[0], render.layers[1], render.layers[2], name);
     }   // idk how to program this without ids
 
 
@@ -98,14 +86,7 @@ class Action_Tile: public Tile{
         Action* actionone, Action* actiontwo=nullptr, Action* actionthree=nullptr
     )
     {
-        for(int i=0; i<3; i++)
-            layers[0][i] = layerone[i];
-        
-        for(int i=0; i<3; i++)
-            layers[1][i] = layertwo[i];
-
-        for(int i=0; i<3; i++)
-            layers[2][i] = layerthree[i];
+        render = ThreeLayerDrawable(layerone, layertwo, layerthree);
 
         actions[0] = actionone;
         actions[1] = actiontwo;
@@ -118,7 +99,8 @@ class Action_Tile: public Tile{
     {
         //Count the amount of actions
         int amount_of_actions = 0;
-        for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++)
+        {
             if(actions[i] == nullptr) break;
             amount_of_actions++;
         }
@@ -126,11 +108,11 @@ class Action_Tile: public Tile{
         //Print the interacted Tile
         cout << "Interacted with " << name << ":\n";
         for(int i=0; i<3; i++)
-            cout << layers[i] << '\n';
+            cout << render.layers[i] << '\n';
 
         cout << "\nWhich action would you like to perform with it?\n";
         for(int i=0; i<amount_of_actions; i++)
-            cout << "\tWrite " << i << " for [" << actions[i]->name << "]\n";
+            cout << "\tWrite " << i+1 << " for [" << actions[i]->name << "]\n";
 
         return amount_of_actions;
     }
@@ -139,8 +121,8 @@ class Action_Tile: public Tile{
     Action_Tile* clone() const
     {
         return new Action_Tile(
-            layers[0], layers[1], layers[2], name,
-            actions[0], actions[1], actions[2]
+            render.layers[0], render.layers[1], render.layers[2], 
+            name, actions[0], actions[1], actions[2]
         );
     }
 
@@ -194,5 +176,11 @@ const Tile* tile_templates[] = {
         "/^\\", "[o]", "o-o", 
         "Portable building",
         &action_templates[5]
+    ),
+    new Action_Tile(
+        " _ ", "/o\\", "[_]", 
+        "Chest",
+        &action_templates[6],
+        &action_templates[7]
     )
 };

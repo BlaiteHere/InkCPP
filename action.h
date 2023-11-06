@@ -48,7 +48,7 @@ Action action_templates[] =
     ),
     Action(
         "Get leaves",
-        item_templates[2]
+        item_templates[7]
     ),
     Action(
         "Get leaves but funnier",
@@ -57,6 +57,16 @@ Action action_templates[] =
     Action(
         "Shove the contraption into your inventory",
         item_templates[9],
+        0
+    ),
+    Action(
+        "Open the chest",
+        item_templates[6],
+        0
+    ),
+    Action(
+        "Break the chest for materials",
+        item_templates[2],
         0
     )
 };

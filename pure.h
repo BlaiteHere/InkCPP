@@ -40,6 +40,26 @@ class ThreeLayerDrawable
     }
 
 
+    ThreeLayerDrawable (
+        string layerone, 
+        string layertwo, 
+        string layerthree
+    )
+    {
+        for(int i=0; i<3; i++)
+            layers[0][i] = layerone[i];
+        layers[0][3] = 0;
+        
+        for(int i=0; i<3; i++)
+            layers[1][i] = layertwo[i];
+        layers[1][3] = 0;
+
+        for(int i=0; i<3; i++)
+            layers[2][i] = layerthree[i];
+        layers[2][3] = 0;
+    }
+
+
     string print() const 
     {
         string myPrint = "";

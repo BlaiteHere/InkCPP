@@ -50,7 +50,7 @@ void getInput(Human* moveThem)
                 case 'Q':
                     quitTheGame();
                     return;
-                case 'I':
+                case 'R':
                     gameViewMode = interaction_tui;
                     break;
                 case 'E':
@@ -83,7 +83,7 @@ void getInput(Human* moveThem)
                 case 'Q':
                     quitTheGame();
                     return;
-                case 'I':
+                case 'R':
                     gameViewMode = interaction_tui;
                     break;
                 case 'E':
@@ -111,17 +111,17 @@ void inGameShowControls()
     {
         case inventory_tui:
             cout << 
-            "A-D to move    E to close inventory    I to use    C to craft\n";
+            "A-D to move    E to close inventory    R to use    C to craft\n";
             return;
 
         case actual_game:
             cout << 
-            "A-D to navigate    E to open inventory    I to interact    C to craft\n";
+            "A-D to navigate    E to open inventory    R to interact    C to craft\n";
             return;
 
         case interaction_tui:
             cout << 
-            "0-1-2 select action    Anything else to close\n";
+            "1-2-3 select action    Anything else to close\n";
             return;
     }
     return;
@@ -164,7 +164,7 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = false;
+    areYouDebugging = true;
 
     introduction();
     loadChunk();

@@ -16,6 +16,47 @@ enum gameViewModes: char
 };
 
 
+void titleScreen() {
+    char key_input;
+    const char title_screen[] = {
+       "\
+  ####   ##  ##   ####    #####   #####  ######   ####   ###### \n\
+ ##  ##  ##  ##  ##  ##  ##      ##        ##    ##  ##    ##   \n\
+ #####   ##  ##  #####   #####    ####     ##    #####     ##   \n\
+ ##  ##  ##  ##  ##      ##          ##    ##    ##  ##    ##   \n\
+ ##  ##   ####   ##       #####  #####     ##    ##  ##  ###### \n\n\
+                                                 made by Blaite.\n"
+    };
+    cout << title_screen << "Press any key to continue...   ";
+    cin >> key_input;
+    return;
+}
+
+
+void introduction()
+    //ASKS FOR THE INK HUMAN NAME, IT IS LATER USED AS THE WORLD SEED
+{
+    string nameYourInk;
+
+    if(areYouDebugging)
+    {
+        player->name = "Blaite";
+        return;
+    } else titleScreen();
+
+    cout << "Name your ink. (type \"no\" if you want it to be nameless)\n>>> ";
+    cin >> nameYourInk;
+
+    if(nameYourInk!="no")
+        player->name = nameYourInk;
+
+    cout << "Welcome to " << player->name << "'s world!" << endl
+    << "Write any key to continue...\n";
+    cin >> nameYourInk;
+    return;
+}
+
+
 const int randomNumberGenerator(const int& stop, const int& start=0)
     //RNG
 {
@@ -75,7 +116,11 @@ void useSelectedItem(Human* const &this_human, Chunk* this_chunk = current_chunk
         this_human->render.layers[1][2] = item->icon;
     else if (item->type == 'c') 
         this_human->useItem(selected_inventory_space);
-    else if (item->type == 'T') {
+    else if (
+        item->type == 'T' && 
+        this_chunk->stage[this_human->stage_pos] == (const Tile*)item_templates[0]
+    )
+    {
         ItemTile* item_tile = static_cast<ItemTile*>(item);
         this_chunk->stage[this_human->stage_pos] = (Tile*)tile_templates[item_tile->tileToChange];
         this_human->useItem(selected_inventory_space);
@@ -97,30 +142,6 @@ void startCrafting()
 }
 
 
-void introduction()
-    //ASKS FOR THE INK HUMAN NAME, IT IS LATER USED AS THE WORLD SEED
-{
-    string nameYourInk;
-
-    if(areYouDebugging)
-    {
-        player->name = "Blaite";
-        return;
-    }
-
-    cout << "Name your ink. (type \"no\" if you want it to be nameless)\n>>> ";
-    cin >> nameYourInk;
-
-    if(nameYourInk!="no")
-        player->name = nameYourInk;
-
-    cout << "Welcome to " << player->name << "'s world!" << endl
-    << "Write any key to continue...\n";
-    cin >> nameYourInk;
-    return;
-}
-
-
 void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
     //CONSTRUCTS A CHUNK AND RETURNS IT
 {
@@ -132,7 +153,7 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
 
     for(int i=0; i<oneChunkSize; i++)
     {
-        this_random_number = randomNumberGenerator(6);
+        this_random_number = randomNumberGenerator(7);
         debug_msg = to_string(this_random_number) + ", ";//DEBUG
         debug(debug_msg, false);                         //DEBUG
         this_chunk->stage[i] = tile_templates[this_random_number]->clone();
@@ -271,8 +292,8 @@ string renderChunk(const Chunk* const& this_chunk, Human* const players[])
 
     for(int y=0; y<3; y++)
         for(int x=0; x<oneChunkSize; x++)
-            for(int i=0; i<3; i++)
-                this_canvas[y][x] = this_chunk->stage[x]->layers[y];
+            this_canvas[y][x] = this_chunk->stage[x]->render.layers[y];
+
 
     //Render Humans to this_canvas array
     for(int i=0; i<1; i++)
@@ -314,7 +335,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     //Current inspected tile
     Tile* this_tile = current_chunk->stage[moveMe->stage_pos];
         // turning char {"1"} to int {1}
-    int input_to_int = this_input - 48;
+    int input_to_int = this_input - 49;
 
     //Check if the input is a legal option of the interaction TUI
     if(input_to_int >= amount_of_actions || input_to_int < 0)

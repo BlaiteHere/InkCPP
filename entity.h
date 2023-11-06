@@ -20,13 +20,12 @@ class Inventory
 class Entity: public NamePrinter
 {
     public:
-    const char entity_type='e';
+    char entity_type='e';
     ThreeLayerDrawable render;
     mutable bool direction;
-    string name;
 
 
-    Entity() : name("DefaultEntity") {}
+    Entity() { name = "DefaultEntity"; }
 
 
     Entity(
@@ -35,11 +34,12 @@ class Entity: public NamePrinter
         const char layertwo[4], 
         const char layerthree[4],
         const bool e_dir=false
-    ) 
-        : name(e_name), 
+    ):
         direction(e_dir), 
         render(ThreeLayerDrawable(layerone, layertwo, layerthree))
-    {}
+    {
+        name = e_name;
+    }
 };
 
 
@@ -48,19 +48,18 @@ class Human: public Entity
     //CHARACTER YOU MOVE AS IN GAME
 {
     public:
-    const char entity_type='h';
     mutable char stage_pos=2,
                  selected_item=0;
     mutable unsigned int chunk_pos=0;
     mutable Inventory backpack;
-    string name;
 
 
     Human(const string human_nick="Ann")//, InventoryItem* human_inv[] = nullptr)
-    : name(human_nick)
     {
-        render = ThreeLayerDrawable(" O ", "/V\\", " A ");
+        entity_type='h';
+        render = ThreeLayerDrawable(" O ", "/V\\", "_A_");
         direction = false;
+        name = human_nick;
     }
 
     const void move(const bool moveTo) const
@@ -88,7 +87,7 @@ class Human: public Entity
     }
 
 
-    const bool itemSorter (const Item* item) const
+    const bool addItemToInv (const Item* item) const
     {
         for(int i=0; i<8; i++)
             if (backpack.m_inventory[i]->item == nullptr)
@@ -105,7 +104,7 @@ class Human: public Entity
 
     const bool pickup_item(const Item* item) const
     {
-        return itemSorter(item);
+        return addItemToInv(item);
     }
 
 
