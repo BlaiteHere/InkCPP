@@ -41,7 +41,7 @@ class Tile: public NamePrinter
     }
 
 
-    virtual int interact() const
+    virtual const int interact() const
     // Interaction screen render
     {
         cout << "Interacted with " << name << ":\n";
@@ -95,7 +95,7 @@ class Action_Tile: public Tile{
     }
 
 
-    int interact() const
+    const int interact() const
     {
         //Count the amount of actions
         int amount_of_actions = 0;
@@ -137,7 +137,7 @@ class Action_Tile: public Tile{
     }
 
 
-    const char getTileToChange(const char input=127) const
+    const char getTileToChange(const char input = 127) const
     // Returns what the tile should change to
     // (index in item_teplates[])
     {

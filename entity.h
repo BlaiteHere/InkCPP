@@ -68,7 +68,7 @@ class Human: public Entity
         {
             if(stage_pos == 0)
             {
-                stage_pos=4;
+                stage_pos = oneChunkSize-1;
                 chunk_pos--;
 
                 isPlayerInNewChunk=true;

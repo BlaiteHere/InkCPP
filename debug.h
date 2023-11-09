@@ -1,7 +1,7 @@
 #include "includes.h"
 using namespace std;
 
-bool areYouDebugging = true;
+bool areYouDebugging;
 
 void debug(string message, const bool putTheDebugThingies = true)
     //DEBUG

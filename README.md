@@ -37,14 +37,14 @@ Otherwise, you can try compiling the files *yourself*.
 ## BUT JOHN, WHAT IS THE GAME ABOUT?
  > about
 
-THE GAME WILL REVOLVE ABOUT YOU, HUMAN.
-YOU'LL SEEK SHELTER AND MATERIALS TO
-SURVIVE IN HARSH ENVIRONMENT OF NATURE.
-YOU'LL MAKE TOOLS AND FIGHT MONSTERS.
-OR YOU WILL BEFRIEND THEM! YOUR CHOICE.
-THERE'S NO GOALS. YOU DO WHAT YOU WANT.
-BUILD STRUCTURES, GATHER RESOURCES
-**IN THIS POCKET-SIZED 1D ADVENTURE.**
+The game will revolve about you, human.
+You'll seek shelter and materials to
+Survive in harsh environment of nature.
+You'll make tools and fight monsters.
+Or you will befriend them! your choice.
+There's no goals. you do what you want.
+Build structures, gather resources
+**In this pocket-sized 1d adventure.**
 
 # Goals:
 

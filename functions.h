@@ -5,7 +5,6 @@ char input;
 char amount_of_actions = 3;
 char selected_inventory_space = 0;
 
-
 enum gameViewModes: char 
     //ALL RENDER/OUTPUT MODES
 {
@@ -132,7 +131,7 @@ void useSelectedItem(Human* const &this_human, Chunk* this_chunk = current_chunk
 };
 
 
-//void doTheActions(); // growing trees, moves enemies, etc.
+//void doTheActions(); // growing trees, moving enemies, etc.
 
 
 void startCrafting()
@@ -148,14 +147,28 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
     //CONSTRUCTS A CHUNK AND RETURNS IT
 {
     srand(player_seed + player->chunk_pos);
+
     int this_random_number;
     string debug_msg;   //DEBUG
+    int tile_chance_map[] = 
+    {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        0,
+        1,
+        2
+    };
 
     debug("Generating new chunk with random numbers: ");
 
     for(int i=0; i<oneChunkSize; i++)
     {
-        this_random_number = randomNumberGenerator(7);
+        this_random_number = tile_chance_map[randomNumberGenerator(10)];
         debug_msg = to_string(this_random_number) + ", ";//DEBUG
         debug(debug_msg, false);                         //DEBUG
         this_chunk->stage[i] = tile_templates[this_random_number]->clone();
@@ -167,12 +180,36 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
 }
 
 
-//Chunk* saveChunk();
+void saveChunk(const bool hasHumanMovedLeft = true, Chunk* this_chunk = current_chunk)
+// Saves the chunk to the vector
+{
+    string debug_msg;
+    int n;
+
+    if(hasHumanMovedLeft)
+        n = 1;
+    else
+        n = -1;
+
+    for(int i=0; i<chunks.size(); i++)
+        if(chunks[i].id + n == this_chunk->id)
+        {
+            debug_msg = "Chunk data found. Saving chunk "
+            + to_string(chunks[i].id + n) + "...\n";    //DEBUG
+
+            debug(debug_msg);                           //DEBUG
+            for(int a=0; a<oneChunkSize; a++)
+                chunks[i].stage[a] = this_chunk->stage[a];
+        }
+
+    return;
+}
 
 
 void loadChunk(Human* const& this_human = player, Chunk* this_chunk = current_chunk)
     //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
 {
+    string debug_msg;
     //Search if chunk exists
     for(int i=0; i<chunks.size(); i++)
     {
@@ -181,16 +218,27 @@ void loadChunk(Human* const& this_human = player, Chunk* this_chunk = current_ch
             for(int a=0; a<oneChunkSize; a++)
                 this_chunk->stage[a] = chunks[i].stage[a];
 
-            debug("Chunk data found. Loading chunk...\n");  //DEBUG
+            debug_msg = "Chunk data found. Loading chunk "
+            + to_string(chunks[i].id) + "...\n";
+            debug(debug_msg);  //DEBUG
             return;
         }
     }
     //If not found:
     debug("Chunk data not found. Creating new chunk...\n"); //DEBUG
     composeChunk(this_human->chunk_pos, this_chunk);
-    chunks.push_back(*this_chunk);
+    chunks.emplace_back(*this_chunk);
     return;
 }
+
+
+void composeScene(const bool argument = true)
+{
+    saveChunk(argument);
+    loadChunk();
+    return;
+}
+
 
 void moveTheHuman(const bool moveThemLeft, Human* const moveThem = player)
     //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
@@ -205,18 +253,18 @@ void moveTheHuman(const bool moveThemLeft, Human* const moveThem = player)
         moveThem->move(m_left);
 
         if(isPlayerInNewChunk)
-            loadChunk();
+            composeScene();
 
         isPlayerInNewChunk=false;
 
 	} else {
         if(player->stage_pos > 3) 
-            loadChunk();
+            composeScene();
 
         moveThem->move(m_right);
 
         if(isPlayerInNewChunk)
-            loadChunk();
+            composeScene();
 
         isPlayerInNewChunk = false;
 	}
