@@ -119,11 +119,11 @@ void useSelectedItem(Human* const &this_human, Chunk* this_chunk = current_chunk
         this_human->useItem(selected_inventory_space);
     else if (
         item->type == 'T' && 
-        this_chunk->stage[this_human->stage_pos] == (const Tile*)item_templates[0]
+        this_chunk->stage[this_human->stage_pos] == tile_templates[0]->clone()
     )
     {
         ItemTile* item_tile = static_cast<ItemTile*>(item);
-        this_chunk->stage[this_human->stage_pos] = (Tile*)tile_templates[item_tile->tileToChange];
+        this_chunk->stage[this_human->stage_pos] = tile_templates[item_tile->tileToChange]->clone();
         this_human->useItem(selected_inventory_space);
     }
 
@@ -146,6 +146,7 @@ void startCrafting()
 void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
     //CONSTRUCTS A CHUNK AND RETURNS IT
 {
+    chunks_vector_size++;
     srand(player_seed + player->chunk_pos);
 
     int this_random_number;
@@ -165,6 +166,8 @@ void composeChunk(unsigned const int& this_id, Chunk* &this_chunk)
     };
 
     debug("Generating new chunk with random numbers: ");
+
+    this_chunk->stage[0] = tile_templates[0]->clone();
 
     for(int i=0; i<oneChunkSize; i++)
     {
@@ -191,15 +194,15 @@ void saveChunk(const bool hasHumanMovedLeft = true, Chunk* this_chunk = current_
     else
         n = -1;
 
-    for(int i=0; i<chunks.size(); i++)
-        if(chunks[i].id + n == this_chunk->id)
+    for(int i=0; i<chunks_vector_size; i++)
+        if(chunks->at(i)->id + n == this_chunk->id)
         {
             debug_msg = "Chunk data found. Saving chunk "
-            + to_string(chunks[i].id + n) + "...\n";    //DEBUG
+            + to_string(chunks->at(i)->id + n) + "...\n";    //DEBUG
 
             debug(debug_msg);                           //DEBUG
             for(int a=0; a<oneChunkSize; a++)
-                chunks[i].stage[a] = this_chunk->stage[a];
+                chunks->at(i)->stage[a] = this_chunk->stage[a];
         }
 
     return;
@@ -211,15 +214,15 @@ void loadChunk(Human* const& this_human = player, Chunk* this_chunk = current_ch
 {
     string debug_msg;
     //Search if chunk exists
-    for(int i=0; i<chunks.size(); i++)
+    for(int i=0; i<chunks_vector_size; i++)
     {
-        if(chunks[i].id == this_human->chunk_pos)
+        if(chunks->at(i)->id == this_human->chunk_pos)
         {
             for(int a=0; a<oneChunkSize; a++)
-                this_chunk->stage[a] = chunks[i].stage[a];
+                this_chunk->stage[a] = chunks->at(i)->stage[a];
 
             debug_msg = "Chunk data found. Loading chunk "
-            + to_string(chunks[i].id) + "...\n";
+            + to_string(chunks->at(i)->id) + "...\n";
             debug(debug_msg);  //DEBUG
             return;
         }
@@ -227,7 +230,7 @@ void loadChunk(Human* const& this_human = player, Chunk* this_chunk = current_ch
     //If not found:
     debug("Chunk data not found. Creating new chunk...\n"); //DEBUG
     composeChunk(this_human->chunk_pos, this_chunk);
-    chunks.emplace_back(*this_chunk);
+    chunks->push_back(this_chunk);
     return;
 }
 
@@ -240,34 +243,42 @@ void composeScene(const bool argument = true)
 }
 
 
+void moveTheHumanCheck()
+{
+    if(isPlayerInNewChunk)
+        composeScene();
+    return;
+}
+
+
 void moveTheHuman(const bool moveThemLeft, Human* const moveThem = player)
     //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
-    enum moving_direction: bool{
-        m_left=true,
-        m_right=false
+
+    enum moving_direction: bool
+    {
+        m_right=false,
+        m_left=true
     };
 
-	if(moveThemLeft && gameViewMode == actual_game)
+
+	if(moveThemLeft)
     {
         moveThem->move(m_left);
 
-        if(isPlayerInNewChunk)
-            composeScene();
+        moveTheHumanCheck();
 
-        isPlayerInNewChunk=false;
 
 	} else {
-        if(player->stage_pos > 3) 
+        if(player->stage_pos >= oneChunkSize-1) 
             composeScene();
 
         moveThem->move(m_right);
 
-        if(isPlayerInNewChunk)
-            composeScene();
-
-        isPlayerInNewChunk = false;
+        moveTheHumanCheck();
 	}
+    isPlayerInNewChunk = false;
+
 	return;
 }
 
@@ -342,7 +353,7 @@ string renderChunk(const Chunk* const& this_chunk, Human* const players[])
 
     for(int y=0; y<3; y++)
         for(int x=0; x<oneChunkSize; x++)
-            this_canvas[y][x] = this_chunk->stage[x]->render.layers[y];
+            this_canvas[y][x] = this_chunk->stage[x].get()->render.layers[y];
 
 
     //Render Humans to this_canvas array
@@ -383,7 +394,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     //Checks stuff necessary for interacting
 {
     //Current inspected tile
-    Tile* this_tile = current_chunk->stage[moveMe->stage_pos];
+    Tile* this_tile = current_chunk->stage[moveMe->stage_pos].get();
         // turning char {"1"} to int {1}
     int input_to_int = this_input - 49;
 
@@ -418,8 +429,7 @@ void interacting_with_tile(Human* const& moveMe, const int& this_input=input)
     const char index = this_tile->getTileToChange(input_to_int);
 
     if(index!=127) 
-        current_chunk->stage[moveMe->stage_pos]
-         = tile_templates[index]->clone();
+        current_chunk->stage[moveMe->stage_pos] = tile_templates[index]->clone();
 
     gameViewMode = actual_game;
     return;

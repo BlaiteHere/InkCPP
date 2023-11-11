@@ -52,10 +52,10 @@ class Tile: public NamePrinter
     }
 
 
-    virtual Tile* clone() const
+    const shared_ptr<Tile> clone() const
     // Returns a heap ptr to a new tile of the same arguments
     {
-        return new Tile(render.layers[0], render.layers[1], render.layers[2], name);
+        return allocate_shared<Tile>((render.layers[0], render.layers[1], render.layers[2], name));
     }   // idk how to program this without ids
 
 
@@ -128,11 +128,14 @@ class Action_Tile: public Tile{
     }
 
 
-    Action_Tile* clone() const
+    const shared_ptr<Action_Tile> clone() const
     {
-        return new Action_Tile(
+        return allocate_shared<Action_Tile>
+        (
+            (
             render.layers[0], render.layers[1], render.layers[2], 
             name, actions[0], actions[1], actions[2]
+            )
         );
     }
 
