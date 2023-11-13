@@ -9,15 +9,15 @@ const int oneChunkSize = 5;
 const char defaultInventorySize=8;
 string recent_action = nothing;
 hash<string> seed;
-unsigned int chunks_vector_size=0;
+unsigned int chunks_vector_size = 0;
 
 
 class Chunk
     //[oneChunkSize] TILES + UNIQUE ID
 {
     public:
-    unsigned int id;
-    const Tile* stage[oneChunkSize];
+    mutable unsigned int id;
+    mutable const Tile* stage[oneChunkSize];
 
 
     Chunk(const unsigned int chunk_id = 0)
@@ -28,9 +28,18 @@ class Chunk
     }
 
 
+    Chunk(const Chunk& other)
+    {
+        for(int i=0; i<oneChunkSize; i++)
+            other.stage[i] = this->stage[i];
+
+        other.id = this->id;
+    }
+
+
     ~Chunk()
     {
-        for(int i=0; i<oneChunkSize; i++) delete stage[i];
+        //for(int i=0; i<oneChunkSize; i++) delete stage[i];
 
         debug(
             ((string)"Chunk " + to_string(id) + (string)" has been deleted.\n")

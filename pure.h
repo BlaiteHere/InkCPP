@@ -5,14 +5,14 @@ using namespace std;
 
 class NamePrinter
 {
-    public:
+public:
     string name;
 };
 
 
 class ThreeLayerDrawable
 {
-    public:
+public:
     char layers[3][4];
 
 

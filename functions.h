@@ -148,6 +148,18 @@ void startCrafting()
 }
 
 
+void PrintVectorThingy()
+{
+    cout << "\nCHUNKS: ";
+
+    for(int i=0; i<chunks_vector_size; i++)
+        cout << chunks[i].id << '\t';
+
+    cout << ".\n";
+    return;
+}
+
+
 const Chunk composeChunk(unsigned const int& this_id, Chunk& this_chunk)
     //CONSTRUCTS A CHUNK AND RETURNS IT
 {
@@ -189,23 +201,24 @@ void saveChunk(const bool hasHumanMovedLeft = true, Chunk& this_chunk = current_
 // Saves the chunk to the vector
 {
     string debug_msg;
-    int n;
-
-    if(hasHumanMovedLeft)
-        n = 1;
-    else
-        n = -1;
+    int my_id;
 
     for(int i=0; i<chunks_vector_size; i++)
-        if(chunks[i].id + n == this_chunk.id)
+    {
+        my_id = chunks[i].id;
+
+        if(my_id == this_chunk.id)
         {
             debug_msg = "Chunk data found. Saving chunk "
-            + to_string(chunks[i].id + n) + "...\n";    //DEBUG
+            + to_string(my_id) + "...\n";    //DEBUG
 
             debug(debug_msg);                           //DEBUG
             for(int a=0; a<oneChunkSize; a++)
                 chunks[i].stage[a] = this_chunk.stage[a];
+            
+            return;
         }
+    }
 
     return;
 }
@@ -214,7 +227,6 @@ void saveChunk(const bool hasHumanMovedLeft = true, Chunk& this_chunk = current_
 void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_chunk)
     //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
 {
-    string debug_msg;
     //Search if chunk exists
     for(int i=0; i<chunks_vector_size; i++)
     {
@@ -227,6 +239,9 @@ void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_ch
             return;
         }
     }
+
+    PrintVectorThingy();
+
     //If not found:
     debug("Chunk data not found. Creating new chunk...\n"); //DEBUG
     Chunk new_chunk = composeChunk(this_human->chunk_pos, this_chunk);
