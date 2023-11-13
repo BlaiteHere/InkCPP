@@ -28,7 +28,7 @@ class Recipe: public NamePrinter {
     void render();
 
 
-    ~Recipe(){ debug(((string)"Recipe " + print() + (string)" has been deleted.\n")); }
+    ~Recipe(){ debug(((string)"Recipe " + name + (string)" has been deleted.\n")); }
 };
 
 

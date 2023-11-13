@@ -7,7 +7,6 @@ class NamePrinter
 {
     public:
     string name;
-    string print() const { return name; };
 };
 
 

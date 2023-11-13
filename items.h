@@ -81,7 +81,7 @@ public:
         type = 't';
     }
 
-    ~Tool(){ debug(((string)"Tool " + print() + (string)" has been deleted.\n")); }
+    ~Tool(){ debug(((string)"Tool " + name + (string)" has been deleted.\n")); }
 };
 
 
@@ -102,7 +102,7 @@ public:
         type = 'c';
     }
 
-    ~Consumable(){ debug(((string)"Consumable " + print() + (string)" has been deleted.\n")); }
+    ~Consumable(){ debug(((string)"Consumable " + name + (string)" has been deleted.\n")); }
 };
 
 
@@ -126,7 +126,7 @@ public:
         type = 'T';
     }
 
-    ~ItemTile(){ debug(((string)"ItemTile " + print() + (string)" has been deleted.\n")); }
+    ~ItemTile(){ debug(((string)"ItemTile " + name + (string)" has been deleted.\n")); }
 };
 
 
@@ -153,7 +153,7 @@ class InventoryItem
     }
 
 
-    ~InventoryItem(){ debug(((string)"InventoryItem " + item->print() + (string)" has been deleted.\n")); }
+    ~InventoryItem(){ debug(((string)"InventoryItem " + item->name + (string)" has been deleted.\n")); }
 };
 
 

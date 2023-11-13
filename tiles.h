@@ -52,11 +52,11 @@ class Tile: public NamePrinter
     }
 
 
-    const shared_ptr<Tile> clone() const
+    /*const Tile* clone() const
     // Returns a heap ptr to a new tile of the same arguments
     {
         return allocate_shared<Tile>((render.layers[0], render.layers[1], render.layers[2], name));
-    }   // idk how to program this without ids
+    }   // idk how to program this without ids*/
 
 
     virtual const char getTileToChange(const int input=dont_change) const
@@ -128,7 +128,7 @@ class Action_Tile: public Tile{
     }
 
 
-    const shared_ptr<Action_Tile> clone() const
+    /*const Action_Tile clone() const
     {
         return allocate_shared<Action_Tile>
         (
@@ -137,7 +137,7 @@ class Action_Tile: public Tile{
             name, actions[0], actions[1], actions[2]
             )
         );
-    }
+    }*/
 
 
     const char getTileToChange(const char input = 127) const

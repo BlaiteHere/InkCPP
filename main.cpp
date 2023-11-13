@@ -143,7 +143,7 @@ void gameHandler()
             return;
 
         case interaction_tui:
-            amount_of_actions = current_chunk->stage[player->stage_pos].get()->interact();
+            amount_of_actions = current_chunk.stage[player->stage_pos]->interact();
             return;
     }
     return;
