@@ -142,10 +142,12 @@ void startCrafting()
 
 void PrintVectorThingy()
 {
-    cout << "\nCHUNKS: ";
+    cout << "\nCHUNK IDs: ";
 
-    for(int i=0; i<chunks_vector_size; i++)
-        cout << chunks[i].id << '\t';
+    for(int i=0; i<chunks_vector_size; i++){
+        cout << chunks[i].id;
+        if(i!=chunks_vector_size-1) cout << ", ";
+    }
 
     cout << ".\n";
     return;
@@ -207,13 +209,12 @@ void saveChunk(Chunk& this_chunk = current_chunk)
             + to_string(my_id) + "...\n";    //DEBUG
 
             debug(debug_msg);                           //DEBUG
-            for(int a=0; a<oneChunkSize; a++)
-                chunks[i].stage[a] = this_chunk.stage[a];
-            
+            chunks.erase(chunks.begin()+i);
+            chunks.push_back(this_chunk);
+            this_chunk = chunks[i];
             return;
         }
     }
-
     return;
 }
 
@@ -234,8 +235,6 @@ void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_ch
         }
     }
 
-    PrintVectorThingy();
-
     //If not found:
     debug("Chunk data not found. Creating new chunk...\n"); //DEBUG
     composeChunk(this_human->chunk_pos, this_chunk);
@@ -252,8 +251,9 @@ void moveTheHuman(const bool moveInThisDirection, Human* const moveThem = player
 
     if(!isPlayerInNewChunk) return;
 
-    //saveChunk();
+    saveChunk();
     loadChunk();
+    isPlayerInNewChunk = false;
 	return;
 }
 

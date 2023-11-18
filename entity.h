@@ -64,6 +64,8 @@ class Human: public Entity
 
     const void move(const bool moveTo) const
     {
+        direction = moveTo;
+
         if(moveTo)
         {
             if(stage_pos == 0)
@@ -72,16 +74,18 @@ class Human: public Entity
                 chunk_pos--;
 
                 isPlayerInNewChunk=true;
-            } else stage_pos--;
-            direction = false;
-        } else {
+            } else 
+                stage_pos--;
+
+        } else
+        {
             if(stage_pos == oneChunkSize-1)
             {
                 stage_pos=0;
                 chunk_pos++;
                 isPlayerInNewChunk=true;
-            } else stage_pos++;
-            direction = true;
+            } else 
+                stage_pos++;
         }
         return;
     }
