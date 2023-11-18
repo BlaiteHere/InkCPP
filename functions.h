@@ -57,14 +57,6 @@ void introduction()
 }
 
 
-const int randomNumberGenerator(const int& stop, const int& start=0)
-    //RNG
-{
-    //Use the world/creator's name as a seed for the random generation
-    return start + (rand() % (stop - start));
-}
-
-
 void renderBackpack(const Human* const& this_human)
     //RENDERS HUMAN INVENTORY
 {
@@ -160,15 +152,15 @@ void PrintVectorThingy()
 }
 
 
-const Chunk composeChunk(unsigned const int& this_id, Chunk& this_chunk)
+void composeChunk(unsigned const int& this_id, Chunk& this_chunk=current_chunk)
     //CONSTRUCTS A CHUNK AND RETURNS IT
 {
     chunks_vector_size++;
     srand(player_seed + player->chunk_pos);
 
-    int this_random_number;
     string debug_msg;   //DEBUG
-    int tile_chance_map[] = 
+    int this_random_number,
+        tile_chance_map[] = 
     {
         0,
         1,
@@ -179,13 +171,15 @@ const Chunk composeChunk(unsigned const int& this_id, Chunk& this_chunk)
         6,
         0,
         1,
-        2
+        2,
+        3,
+        7
     };
 
     debug("Generating new chunk with random numbers: ");
     for(int i=0; i<oneChunkSize; i++)
     {
-        this_random_number = tile_chance_map[randomNumberGenerator(10)];
+        this_random_number = tile_chance_map[randomNumberGenerator(12)];
         debug_msg = to_string(this_random_number) + ", ";//DEBUG
         debug(debug_msg, false);                         //DEBUG
         this_chunk.stage[i] = tile_templates[this_random_number];
@@ -193,11 +187,11 @@ const Chunk composeChunk(unsigned const int& this_id, Chunk& this_chunk)
 
     debug("\n", false); //DEBUG
     this_chunk.id = this_id;
-    return this_chunk;
+    return;
 }
 
 
-void saveChunk(const bool hasHumanMovedLeft = true, Chunk& this_chunk = current_chunk)
+void saveChunk(Chunk& this_chunk = current_chunk)
 // Saves the chunk to the vector
 {
     string debug_msg;
@@ -244,56 +238,22 @@ void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_ch
 
     //If not found:
     debug("Chunk data not found. Creating new chunk...\n"); //DEBUG
-    Chunk new_chunk = composeChunk(this_human->chunk_pos, this_chunk);
-    chunks.push_back(new_chunk);
+    composeChunk(this_human->chunk_pos, this_chunk);
+    chunks.push_back(this_chunk);
+    this_chunk = chunks.back();
     return;
 }
 
 
-void composeScene(const bool argument = true)
-{
-    saveChunk(argument);
-    loadChunk();
-    return;
-}
-
-
-void moveTheHumanCheck()
-{
-    if(isPlayerInNewChunk)
-        composeScene();
-    return;
-}
-
-
-void moveTheHuman(const bool moveThemLeft, Human* const moveThem = player)
+void moveTheHuman(const bool moveInThisDirection, Human* const moveThem = player)
     //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
+    moveThem->move(moveInThisDirection);
 
-    enum moving_direction: bool
-    {
-        m_right=false,
-        m_left=true
-    };
+    if(!isPlayerInNewChunk) return;
 
-
-	if(moveThemLeft)
-    {
-        moveThem->move(m_left);
-
-        moveTheHumanCheck();
-
-
-	} else {
-        if(player->stage_pos >= oneChunkSize-1) 
-            composeScene();
-
-        moveThem->move(m_right);
-
-        moveTheHumanCheck();
-	}
-    isPlayerInNewChunk = false;
-
+    //saveChunk();
+    loadChunk();
 	return;
 }
 
@@ -326,7 +286,8 @@ void quitTheGame()
 	cout << "Are you sure you want to leave the game? (y/n)\n>>>";
 	cin >> answer;
 
-	if(answer=='y' or answer=='Y') {
+	if(answer=='y' or answer=='Y')
+    {
 		youWannaKeepGaming = false;
 		cout << "See you soon " << player->name << "... ";
 		cin >> answer;
@@ -368,7 +329,7 @@ string renderChunk(const Chunk& this_chunk, Human* const players[])
 
     for(int y=0; y<3; y++)
         for(int x=0; x<oneChunkSize; x++)
-            this_canvas[y][x] = this_chunk.stage[x]->render.layers[y];
+            this_canvas[y][x] = this_chunk.stage[x]->getRender().layers[y];
 
 
     //Render Humans to this_canvas array
@@ -434,10 +395,29 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
 
     recent_action = "Successfully interacted with " + this_tile->name + '!';
     debug("Successfully commited tax fraud.\n");
+    gameViewMode = actual_game;
 
     //Call Player(moveMe)'s pickup_item() that will put the item in the inventory
-    Item* my_loot = (Item*)(this_tile->getLoot(input_to_int));
+    const Item* my_loot = this_tile->getLoot(input_to_int);
+
     if (moveMe->pickup_item(my_loot)) recent_action = "Full inventory!";
+
+    switch(this_tile->getActionName(input_to_int).at(0))
+    {
+        case 'P':
+            const string dog_statue_wisdom[] = {
+                "The statue wagged its tail.",
+                "The statue licked your face.",
+                "The statue sneezed.",
+                "'Woof woof!'",
+                "'Pant pant!'",
+                "'Woof!'",
+                "'Woof?'",
+                "'Woof...'"
+            };
+            recent_action = dog_statue_wisdom[randomNumberGenerator(8)];
+            return;
+    }
 
     if (this_tile->getLoot() == 0) 
         return;
@@ -447,7 +427,7 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
     if(index!=127) 
         this_chunk.stage[moveMe->stage_pos] = tile_templates[index];
 
-    gameViewMode = actual_game;
+    
     return;
 }
 

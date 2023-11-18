@@ -27,7 +27,7 @@ class Tile: public NamePrinter
 
     
     /*
-    Tile(Tile& other)
+    Tile(const Tile& other)
     {
         other.name = name;
     }
@@ -73,12 +73,21 @@ class Tile: public NamePrinter
     {
         return (const Item*)(item_templates[0]);
     }
+
+
+    virtual const string getActionName(int action_index) const { return "No Action"; }
+
+
+    virtual const ThreeLayerDrawable getRender() const { return render; }
 };
 
 
 class Action_Tile: public Tile{
     public:
     Action* actions[3];
+
+
+    Action_Tile(){}
 
 
     Action_Tile(
@@ -162,7 +171,48 @@ class Action_Tile: public Tile{
     {
         return actions[action_index]->requiredItem;
     }
+
+
+    const string getActionName(int action_index) const
+    {
+        return actions[action_index]->name;
+    }
 };
+
+
+
+class Doggo: public Action_Tile
+{
+    public:
+    mutable bool wasPatted;
+    ThreeLayerDrawable render2 = ThreeLayerDrawable(" v ", ".\"L", "[=]");
+
+
+    Doggo()
+    {
+        render = ThreeLayerDrawable(" v ", ".\"V", "[=]");
+
+        actions[0] = &action_templates[8];
+        actions[1] = nullptr;
+        actions[2] = nullptr;
+        name = "a doggo statue";
+    }
+
+
+    void wag() const
+    {
+        wasPatted = !wasPatted;
+    }
+
+
+    const ThreeLayerDrawable getRender() const 
+    {
+        wag();
+        if(wasPatted) return render; 
+        else return render2;
+    }
+};
+
 
 
 const Tile* tile_templates[] = {
@@ -187,13 +237,14 @@ const Tile* tile_templates[] = {
     ),
     new Action_Tile(
         "/^\\", "[o]", "o-o", 
-        "Portable building",
+        "a portable building",
         &action_templates[5]
     ),
     new Action_Tile(
         " _ ", "/o\\", "[_]", 
-        "Chest",
+        "a chest",
         &action_templates[6],
         &action_templates[7]
-    )
+    ),
+    new Doggo
 };

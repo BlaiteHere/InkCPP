@@ -6,7 +6,7 @@ bool youWannaKeepGaming = 1,
 char gameViewMode = 1;
 unsigned char current_selected_item;
 const int oneChunkSize = 5;
-const char defaultInventorySize=8;
+const int defaultInventorySize=8;
 string recent_action = nothing;
 hash<string> seed;
 unsigned int chunks_vector_size = 0;
@@ -31,9 +31,9 @@ class Chunk
     Chunk(const Chunk& other)
     {
         for(int i=0; i<oneChunkSize; i++)
-            other.stage[i] = this->stage[i];
+            this->stage[i] = other.stage[i];
 
-        other.id = this->id;
+        this->id = other.id;
     }
 
 

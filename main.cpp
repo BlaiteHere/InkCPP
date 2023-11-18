@@ -17,10 +17,10 @@ void getInput(Human* moveThem)
         case inventory_tui:
             switch(input)
             {
-                case 'A':
+                case 'W':
                     change_inventory_selected_space();
                     break;
-                case 'D':
+                case 'S':
                     change_inventory_selected_space(false);
                     break;
                 case 'Q':
@@ -112,12 +112,12 @@ void inGameShowControls()
     {
         case inventory_tui:
             cout << 
-            "A-D to move    E to close inventory    R to use    C to craft\n";
+            "W-S to navigate    E to close inventory    R to use    C to craft\n";
             return;
 
         case actual_game:
             cout << 
-            "A-D to navigate    E to open inventory    R to interact    C to craft\n";
+            "A-D to move    E to open inventory    R to interact    C to craft\n";
             return;
 
         case interaction_tui:
@@ -165,7 +165,7 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = true;
+    areYouDebugging = false;
 
     introduction();
     loadChunk();

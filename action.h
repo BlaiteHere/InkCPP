@@ -32,6 +32,7 @@ class Action: public NamePrinter
 };
 
 
+
 Action action_templates[] =
 {
     Action(),
@@ -68,5 +69,8 @@ Action action_templates[] =
         "Break the chest for materials",
         item_templates[2],
         0
+    ),
+    Action(
+        "Pet"
     )
 };
