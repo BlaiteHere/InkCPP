@@ -58,7 +58,7 @@ void getInput(Human* moveThem)
                     gameViewMode = inventory_tui;
                     break;
                 case 'C':
-                    PrintChunks();
+                    if(areYouDebugging) PrintChunks();//DEBUG
                     break;
                 default:
                     povYouDidNothing();
@@ -91,7 +91,7 @@ void getInput(Human* moveThem)
                     gameViewMode = inventory_tui;
                     break;
                 case 'C':
-                    startCrafting();
+                    return;//for now...
                     break;
                 default:
                     povYouDidNothing();
@@ -201,7 +201,7 @@ int main()
     else
         while(youWannaKeepGaming)
         {
-            //system("cls");  //WINDOWS ONLY! cleans cmdl
+            system("cls");  //WINDOWS ONLY! cleans cmdl
 
             cout << recent_action << endl;
             gameHandler();

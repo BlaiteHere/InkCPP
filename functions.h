@@ -135,9 +135,17 @@ void useSelectedItem(Human* const &this_human, Chunk& this_chunk = current_chunk
 };
 
 
-void doTheActions()
+void doTheActions(const Chunk& this_chunk = current_chunk)
 // growing trees, moving enemies, etc.
 {
+    char a;
+    //Do the dog
+    for(int i=0; i<oneChunkSize; i++){
+        a = current_chunk.stage[i]->getType();
+        if(a == 'D')
+            tile_templates[7]->animateTile();
+    }
+
     return;
 }
 
@@ -260,6 +268,7 @@ void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_ch
 void moveTheHuman(const bool moveInThisDirection, Human* const moveThem = player)
 //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
+    doTheActions();
     moveThem->move(moveInThisDirection);
 
     if(!isPlayerInNewChunk) return;
@@ -346,9 +355,12 @@ string renderChunk(const Chunk& this_chunk, Human* const players[])
 
 
     //Render Humans to this_canvas array
-    for(int i=0; i<1; i++)
-        for(int y=0; y<3; y++)
-            this_canvas[y][humans[i]->stage_pos] = humans[i]->render.layers[y];
+    for(int i=0; i<1; i++) for(int y=0; y<3; y++)
+        for(int x=0; x<3; x++) if(humans[i]->render.layers[y][x] != '?')
+            this_canvas[y][humans[i]->stage_pos][x]
+            = humans[i]->render.layers[y][x];
+
+/*------------------------------------------------------*/
 
     //Render whole to this_render string
     string this_render = "";
@@ -376,6 +388,12 @@ string renderChunk(const Chunk& this_chunk, Human* const players[])
         }
         this_render += '\n';
     }
+
+    //Render shadow pointing at the human above
+    for(int i=0; i<player->stage_pos; i++) 
+        this_render += "    ";
+    this_render += ">you<";
+
     return this_render;
 }
 
@@ -417,7 +435,7 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
     //Doggo code. So cute.
     switch(this_tile->getType())
     {
-        case 'd':
+        case 'D':
             const string dog_statue_wisdom[] = {
                 "The statue wagged its tail.",
                 "The statue licked your face.",
@@ -432,7 +450,7 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
             return;
     }
 
-    if (this_tile->getLoot() == 0) 
+    if (this_tile->getLoot(input_to_int) == 0) 
         return;
 
     const char index = this_tile->getTileToChange(input_to_int);

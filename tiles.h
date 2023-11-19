@@ -81,6 +81,12 @@ class Tile: public NamePrinter, public CharType
 
 
     virtual const ThreeLayerDrawable getRender() const { return render; }
+
+
+    virtual const bool animateTile() const
+    {
+        return 1;
+    };
 };
 
 
@@ -188,7 +194,7 @@ class Action_Tile: public Tile{
 class Doggo: public Action_Tile
 {
     public:
-    mutable bool wasPatted;
+    mutable bool wasPatted=false;
     ThreeLayerDrawable render2 = ThreeLayerDrawable(" v ", ".\"L", "[=]");
 
 
@@ -203,19 +209,18 @@ class Doggo: public Action_Tile
         type = 'D';
     }
 
-
-    void wag() const
-    {
-        wasPatted = !wasPatted;
-    }
-
-
     const ThreeLayerDrawable getRender() const 
     {
-        wag();
         if(wasPatted) return render; 
-        else return render2;
+        return render2;
     }
+
+
+    const bool animateTile() const
+    {
+        wasPatted = !wasPatted;
+        return 0;
+    };
 };
 
 
