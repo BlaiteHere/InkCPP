@@ -2,6 +2,8 @@
 #include "maths.h"
 using namespace std;
 
+
+
 class Inventory
 {
     public:
@@ -17,10 +19,9 @@ class Inventory
 
 
 
-class Entity: public NamePrinter
+class Entity: public NamePrinter, public CharType
 {
     public:
-    char entity_type='e';
     ThreeLayerDrawable render;
     mutable bool direction;
 
@@ -38,6 +39,7 @@ class Entity: public NamePrinter
         direction(e_dir), 
         render(ThreeLayerDrawable(layerone, layertwo, layerthree))
     {
+        type = 'e';
         name = e_name;
     }
 };
@@ -48,7 +50,7 @@ class Human: public Entity
     //CHARACTER YOU MOVE AS IN GAME
 {
     public:
-    mutable char stage_pos=2,
+    mutable char stage_pos= oneChunkSize / 2,
                  selected_item=0;
     mutable unsigned int chunk_pos=0;
     mutable Inventory backpack;
@@ -56,8 +58,8 @@ class Human: public Entity
 
     Human(const string human_nick="Ann")//, InventoryItem* human_inv[] = nullptr)
     {
-        entity_type='h';
-        render = ThreeLayerDrawable(" O ", "/V\\", "_A_");
+        type = 'h';
+        render = ThreeLayerDrawable("?O?", "/V\\", "?A?");
         direction = false;
         name = human_nick;
     }
@@ -93,12 +95,14 @@ class Human: public Entity
 
     const bool addItemToInv (const Item* item) const
     {
-        for(int i=0; i<8; i++)
+        for(int i=0; i<defaultInventorySize; i++)
             if (backpack.m_inventory[i]->item == nullptr)
             {
                 backpack.m_inventory[i] = new InventoryItem(item, 1);
                 return 0;
-            } else if (backpack.m_inventory[i]->item == item) {
+
+            } else if (backpack.m_inventory[i]->item == item)
+            {
                 backpack.m_inventory[i]->amount++;
                 return 0;
             }

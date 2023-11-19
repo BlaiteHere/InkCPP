@@ -9,7 +9,8 @@ enum tile_change_to: char {
 };
 
 
-class Tile: public NamePrinter
+
+class Tile: public NamePrinter, public CharType
 {
     public:
     ThreeLayerDrawable render;
@@ -23,6 +24,7 @@ class Tile: public NamePrinter
         render = ThreeLayerDrawable(layerone, layertwo, layerthree);
 
         name = tilename;
+        type = 'T';
     }
 
     
@@ -101,6 +103,8 @@ class Action_Tile: public Tile{
         actions[1] = actiontwo;
         actions[2] = actionthree;
         name = tilename;
+
+        type = 'A';
     }
 
 
@@ -196,6 +200,7 @@ class Doggo: public Action_Tile
         actions[1] = nullptr;
         actions[2] = nullptr;
         name = "a doggo statue";
+        type = 'D';
     }
 
 

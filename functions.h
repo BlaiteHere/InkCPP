@@ -20,12 +20,16 @@ void titleScreen() {
     char key_input;
     const char title_screen[] = {
        "\
+   ___  ,    /\\         ___       _   /\\     ^~^       .-~>\n\
+  /  :\\ |\\  / :`---.   /   \\ /\\  / ^~' :\\   /  :\\ /\\  /  <_.^.\n\
+\\/   ;:V :\\/  ;:  :;\\^/   :;V :\\/  :; :;:\\^/  o :V :\\/   :;  :\\\n\
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\
   ####   ##  ##   ####    #####   #####  ######   ####   ###### \n\
  ##  ##  ##  ##  ##  ##  ##      ##        ##    ##  ##    ##   \n\
  #####   ##  ##  #####   #####    ####     ##    #####     ##   \n\
  ##  ##  ##  ##  ##      ##          ##    ##    ##  ##    ##   \n\
  ##  ##   ####   ##       #####  #####     ##    ##  ##  ###### \n\n\
-                                                 made by Blaite.\n"
+\t\t\t\t\t\t made by Blaite.\n"
     };
     cout << title_screen << "Press any key to continue...   ";
     cin >> key_input;
@@ -42,7 +46,7 @@ void introduction()
     {
         player->name = "Blaite";
         return;
-    } else titleScreen();
+    }
 
     cout << "Name your ink. (type \"no\" if you want it to be nameless)\n>>> ";
     cin >> nameYourInk;
@@ -97,19 +101,26 @@ void useSelectedItem(Human* const &this_human, Chunk& this_chunk = current_chunk
     //Change recent_action dialogue
     if (item->type == 'i')
         recent_action = "Materials can't be used or equiped.";
+
     else if (item->type == 't')
         recent_action = item->name + " has been equiped.";
+
     else if (item->type == 'c') 
         recent_action = item->name + " consumed.";
+
     else if (item->type == 'T') 
         recent_action = item->name + " placed down.";
-    else recent_action = "Error! How did we get here?";
 
-    //Check Item type
+    else
+        recent_action = "Error! How did we get here?";
+
+    //Check Item type and execute what that type should do
     if (item->type == 't' || item->icon == 'w')
         this_human->render.layers[1][2] = item->icon;
+
     else if (item->type == 'c') 
         this_human->useItem(selected_inventory_space);
+
     else if (
         item->type == 'T' && 
         this_chunk.stage[this_human->stage_pos] == tile_templates[0]
@@ -127,26 +138,28 @@ void useSelectedItem(Human* const &this_human, Chunk& this_chunk = current_chunk
 void doTheActions()
 // growing trees, moving enemies, etc.
 {
-
+    return;
 }
 
 
 void startCrafting()
     //RENDERS CRAFTING TUI
 {
-    recent_action = "Crafting...";
+    recent_action = "Crafting... (jk)";
 
     return;
 }
 
 
-void PrintVectorThingy()
+void PrintChunks()
+//Prints chunks vector
 {
     cout << "\nCHUNK IDs: ";
 
-    for(int i=0; i<chunks_vector_size; i++){
+    const int chunks_size = chunks.size();
+    for(int i=0; i<chunks_size; i++){
         cout << chunks[i].id;
-        if(i!=chunks_vector_size-1) cout << ", ";
+        if(i!=chunks_size-1) cout << ", ";
     }
 
     cout << ".\n";
@@ -155,9 +168,8 @@ void PrintVectorThingy()
 
 
 void composeChunk(unsigned const int& this_id, Chunk& this_chunk=current_chunk)
-    //CONSTRUCTS A CHUNK AND RETURNS IT
+//CONSTRUCTS A CHUNK AND RETURNS IT
 {
-    chunks_vector_size++;
     srand(player_seed + player->chunk_pos);
 
     string debug_msg;   //DEBUG
@@ -198,39 +210,40 @@ void saveChunk(Chunk& this_chunk = current_chunk)
 {
     string debug_msg;
     int my_id;
+    const int chunks_size = chunks.size();
 
-    for(int i=0; i<chunks_vector_size; i++)
+    for(int i=0; i<chunks_size; i++)
     {
         my_id = chunks[i].id;
 
         if(my_id == this_chunk.id)
         {
-            debug_msg = "Chunk data found. Saving chunk "
-            + to_string(my_id) + "...\n";    //DEBUG
-
-            debug(debug_msg);                           //DEBUG
+debug_msg = "Chunk data found. Saving chunk " + to_string(my_id) + "...\n";
+            debug(debug_msg);//DEBUG
             chunks.erase(chunks.begin()+i);
             chunks.push_back(this_chunk);
-            this_chunk = chunks[i];
             return;
         }
     }
+
+    debug("Error! Chunk saving failed. Chunk not found.");
     return;
 }
 
 
 void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_chunk)
-    //CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
+//CHECKS IF CHUNK EXISTS, IF IT DOESN'T THEN MAKES ONE WITH composeChunk()
 {
     //Search if chunk exists
-    for(int i=0; i<chunks_vector_size; i++)
+    const int chunks_size = chunks.size();
+
+    for(int i=0; i<chunks_size; i++)
     {
         if(chunks[i].id == this_human->chunk_pos)
         {
-            for(int a=0; a<oneChunkSize; a++)
-                this_chunk.stage[a] = chunks[i].stage[a];
+            this_chunk = chunks.at(i);
 
-            debug(this_chunk.debug_msg());  //DEBUG
+            debug(this_chunk.debug_msg()); //DEBUG
             return;
         }
     }
@@ -245,7 +258,7 @@ void loadChunk(Human* const& this_human = player, Chunk& this_chunk = current_ch
 
 
 void moveTheHuman(const bool moveInThisDirection, Human* const moveThem = player)
-    //MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
+//MOVES SPECIFIED HUMAN IN THE PLACE THEY WANNA MOVE
 {
     moveThem->move(moveInThisDirection);
 
@@ -259,18 +272,18 @@ void moveTheHuman(const bool moveInThisDirection, Human* const moveThem = player
 
 
 void change_inventory_selected_space(const bool change_space_left = true)
-    //CHANGES INVENTORY SELECTED CURSOR SPACE 
-    //and checks if it's not out of bounds of the array
+//CHANGES INVENTORY SELECTED CURSOR SPACE 
+//and checks if it's not out of bounds of the array
 {
     if(change_space_left)
     {
-        if(selected_inventory_space == 0) 
-            selected_inventory_space = 7;
+        if(selected_inventory_space == 0)
+            selected_inventory_space = defaultInventorySize-1;
 
         else selected_inventory_space--;
 
     } else {
-        if(selected_inventory_space == 7) 
+        if(selected_inventory_space == defaultInventorySize-1)
             selected_inventory_space = 0;
 
         else selected_inventory_space++;
@@ -370,41 +383,41 @@ string renderChunk(const Chunk& this_chunk, Human* const players[])
 void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk, const int& this_input=input)
     //Checks stuff necessary for interacting
 {
-    //Current inspected tile
+//Current inspected tile
     const Tile* this_tile = this_chunk.stage[moveMe->stage_pos];
-        // turning char {"1"} to int {1}
+//Turning char {"1"} to int {1}
     int input_to_int = this_input - 49;
+
+    gameViewMode = actual_game;
 
     //Check if the input is a legal option of the interaction TUI
     if(input_to_int >= amount_of_actions || input_to_int < 0)
-    {
-        gameViewMode = actual_game;
         return;
-    }
 
-    //Check if human's hand has the item to do the action
+    //Check if human's Hand has the Item required to do the Action
     Item* human_hand = moveMe->backpack.m_inventory[moveMe->selected_item]->item;
     const Item* item_req = this_tile->getActionReq(input_to_int);
 
     if (item_req != nullptr && human_hand != item_req)
     {
         cout << "Requirements don't match.\n";
-        gameViewMode = actual_game;
         return;
     }
 
     recent_action = "Successfully interacted with " + this_tile->name + '!';
-    debug("Successfully commited tax fraud.\n");
-    gameViewMode = actual_game;
+    debug(recent_action);//DEBUG
 
-    //Call Player(moveMe)'s pickup_item() that will put the item in the inventory
+//Call Player's (aka: moveMe's) pickup_item()
+//that will put the item in the inventory
     const Item* my_loot = this_tile->getLoot(input_to_int);
 
-    if (moveMe->pickup_item(my_loot)) recent_action = "Full inventory!";
+    if (moveMe->pickup_item(my_loot))
+        recent_action = "Full inventory!";
 
-    switch(this_tile->getActionName(input_to_int).at(0))
+    //Doggo code. So cute.
+    switch(this_tile->getType())
     {
-        case 'P':
+        case 'd':
             const string dog_statue_wisdom[] = {
                 "The statue wagged its tail.",
                 "The statue licked your face.",

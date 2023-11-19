@@ -1,15 +1,15 @@
 #include "tiles.h"
 using namespace std;
 
-bool youWannaKeepGaming = 1,
-     isPlayerInNewChunk = 0;
+bool youWannaKeepGaming = true,
+     isPlayerInNewChunk = false;
 char gameViewMode = 1;
 unsigned char current_selected_item;
-const int oneChunkSize = 5;
-const int defaultInventorySize=8;
+const unsigned int oneChunkSize = 16,
+                   defaultInventorySize = 32;
 string recent_action = nothing;
 hash<string> seed;
-unsigned int chunks_vector_size = 0;
+
 
 
 class Chunk
@@ -47,7 +47,7 @@ class Chunk
     }
 
 
-    string debug_msg()
+    string debug_msg() const
     {
         return "Chunk data found. Loading chunk " + to_string(id) + "...\n";
     }

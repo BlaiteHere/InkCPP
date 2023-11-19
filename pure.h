@@ -7,7 +7,26 @@ class NamePrinter
 {
 public:
     string name;
+
+    virtual const string getName() const
+    {
+        return name;
+    }
 };
+
+
+
+class CharType
+{
+public:
+    char type;
+
+    virtual const char getType() const
+    {
+        return type;
+    }
+};
+
 
 
 class ThreeLayerDrawable

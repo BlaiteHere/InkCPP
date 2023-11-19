@@ -5,7 +5,7 @@ using namespace std;
 void getInput(Human* moveThem)
     //GETS INPUT
 {
-    cout << "Action: ";
+    cout << "\n >>> Write your input here: ";
     cin >> input;
 
     //Check if [small letter], if yes - changes to CAPITALISED LETTER
@@ -58,7 +58,7 @@ void getInput(Human* moveThem)
                     gameViewMode = inventory_tui;
                     break;
                 case 'C':
-                    PrintVectorThingy();
+                    PrintChunks();
                     break;
                 default:
                     povYouDidNothing();
@@ -106,23 +106,40 @@ void getInput(Human* moveThem)
 void inGameShowControls()
     //OUTPUTS GAME CONTROLS FOR SPECIFIC GAMEVIEWMODES
 {
-    cout << '\n';
+    string current_obj;
+
+    cout << "\nInstructions:\n";
 
     switch(gameViewMode)
     {
         case inventory_tui:
+            current_obj = player->backpack.m_inventory[player->selected_item]->item->getName();
             cout << 
-            "W-S to navigate    E to close inventory    R to use    C to craft\n";
+"\
+ W-S to navigate the inventory up & down\n\
+ E to close the inventory\n\
+ R to use " << current_obj << "\n\
+ C to craft (unavailable)\n\
+";
             return;
 
         case actual_game:
+            current_obj = current_chunk.stage[player->stage_pos]->getName();
             cout << 
-            "A-D to move    E to open inventory    R to interact    C to craft\n";
+"\
+ A-D to move left-right\n\
+ E to open inventory\n\
+ R to interact with " << current_obj << "\n\
+ C to craft (unavailable)\n\
+";
             return;
 
         case interaction_tui:
             cout << 
-            "1-2-3 select action    Anything else to close\n";
+"\
+ 1-2-3 to select action\n\
+ Write anything else to exit the interaction screen\n\
+";
             return;
     }
     return;
@@ -151,7 +168,7 @@ void gameHandler()
 
 
 /*void memory_deletus()
-    //DELETES HEAP MEMORY
+//DELETES HEAP MEMORY and has all the heap-allocated elements in here
 {
     for(int i=0; i<1; i++)
         delete humans[i];
@@ -165,8 +182,9 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = true;
+    areYouDebugging = false;
 
+    titleScreen();
     introduction();
     loadChunk();
 
@@ -183,7 +201,7 @@ int main()
     else
         while(youWannaKeepGaming)
         {
-            system("cls");  //WINDOWS ONLY! cleans cmdl
+            //system("cls");  //WINDOWS ONLY! cleans cmdl
 
             cout << recent_action << endl;
             gameHandler();
