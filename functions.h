@@ -31,7 +31,11 @@ void titleScreen() {
  ##  ##   ####   ##       #####  #####     ##    ##  ##  ###### \n\n\
 \t\t\t\t\t\t made by Blaite.\n"
     };
-    cout << title_screen << "Press any key to continue...   ";
+    cout << title_screen;
+
+    if(areYouDebugging) cout << "Press any key to continue with debugging...\t";
+    else cout << "Press any key to continue...\t";
+
     cin >> key_input;
     return;
 }
@@ -142,7 +146,7 @@ void doTheActions(const Chunk& this_chunk = current_chunk)
     //Do the dog
     for(int i=0; i<oneChunkSize; i++){
         a = current_chunk.stage[i]->getType();
-        if(a == 'D')
+        if(current_chunk.stage[i]->getType() == 'D')
             tile_templates[7]->animateTile();
     }
 
@@ -343,58 +347,123 @@ void povYouDidNothing()
 }
 
 
-string renderChunk(const Chunk& this_chunk, Human* const players[])
-    //RETURNS STRING WITH THE VIEW OF THE GAME SCENE
+string RenderTiles(const Chunk& this_chunk = current_chunk)
 {
-    //Render Tiles to this_canvas array
-    string this_canvas[3][oneChunkSize];
-
-    for(int y=0; y<3; y++)
-        for(int x=0; x<oneChunkSize; x++)
-            this_canvas[y][x] = this_chunk.stage[x]->getRender().layers[y];
-
-
-    //Render Humans to this_canvas array
-    for(int i=0; i<1; i++) for(int y=0; y<3; y++)
-        for(int x=0; x<3; x++) if(humans[i]->render.layers[y][x] != '?')
-            this_canvas[y][humans[i]->stage_pos][x]
-            = humans[i]->render.layers[y][x];
-
-/*------------------------------------------------------*/
-
-    //Render whole to this_render string
-    string this_render = "";
-
-    debug("Player chunk pos: " + to_string(player->chunk_pos) + '\n'); //DEBUG
-
+    string my_canvas = "";
     for(int y=0; y<3; y++)
     {
         for(int x=0; x<oneChunkSize; x++)
         {
-
-            if(x==0) {
+            if(x == 0)
                 if(y==2)
-                    this_render += '_';
+                    my_canvas += '_';
                 else
-                    this_render += ' ';
-            }
+                    my_canvas += ' ';
 
-            this_render += this_canvas[y][x];
+            my_canvas += this_chunk.stage[x]->getRender().layers[y];
+
+            if(x == oneChunkSize-1) continue;
 
             if(y==2)
-                this_render += '_';
+                my_canvas += '_';
             else
-                this_render += ' ';
+                my_canvas += ' ';
         }
-        this_render += '\n';
+        
+        //if(y == 3) my_canvas += '_';
+        my_canvas += '\n';
     }
 
-    //Render shadow pointing at the human above
-    for(int i=0; i<player->stage_pos; i++) 
-        this_render += "    ";
-    this_render += ">you<";
+    return my_canvas;
+};
 
-    return this_render;
+
+void RenderHuman(
+    string& my_canvas,
+    Human* const singular_human = player,
+    const int human_offset = 0
+)
+{
+    const int distance = singular_human->stage_pos;
+    int x_distance;
+
+    for(int y=0; y<3; y++)
+    {
+        for(int x=0; x<3; x++)
+        {
+            if(singular_human->render.layers[y][x] == '?') continue;
+
+            x_distance = distance*4 + x + 1;
+
+            if(y == 0)
+                my_canvas[x_distance] = singular_human->render.layers[y][x];
+            else
+                my_canvas[oneChunkSize*4 * y + y + x_distance] = singular_human->render.layers[y][x];
+        }
+    }
+    return;
+};
+
+
+string renderChunk(const Chunk& this_chunk = current_chunk, Human* const players[] = humans)
+    //RETURNS STRING WITH THE VIEW OF THE GAME SCENE
+{
+    //Render Tiles to this_canvas array
+    //string this_canvas[3][oneChunkSize];
+    string my_canvas = "";
+
+    my_canvas += RenderTiles();
+    debug(to_string(humans[0]->stage_pos)+'\n');
+    RenderHuman(my_canvas, humans[0]);
+
+    //Render shadow pointing at the human above
+    for(int i=0; i<player->stage_pos; i++)
+        if(areYouDebugging)
+            my_canvas += ".   ";
+        else
+            my_canvas += "    ";
+    my_canvas += ">you<";
+
+    return my_canvas;
+
+    // OLD CODE:
+    // for(int y=0; y<3; y++)
+    //     for(int x=0; x<oneChunkSize; x++)
+    //         this_canvas[y][x] = this_chunk.stage[x]->getRender().layers[y];
+    //Render Humans to this_canvas array
+    // int players_array_size = 1; //sizeof(players) / sizeof(Human*)
+    // for(int i=0; i<players_array_size; i++) for(int y=0; y<3; y++)
+    //     for(int x=0; x<3; x++) if(humans[i]->render.layers[y][x] != '?')
+    //         this_canvas[y][humans[i]->stage_pos][x] = humans[i]->render.layers[y][x];
+
+/*------------------------------------------------------*/
+
+    //Render whole to this_render string
+    // string this_render = "";
+
+    // debug("Player chunk pos: " + to_string(player->chunk_pos) + '\n'); //DEBUG
+
+    // for(int y=0; y<3; y++)
+    // {
+    //     for(int x=0; x<oneChunkSize; x++)
+    //     {
+
+    //         if(x==0) {
+    //             if(y==2)
+    //                 this_render += '_';
+    //             else
+    //                 this_render += ' ';
+    //         }
+
+    //         this_render += this_canvas[y][x];
+
+    //         if(y==2)
+    //             this_render += '_';
+    //         else
+    //             this_render += ' ';
+    //     }
+    //     this_render += '\n';
+    // }
 }
 
 

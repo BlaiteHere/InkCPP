@@ -5,7 +5,7 @@ bool youWannaKeepGaming = true,
      isPlayerInNewChunk = false;
 char gameViewMode = 1;
 unsigned char current_selected_item;
-const unsigned int oneChunkSize = 16,
+const unsigned int oneChunkSize = 6,
                    defaultInventorySize = 32;
 string recent_action = nothing;
 hash<string> seed;

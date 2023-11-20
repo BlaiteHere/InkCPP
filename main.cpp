@@ -156,6 +156,7 @@ void gameHandler()
             return;
 
         case actual_game:
+            //usleep(30000);
             cout << renderChunk(current_chunk, humans);
             return;
 
