@@ -25,7 +25,12 @@ Welcome to README.md of my project:
 
 # FAQ:
 
-## OKAY THEN, HOW DO I PLAY THE GAME/COMPILE?
+## WHAT ARE YOU WORKING ON RIGHT NOW IN THE GAME?
+> list of things i'm currently working on
+- Animated Tiles
+- Player walking between Tiles animation
+
+## OKAY THEN, HOW DO I PLAY/COMPILE THE GAME?
 
 ### There's also a RELEASE with a compiled `.exe` file & Dynamic libs that should work on any Windows & maybe Linux OS!
 Otherwise, you can try compiling the files *yourself*.
@@ -103,7 +108,7 @@ changing one thing
  ~ world generation with enabled spawning structures and
 being able to loot them (like Statue, Lake)
  - Crafting system giving structures to Inventory and ability to place them
-(like House, Camp & Farm 
+(like House, Camp & Farm)
 ~ Enemies & battle system;
  - ability to defeat Enemies in a battle
  - ability to calm Enemies & exit battling
@@ -120,8 +125,8 @@ being able to loot them (like Statue, Lake)
 GUIDE:
 
 ### Download && Install a MinGW C++ Compiler
- > default https://www.mingw-w64.org
- > or my fav: https://sourceforge.net/projects/mingw
+- default https://www.mingw-w64.org
+- or my fav: https://sourceforge.net/projects/mingw
 
 ### Check if G++ works as intended
 ```
@@ -131,8 +136,8 @@ If you got an error, there's something wrong with your installation.
 You might also need to go to Windows Settings && add `g++` to your system's variables || you can just use `g++` in the same directory as `main.cpp`
 
 ### Compiling && Linking `main.cpp` file (example for `g++` on Windows)
- > Open CMDL (Command Line)
- > Go to the file directory, compile && link the file to `a.exe` && then execute it in the terminal using the following cmds:
+ - Open CMDL (Command Line)
+ - Go to the file directory, compile && link the file to `a.exe` && then execute it in the terminal using the following cmds:
 ```bash
 cd [file path of the InkCPP folder]
 g++ main.cpp
