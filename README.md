@@ -25,11 +25,6 @@ Welcome to README.md of my project:
 
 # FAQ:
 
-## WHAT ARE YOU WORKING ON RIGHT NOW IN THE GAME?
-> list of things i'm currently working on
-- Animated Tiles
-- Player walking between Tiles animation
-
 ## OKAY THEN, HOW DO I PLAY/COMPILE THE GAME?
 
 ### There's also a RELEASE with a compiled `.exe` file & Dynamic libs that should work on any Windows & maybe Linux OS!
@@ -56,7 +51,12 @@ Build structures, gather resources
 ### WHAT I'LL BE DOING ASAP!
  > aka current goals
 
-```
+### rn?
+ > list of things i'm currently working on
+- Animated Tiles
+- Player walking between Tiles animation
+
+```r
 + make Interaction with Tiles work
  + class type Action with `name` (to display), what the Tile should change to
 (if it even should), what Item the player has to have equipped to do the action

@@ -113,7 +113,13 @@ void inGameShowControls()
     switch(gameViewMode)
     {
         case inventory_tui:
-            current_obj = player->backpack.m_inventory[player->selected_item]->item->getName();
+        {
+            Item* this_item = player->backpack.m_inventory[player->selected_item]->item;
+
+            if(this_item != nullptr)
+                current_obj = this_item->getName();
+            else
+                current_obj = "an item";
             cout << 
 "\
  W-S to navigate the inventory up & down\n\
@@ -121,6 +127,7 @@ void inGameShowControls()
  R to use " << current_obj << "\n\
  C to craft (unavailable)\n\
 ";
+            }
             return;
 
         case actual_game:
@@ -141,8 +148,10 @@ void inGameShowControls()
  Write anything else to exit the interaction screen\n\
 ";
             return;
+        default:
+            cout << "Error!";
+            return;
     }
-    return;
 }
 
 
@@ -183,7 +192,7 @@ void gameHandler()
 
 int main()
 {
-    areYouDebugging = false;
+    areYouDebugging = true;
 
     titleScreen();
     introduction();

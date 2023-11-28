@@ -470,11 +470,12 @@ string renderChunk(const Chunk& this_chunk = current_chunk, Human* const players
 void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk, const int& this_input=input)
     //Checks stuff necessary for interacting
 {
-//Current inspected tile
+    //Current inspected tile
     const Tile* this_tile = this_chunk.stage[moveMe->stage_pos];
-//Turning char {"1"} to int {1}
+    //Turning char {"1"} to int {1}
     int input_to_int = this_input - 49;
 
+    //Inventory off
     gameViewMode = actual_game;
 
     //Check if the input is a legal option of the interaction TUI
@@ -487,7 +488,7 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
 
     if (item_req != nullptr && human_hand != item_req)
     {
-        cout << "Requirements don't match.\n";
+        recent_action = "Requirements don't match.\n";
         return;
     }
 
@@ -526,7 +527,6 @@ void interacting_with_tile(Human* const& moveMe, Chunk& this_chunk=current_chunk
 
     if(index!=127) 
         this_chunk.stage[moveMe->stage_pos] = tile_templates[index];
-
     
     return;
 }
